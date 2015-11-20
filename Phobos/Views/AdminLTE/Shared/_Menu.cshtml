@@ -1,0 +1,11 @@
+﻿@{
+    MenuEntriesListViewModel menus = ViewBag.Menus;
+}
+
+<ul class="sidebar-menu">
+    <li class="header">@menus.Title</li>
+    @foreach (var item in menus)
+    {
+        @Html.Partial("_MenuEntry", item)
+    }
+</ul>

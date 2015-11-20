@@ -23,6 +23,7 @@
             @RenderSection("_ContentHeader", required: false)
             <section class="content">
                 @RenderBody()
+                @ViewBag.PageTitle
             </section>
         </div>
         @Html.Partial("_MainFooter")

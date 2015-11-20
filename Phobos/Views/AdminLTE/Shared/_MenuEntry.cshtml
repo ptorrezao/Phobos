@@ -1,0 +1,20 @@
+﻿@model MenuEntriesViewModel
+@{
+    var classActive= Model.IsActive ? "active" : "";
+}
+@if (Model.Childs.Count > 0)
+{
+    <li class="treeview">
+        <a href="#"><i class="fa fa-link"></i> <span>@Model.Text</span> <i class="fa fa-angle-left pull-right"></i></a>
+        <ul class="treeview-menu">
+            @foreach (var item in Model.Childs)
+            {
+               <text>@Html.Partial("_MenuEntry", item)</text>
+            }
+        </ul>
+    </li>
+}
+else
+{
+    <li class="@classActive"><a href="@Model.Url"><i class="fa fa-link"></i> <span>@Model.Text</span></a></li>
+}

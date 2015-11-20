@@ -43,6 +43,14 @@ namespace Phobos
                     "~/Content/themes/AdminLTE/css/AdminLTE.css",
                     "~/Content/themes/AdminLTE/css/skins/skin-blue.css"));
 
+            bundles.Add(new StyleBundle("~/Content/iCheck").Include(
+                    "~/Content/plugins/iCheck/square/blue.css"));
+
+            bundles.Add(new ScriptBundle("~/bundles/iCheck").Include(
+                     "~/Content/plugins/iCheck/icheck.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/shuffleLetters").Include(
+                   "~/Content/plugins/shuffleLetters/jquery.shuffleLetters.js"));
         }
     }
 }
