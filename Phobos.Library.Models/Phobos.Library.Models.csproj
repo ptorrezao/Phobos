@@ -1,14 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{5C2EEF0B-4059-4E83-81A1-9C27B98700B3}</ProjectGuid>
+    <ProjectGuid>{B61B11E0-0298-48D7-B0FA-7D44B25562D3}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Phobos.Library.TestServices</RootNamespace>
-    <AssemblyName>Phobos.Library.TestServices</AssemblyName>
+    <RootNamespace>Phobos.Library.Models</RootNamespace>
+    <AssemblyName>Phobos.Library.Models</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -36,21 +36,17 @@
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="UserManagementService.cs" />
+    <Compile Include="Enums\UserStatusEnum.cs" />
+    <Compile Include="UserAccount.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Phobos.Library.Interfaces\Phobos.Library.Interfaces.csproj">
-      <Project>{d504107e-d9b7-442f-81a1-f4a60616b65a}</Project>
-      <Name>Phobos.Library.Interfaces</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Phobos.Library.Models\Phobos.Library.Models.csproj">
-      <Project>{b61b11e0-0298-48d7-b0fa-7d44b25562d3}</Project>
-      <Name>Phobos.Library.Models</Name>
-    </ProjectReference>
+    <Compile Include="ViewModels\AccountViewModel.cs" />
+    <Compile Include="ViewModels\MenuEntriesListViewModel.cs" />
+    <Compile Include="ViewModels\MenuItemViewModel.cs" />
+    <Compile Include="ViewModels\UserAccountViewModel.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -20,6 +20,7 @@
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -142,7 +143,8 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="App_Utils\BaseActionFilterAttribute.cs" />
+    <Compile Include="App_Utils\AuthenticationService.cs" />
+    <Compile Include="App_Utils\PhobosInitializationFilterAttribute.cs" />
     <Compile Include="App_Utils\CustomViewEngine.cs" />
     <Compile Include="App_Utils\SessionManager.cs" />
     <Compile Include="App_Utils\TemplateEnum.cs" />
@@ -377,7 +379,7 @@
       <Name>Phobos.Library.Interfaces</Name>
     </ProjectReference>
     <ProjectReference Include="..\Phobos.Library.Models\Phobos.Library.Models.csproj">
-      <Project>{4a385e1e-0c27-4824-9a7a-206dcd357b32}</Project>
+      <Project>{b61b11e0-0298-48d7-b0fa-7d44b25562d3}</Project>
       <Name>Phobos.Library.Models</Name>
     </ProjectReference>
     <ProjectReference Include="..\Phobos.Library.TestServices\Phobos.Library.TestServices.csproj">

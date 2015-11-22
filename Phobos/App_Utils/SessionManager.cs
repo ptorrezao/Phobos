@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Security;
 
 namespace Phobos
 {
@@ -13,12 +14,15 @@ namespace Phobos
 
             get
             {
-                return (TemplateEnum)HttpContext.Current.Session["template"];
+                return (TemplateEnum)((HttpContext.Current.Session["template"]) ?? TemplateEnum.AdminLTE);
             }
 
             set
             {
-                HttpContext.Current.Session["template"] = value;
+                if (HttpContext.Current != null)
+                {
+                    HttpContext.Current.Session["template"] = value;
+                }
             }
         }
 
@@ -26,13 +30,19 @@ namespace Phobos
         {
             get
             {
-                return (UserAccountViewModel)HttpContext.Current.Session["userAccount"];
+
+                return (UserAccountViewModel)(HttpContext.Current.Session["userAccount"] ?? null);
             }
 
             set
             {
-                HttpContext.Current.Session["userAccount"] = value;
+                if (HttpContext.Current != null)
+                {
+                    HttpContext.Current.Session["userAccount"] = value;
+                }
             }
         }
+
+
     }
 }

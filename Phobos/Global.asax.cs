@@ -1,5 +1,6 @@
 ﻿using Ninject;
 using Ninject.Web.Common;
+using Phobos.App_Utils;
 using Phobos.Library.Interfaces;
 using Phobos.Library.TestServices;
 using StackExchange.Profiling;
@@ -17,7 +18,7 @@ namespace Phobos
 {
     public class MvcApplication : NinjectHttpApplication
     {
-
+        static IKernel kernel = null;
         protected override void OnApplicationStarted()
         {
             AreaRegistration.RegisterAllAreas();
@@ -34,10 +35,7 @@ namespace Phobos
 
         protected override IKernel CreateKernel()
         {
-            var kernel = new StandardKernel();
-            kernel.Bind<IUserManagementService>().To<UserManagementService>();
-            return kernel;
-
+            return GetKernel();
         }
 
         protected void Application_BeginRequest()
@@ -53,6 +51,17 @@ namespace Phobos
         protected void Application_EndRequest()
         {
             MiniProfiler.Stop();
+        }
+
+        public static IKernel GetKernel()
+        {
+            if (kernel == null)
+            {
+                kernel = new StandardKernel();
+                kernel.Bind<IUserManagementService>().To<UserManagementService>();
+                kernel.Bind<IAuthenticationService>().To<AuthenticationService>();
+            }
+            return kernel;
         }
 
     }

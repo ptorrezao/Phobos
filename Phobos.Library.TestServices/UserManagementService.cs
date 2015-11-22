@@ -1,6 +1,6 @@
 ﻿using Phobos.Library.Interfaces;
+using Phobos.Library.Models;
 using Phobos.Library.Models.Enums;
-using Phobos.Library.Models.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,6 +26,7 @@ namespace Phobos.Library.TestServices
                 MemberSinceDate = new DateTime(1988, 10, 3),
                 Position = "Software Engineer",
                 CurrentStatus = UserStatusEnum.Online,
+                  Username="ptorrezao"
             };
         }
     }
