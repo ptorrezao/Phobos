@@ -8,7 +8,7 @@ namespace Phobos.Library.Interfaces
 {
     public interface IAuthenticationService
     {
-        void Login(string username);
+        void Login(string username, bool rememberMe);
         void Logout();
     }
 }

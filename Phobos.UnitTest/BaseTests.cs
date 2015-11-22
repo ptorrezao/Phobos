@@ -17,7 +17,7 @@ using System.Collections.Specialized;
 namespace Phobos.UnitTest
 {
     [TestClass]
-    public class BaseTests
+    public class AccountControllerUnitTesting
     {
         private IUserManagementService usrMngSvc;
         private string localUser = "testUser";
@@ -60,11 +60,11 @@ namespace Phobos.UnitTest
             this.usrMngSvc = new UserManagementService();
 
             this.mockAuth = mockRepo.DynamicMock<IAuthenticationService>();
-            mockAuth.Expect(x => x.Login(localUser));
+            mockAuth.Expect(x => x.Login(localUser, true));
         }
 
         [TestMethod]
-        public void AccountController_Login()
+        public void AccountController_Login_ExistingUser()
         {
             AccountController controller = new AccountController(this.usrMngSvc, this.mockAuth);
             ActionResult loginAction = controller.Login();
@@ -85,6 +85,59 @@ namespace Phobos.UnitTest
                 Assert.IsFalse(loginAction is ViewResult, string.Join(" |", loginScreen.ViewData.ModelState.Values.Select(x => x.Errors.First().ErrorMessage)));
                 Assert.IsTrue(loginAction is RedirectToRouteResult);
             }
+        }
+
+        [TestMethod]
+        public void AccountController_Login_NonExistingUser()
+        {
+            AccountController controller = new AccountController(this.usrMngSvc, this.mockAuth);
+            ActionResult loginAction = controller.Login();
+
+            Assert.IsTrue(loginAction is ViewResult);
+            ViewResult loginScreen = loginAction as ViewResult;
+
+            if (loginScreen != null)
+            {
+                Assert.IsTrue(loginScreen.Model is AccountViewModel);
+                var model = loginScreen.Model as AccountViewModel;
+                model.UserName = "fakeUser";
+
+                loginAction = controller.Login(model);
+
+                Assert.IsTrue(loginAction is ViewResult);
+                Assert.IsTrue(loginScreen.ViewData.ModelState.Values.Count > 0, string.Join(" |", loginScreen.ViewData.ModelState.Values.Select(x => x.Errors.First().ErrorMessage)));
+            }
+        }
+
+        [TestMethod]
+        public void AccountController_Login_UnexpectedError()
+        {
+            AccountController controller = new AccountController(this.usrMngSvc, this.mockAuth);
+            ActionResult loginAction = controller.Login();
+
+            Assert.IsTrue(loginAction is ViewResult);
+            ViewResult loginScreen = loginAction as ViewResult;
+
+            if (loginScreen != null)
+            {
+                Assert.IsTrue(loginScreen.Model is AccountViewModel);
+                var model = loginScreen.Model as AccountViewModel;
+                model.UserName = Guid.NewGuid().ToString();
+
+                loginAction = controller.Login(model);
+
+                Assert.IsTrue(loginAction is ViewResult);
+                Assert.IsTrue(loginScreen.ViewData.ModelState.Values.Count > 0, string.Join(" |", loginScreen.ViewData.ModelState.Values.Select(x => x.Errors.First().ErrorMessage)));
+            }
+        }
+
+        [TestMethod]
+        public void AccountController_Logout()
+        {
+            AccountController controller = new AccountController(this.usrMngSvc, this.mockAuth);
+            ActionResult loginAction = controller.Logout();
+
+            Assert.IsTrue(loginAction is RedirectToRouteResult);
         }
     }
 }

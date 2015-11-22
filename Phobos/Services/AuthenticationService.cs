@@ -5,13 +5,13 @@ using System.Linq;
 using System.Web;
 using System.Web.Security;
 
-namespace Phobos.App_Utils
+namespace Phobos
 {
     public class AuthenticationService : IAuthenticationService
     {
-        public void Login(string username)
+        public void Login(string username, bool rememberMe)
         {
-            FormsAuthentication.SetAuthCookie(username,true);
+            FormsAuthentication.SetAuthCookie(username, rememberMe);
         }
 
         public void Logout()

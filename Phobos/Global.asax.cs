@@ -1,7 +1,7 @@
 ﻿using Ninject;
 using Ninject.Web.Common;
-using Phobos.App_Utils;
 using Phobos.Library.Interfaces;
+using Phobos.Library.Interfaces.Services;
 using Phobos.Library.TestServices;
 using StackExchange.Profiling;
 using System;
@@ -60,6 +60,7 @@ namespace Phobos
                 kernel = new StandardKernel();
                 kernel.Bind<IUserManagementService>().To<UserManagementService>();
                 kernel.Bind<IAuthenticationService>().To<AuthenticationService>();
+                kernel.Bind<INavigationService>().To<NavigationService>();
             }
             return kernel;
         }

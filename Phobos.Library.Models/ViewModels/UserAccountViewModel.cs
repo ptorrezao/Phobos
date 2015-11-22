@@ -20,18 +20,26 @@ namespace Phobos.Library.Models.ViewModels
         public DateTime MemberSince { get; set; }
         public string ImageUrl { get; set; }
         public List<MenuEntriesViewModel> FavoriteLinks { get; set; }
+        public string Username { get; set; }
+
         public static UserAccountViewModel AsUserAccountViewModel(UserAccount model)
         {
             return new UserAccountViewModel()
             {
-                CurrentStatus = UserStatusEnum.Online,
+                CurrentStatus = model.CurrentStatus,
                 FavoriteLinks = new List<MenuEntriesViewModel>(),
                 FullName = model.FirstName + " " + model.LastName,
                 ImageUrl = "/Content/themes/AdminLTE/img/user2-160x160.jpg",
                 MemberSince = model.MemberSinceDate,
                 Name = model.Username,
-                Position = model.Position
+                Position = model.Position,
+                Username= model.Username,
             };
+        }
+
+        internal static UserAccountViewModel AsUserAccountViewModel(object user)
+        {
+            throw new NotImplementedException();
         }
     }
 }

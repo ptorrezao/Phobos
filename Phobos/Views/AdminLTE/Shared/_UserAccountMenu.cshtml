@@ -4,7 +4,7 @@
 <li class="dropdown user user-menu">
     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
         <img src="@userAccount.ImageUrl" class="user-image" alt="User Image">
-        <span class="hidden-xs">@userAccount.Name</span>
+        <span class="hidden-xs">@userAccount.FullName</span>
     </a>
     <ul class="dropdown-menu">
         <li class="user-header">
@@ -30,7 +30,7 @@
                 <a href="#" class="btn btn-default btn-flat">Profile</a>
             </div>
             <div class="pull-right">
-                <a href="#" class="btn btn-default btn-flat">Sign out</a>
+                <a href="@Url.Action("Account", "Logout")" class="btn btn-default btn-flat">Sign out</a>
             </div>
         </li>
     </ul>

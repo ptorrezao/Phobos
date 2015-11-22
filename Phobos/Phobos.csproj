@@ -143,11 +143,11 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="App_Utils\AuthenticationService.cs" />
-    <Compile Include="App_Utils\PhobosInitializationFilterAttribute.cs" />
+    <Compile Include="Services\AuthenticationService.cs" />
+    <Compile Include="ActionFilter\PhobosInitializationFilterAttribute.cs" />
     <Compile Include="App_Utils\CustomViewEngine.cs" />
     <Compile Include="App_Utils\SessionManager.cs" />
-    <Compile Include="App_Utils\TemplateEnum.cs" />
+    <Compile Include="Enums\TemplateEnum.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
@@ -277,6 +277,7 @@
     <Content Include="Content\plugins\iCheck\square\yellow.png" />
     <Content Include="Content\plugins\iCheck\square\_all.css" />
     <Content Include="Content\plugins\shuffleLetters\jquery.shuffleLetters.js" />
+    <Content Include="Content\plugins\timeago\jquery.timeago.js" />
     <Content Include="Content\Site.css" />
     <Content Include="Content\themes\AdminLTE\css\AdminLTE.css" />
     <Content Include="Content\themes\AdminLTE\css\AdminLTE.min.css" />
@@ -308,6 +309,7 @@
     <Content Include="Content\themes\AdminLTE\css\skins\_all-skins.min.css" />
     <Content Include="Content\themes\AdminLTE\img\user2-160x160.jpg" />
     <Content Include="Content\themes\AdminLTE\js\app.js" />
+    <Content Include="Content\themes\AdminLTE\js\phobos.js" />
     <Content Include="favicon.ico" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -386,9 +388,6 @@
       <Project>{5c2eef0b-4059-4e83-81a1-9c27b98700b3}</Project>
       <Name>Phobos.Library.TestServices</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

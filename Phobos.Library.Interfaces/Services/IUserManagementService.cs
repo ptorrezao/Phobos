@@ -1,4 +1,5 @@
 ﻿using Phobos.Library.Models;
+using Phobos.Library.Models.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,5 +12,7 @@ namespace Phobos.Library.Interfaces
     {
         bool CheckIfUserIsValid(string userName, string password, out string error);
         UserAccount GetUser(string userName);
+        List<UserMessage> GetLastMessages(string userName, int qtd);
+        List<UserNotification> GetLastNotifications(string userName, int qtd);
     }
 }

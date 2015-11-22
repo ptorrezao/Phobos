@@ -35,7 +35,7 @@ namespace Phobos.Controllers
             {
                 if (this.UserManagement.CheckIfUserIsValid(user.UserName, user.Password, out error))
                 {
-                    AuthenticationService.Login(user.UserName);
+                    AuthenticationService.Login(user.UserName, user.RememberMe);
 
                     SessionManager.UserAccount = UserAccountViewModel.AsUserAccountViewModel(this.UserManagement.GetUser(user.UserName));
 

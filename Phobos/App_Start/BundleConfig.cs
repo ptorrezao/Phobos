@@ -23,7 +23,10 @@ namespace Phobos
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
                       "~/Scripts/bootstrap.js"));
             bundles.Add(new ScriptBundle("~/bundles/AdminLTE").Include(
-               "~/Content/themes/AdminLTE/js/app.js"));
+               "~/Content/themes/AdminLTE/js/app.js",
+                "~/Content/themes/AdminLTE/js/phobos.js"));
+
+            
             bundles.Add(new ScriptBundle("~/bundles/respond", "https://oss.maxcdn.com/respond/1.4.2/respond.min.js").Include(
                      "~/Scripts/respond.js"));
             bundles.Add(new ScriptBundle("~/bundles/html5shiv", "https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js").Include(
@@ -48,6 +51,10 @@ namespace Phobos
 
             bundles.Add(new ScriptBundle("~/bundles/iCheck").Include(
                      "~/Content/plugins/iCheck/icheck.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/timeago").Include(
+                    "~/Content/plugins/timeago/jquery.timeago.js"));
+
 
             bundles.Add(new ScriptBundle("~/bundles/shuffleLetters").Include(
                    "~/Content/plugins/shuffleLetters/jquery.shuffleLetters.js"));
