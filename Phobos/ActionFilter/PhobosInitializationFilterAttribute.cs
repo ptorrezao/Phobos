@@ -40,16 +40,22 @@ namespace Phobos
 
             ResolveUserTasks(filterContext); // Get UserTasks
 
+            ResolveFooter(filterContext); // Get version
+
+            base.OnActionExecuting(filterContext);
+        }
+
+
+        private static void ResolveFooter(ActionExecutingContext filterContext)
+        {
             UrlHelper helper = new UrlHelper(filterContext.RequestContext, RouteTable.Routes);
             filterContext.Controller.ViewBag.Version = Assembly.GetAssembly(typeof(MvcApplication)).GetName().Version.ToString();
             filterContext.Controller.ViewBag.CompanyUrl = helper.Action("", "", new { });
             filterContext.Controller.ViewBag.CompanyName = "PTZ";
             filterContext.Controller.ViewBag.PageTitle = "Phobos";
-
-            base.OnActionExecuting(filterContext);
         }
 
-         private void ResolveUserTasks(ActionExecutingContext filterContext)
+        private void ResolveUserTasks(ActionExecutingContext filterContext)
         {
             filterContext.Controller.ViewBag.UserTasks = UserTaskViewModel.AsListOfUserTaskViewModel(this.userManagementService.GetLastTasks(filterContext.HttpContext.User.Identity.Name, 10));
         }
@@ -69,7 +75,7 @@ namespace Phobos
             UrlHelper helper = new UrlHelper(filterContext.RequestContext, RouteTable.Routes);
             string currentControllerName = (string)filterContext.RouteData.Values["controller"];
             string currentActionName = (string)filterContext.RouteData.Values["action"];
-            
+
             var menus = navigationService.GetMenusForUser(SessionManager.UserAccount.Username);
 
             menus.ForEach(menu =>

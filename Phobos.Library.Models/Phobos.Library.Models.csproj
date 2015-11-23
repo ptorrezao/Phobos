@@ -48,6 +48,7 @@
     <Compile Include="ViewModels\AccountViewModel.cs" />
     <Compile Include="ViewModels\MenuEntriesListViewModel.cs" />
     <Compile Include="ViewModels\MenuItemViewModel.cs" />
+    <Compile Include="ViewModels\SideTabViewModel.cs" />
     <Compile Include="ViewModels\UserAccountViewModel.cs" />
     <Compile Include="UserNotification.cs" />
     <Compile Include="ViewModels\UserTaskViewModel.cs" />

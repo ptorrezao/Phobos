@@ -8,6 +8,13 @@ namespace Phobos
 {
     public class CustomViewEngine : RazorViewEngine
     {
+        private bool isViewsSetted;
+
+        public CustomViewEngine()
+        {
+            this.isViewsSetted = false;
+        }
+
         public override ViewEngineResult FindPartialView(ControllerContext controllerContext, string partialViewName, bool useCache)
         {
             this.SetViewLocations();
@@ -35,7 +42,12 @@ namespace Phobos
 
         private void SetViewLocations()
         {
-            this.MasterLocationFormats = GetMainViews(SessionManager.TemplateName);
+            if (isViewsSetted == false)
+            {
+                this.MasterLocationFormats = GetMainViews(SessionManager.TemplateName);
+                this.isViewsSetted = true;
+            }
+
             this.ViewLocationFormats = this.MasterLocationFormats;
             this.PartialViewLocationFormats = this.ViewLocationFormats;
         }

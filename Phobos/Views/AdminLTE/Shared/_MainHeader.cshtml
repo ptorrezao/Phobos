@@ -1,4 +1,7 @@
-﻿<header class="main-header">
+﻿@{
+    List<SideTabViewModel> sideTabs = ViewBag.SideTabs;
+}
+<header class="main-header">
     <a href="@Url.Content("~")" class="logo">
         <span class="logo-mini"><b>A</b>LT</span>
         <span class="logo-lg"><b>Admin</b>LTE</span>
@@ -13,11 +16,13 @@
                 @Html.Partial("_NotificationsMenu")
                 @Html.Partial("_TasksMenu")
                 @Html.Partial("_UserAccountMenu")
-                @*
-                    <li>
-                        <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
-                    </li>
-                *@
+
+                @if (sideTabs.Count > 0)
+                {
+                <li>
+                    <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
+                </li>
+                }
             </ul>
         </div>
     </nav>
