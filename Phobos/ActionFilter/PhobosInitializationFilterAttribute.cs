@@ -5,6 +5,7 @@ using Phobos.Library.Models.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
@@ -38,6 +39,12 @@ namespace Phobos
             ResolveUserNotifications(filterContext); // Get Usermessages
 
             ResolveUserTasks(filterContext); // Get UserTasks
+
+            UrlHelper helper = new UrlHelper(filterContext.RequestContext, RouteTable.Routes);
+            filterContext.Controller.ViewBag.Version = Assembly.GetAssembly(typeof(MvcApplication)).GetName().Version.ToString();
+            filterContext.Controller.ViewBag.CompanyUrl = helper.Action("", "", new { });
+            filterContext.Controller.ViewBag.CompanyName = "PTZ";
+            filterContext.Controller.ViewBag.PageTitle = "Phobos";
 
             base.OnActionExecuting(filterContext);
         }
