@@ -14,5 +14,6 @@ namespace Phobos.Library.Interfaces
         UserAccount GetUser(string userName);
         List<UserMessage> GetLastMessages(string userName, int qtd);
         List<UserNotification> GetLastNotifications(string userName, int qtd);
+        List<UserTask> GetLastTasks(string userName, int qtd);
     }
 }

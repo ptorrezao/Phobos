@@ -45,6 +45,12 @@ namespace Phobos.Library.TestServices
             return list;
         }
 
+        public List<UserTask> GetLastTasks(string userName, int qtd)
+        {
+            var list = new List<UserTask>();
+            return list;
+        }
+
         public UserAccount GetUser(string username)
         {
             return new UserAccount()

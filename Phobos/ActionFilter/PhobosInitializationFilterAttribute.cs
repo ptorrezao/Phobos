@@ -37,7 +37,14 @@ namespace Phobos
 
             ResolveUserNotifications(filterContext); // Get Usermessages
 
+            ResolveUserTasks(filterContext); // Get UserTasks
+
             base.OnActionExecuting(filterContext);
+        }
+
+         private void ResolveUserTasks(ActionExecutingContext filterContext)
+        {
+            filterContext.Controller.ViewBag.UserTasks = UserTaskViewModel.AsListOfUserTaskViewModel(this.userManagementService.GetLastTasks(filterContext.HttpContext.User.Identity.Name, 10));
         }
 
         private void ResolveUserMessages(ActionExecutingContext filterContext)

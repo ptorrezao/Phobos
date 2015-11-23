@@ -22,7 +22,6 @@ namespace Phobos.UnitTest
         private IUserManagementService usrMngSvc;
         private string localUser = "testUser";
         private string localPwd = "password";
-        private UserAccount mockedUser;
         private IAuthenticationService mockAuth;
 
         [TestInitialize]
