@@ -123,5 +123,10 @@ namespace Phobos.Library.TestServices
             error = "";
             return true;
         }
+
+        public bool CheckIfActionIsAllowed(string currentControllerName, string currentActionName, string username)
+        {
+            return true;
+        }
     }
 }

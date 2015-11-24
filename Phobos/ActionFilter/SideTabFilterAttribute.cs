@@ -8,11 +8,11 @@ using System.Web.Mvc;
 namespace Phobos.ActionFilter
 {
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
-    public class SideTabFilterAttribute : ActionFilterAttribute
+    public class SideTabAttribute : ActionFilterAttribute
     {
         SideTabViewModel sideTab;
 
-        public SideTabFilterAttribute(string action, string controller, string fontAwesomeIcon)
+        public SideTabAttribute(string action, string controller, string fontAwesomeIcon)
         {
             sideTab = new SideTabViewModel();
             sideTab.Id = Guid.NewGuid();

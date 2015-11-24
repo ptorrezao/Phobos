@@ -12,17 +12,17 @@ using System.Web.Routing;
 
 namespace Phobos
 {
-    public class PhobosInitializationFilterAttribute : ActionFilterAttribute
+    public class PhobosInitializationAttribute : ActionFilterAttribute
     {
         private IUserManagementService userManagementService;
         private INavigationService navigationService;
 
-        public PhobosInitializationFilterAttribute() : this(
+        public PhobosInitializationAttribute() : this(
             MvcApplication.GetKernel().Get<IUserManagementService>(),
             MvcApplication.GetKernel().Get<INavigationService>())
         { }
 
-        public PhobosInitializationFilterAttribute(IUserManagementService userMngSvc, INavigationService navSvc)
+        public PhobosInitializationAttribute(IUserManagementService userMngSvc, INavigationService navSvc)
         {
             this.userManagementService = userMngSvc;
             this.navigationService = navSvc;
@@ -44,7 +44,6 @@ namespace Phobos
 
             base.OnActionExecuting(filterContext);
         }
-
 
         private static void ResolveFooter(ActionExecutingContext filterContext)
         {

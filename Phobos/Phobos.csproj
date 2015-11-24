@@ -140,12 +140,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ActionFilter\ActionAutorizeAttribute.cs" />
     <Compile Include="ActionFilter\SideTabFilterAttribute.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Services\AuthenticationService.cs" />
-    <Compile Include="ActionFilter\PhobosInitializationFilterAttribute.cs" />
+    <Compile Include="ActionFilter\PhobosInitializationAttribute.cs" />
     <Compile Include="App_Utils\CustomViewEngine.cs" />
     <Compile Include="App_Utils\SessionManager.cs" />
     <Compile Include="Enums\TemplateEnum.cs" />

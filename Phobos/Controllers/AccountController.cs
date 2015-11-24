@@ -9,7 +9,7 @@ using System.Web.Security;
 
 namespace Phobos.Controllers
 {
-    [PhobosInitializationFilter]
+    [PhobosInitialization]
     public class AccountController : Controller
     {
         private IAuthenticationService AuthenticationService;

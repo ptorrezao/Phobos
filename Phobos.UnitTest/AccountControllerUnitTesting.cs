@@ -281,8 +281,7 @@ namespace Phobos.UnitTest
         }
         #endregion
 
-
-        #region Register
+        #region Forgot
         [TestMethod]
         public void AccountController_Forgot()
         {

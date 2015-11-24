@@ -8,14 +8,17 @@ using System.Web.Mvc;
 
 namespace Phobos.Controllers
 {
-    [PhobosInitializationFilterAttribute]
+    [ActionAutorize]
+    [PhobosInitialization]
 
     public class HomeController : Controller
     {
         readonly log4net.ILog logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-        [SideTabFilter("TestA", "Home", "fa-home", Order = 0)]
-        [SideTabFilter("TestB", "Home", "fa-home", Order = 0)]
+
+        [ActionAutorize]
+        [SideTab("TestA", "Home", "fa-home", Order = 0)]
+        [SideTab("TestB", "Home", "fa-home", Order = 0)]
         public ActionResult Index()
         {
             return View();
