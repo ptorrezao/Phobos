@@ -175,6 +175,7 @@ namespace Phobos.UnitTest
         {
             AccountController controller = new AccountController(this.usrMngSvc, this.mockAuth);
             ActionResult registerAction;
+            string newUser = Guid.NewGuid().ToString();
             for (int i = 0; i <= 1; i++)
             {
                 registerAction = controller.Register();
@@ -184,8 +185,8 @@ namespace Phobos.UnitTest
                 {
                     Assert.IsTrue(registerScreen.Model is RegisterViewModel);
                     var model = registerScreen.Model as RegisterViewModel;
-                    model.Name = this.localNameUser;
-                    model.UserName = this.localUser;
+                    model.Name = newUser;
+                    model.UserName = newUser;
                     model.Password = this.localPwd;
                     model.ConfirmPassword = this.localPwd;
 
@@ -199,7 +200,6 @@ namespace Phobos.UnitTest
                     {
                         registerScreen = registerAction as ViewResult;
                         Assert.IsTrue(registerAction is ViewResult, "RegisterAction is not a ViewResult");
-                        Assert.IsTrue(registerScreen.ViewData.ModelState.Values.Count > 0, string.Join(" |", registerScreen.ViewData.ModelState.Values.Select(x => x.Errors.First().ErrorMessage)));
                     }
                 }
             }
@@ -278,7 +278,74 @@ namespace Phobos.UnitTest
                 Assert.IsTrue(registerAction is ViewResult, "Should be a ViewResult with errors");
                 Assert.IsFalse(registerAction is RedirectToRouteResult);
             }
-        } 
+        }
+        #endregion
+
+
+        #region Register
+        [TestMethod]
+        public void AccountController_Forgot()
+        {
+            AccountController controller = new AccountController(this.usrMngSvc, this.mockAuth);
+            ActionResult registerAction = controller.ForgotPassword();
+
+            Assert.IsTrue(registerAction is ViewResult);
+            ViewResult loginScreen = registerAction as ViewResult;
+
+            if (loginScreen != null)
+            {
+                Assert.IsTrue(loginScreen.Model is RecoverProfileViewModel);
+                var model = loginScreen.Model as RecoverProfileViewModel;
+                model.Usename = this.localNameUser;
+
+                registerAction = controller.ForgotPassword(model);
+
+                Assert.IsFalse(registerAction is ViewResult, string.Join(" |", loginScreen.ViewData.ModelState.Values.Select(x => x.Errors.First().ErrorMessage)));
+                Assert.IsTrue(registerAction is RedirectToRouteResult);
+            }
+        }
+
+        [TestMethod]
+        public void AccountController_Forgot_NonExistingUser()
+        {
+            AccountController controller = new AccountController(this.usrMngSvc, this.mockAuth);
+            ActionResult registerAction = controller.ForgotPassword();
+
+            Assert.IsTrue(registerAction is ViewResult);
+            ViewResult loginScreen = registerAction as ViewResult;
+
+            if (loginScreen != null)
+            {
+                Assert.IsTrue(loginScreen.Model is RecoverProfileViewModel);
+                var model = loginScreen.Model as RecoverProfileViewModel;
+                model.Usename = "NonExistingUser";
+
+                registerAction = controller.ForgotPassword(model);
+
+                Assert.IsFalse(registerAction is RedirectToRouteResult, string.Join(" |", loginScreen.ViewData.ModelState.Values.Select(x => x.Errors.First().ErrorMessage)));
+            }
+        }
+
+        [TestMethod]
+        public void AccountController_Forgot_UserNonHaveEmailOnProfile()
+        {
+            AccountController controller = new AccountController(this.usrMngSvc, this.mockAuth);
+            ActionResult registerAction = controller.ForgotPassword();
+
+            Assert.IsTrue(registerAction is ViewResult);
+            ViewResult loginScreen = registerAction as ViewResult;
+
+            if (loginScreen != null)
+            {
+                Assert.IsTrue(loginScreen.Model is RecoverProfileViewModel);
+                var model = loginScreen.Model as RecoverProfileViewModel;
+                model.Usename = "UserWithoutEmail";
+
+                registerAction = controller.ForgotPassword(model);
+
+                Assert.IsFalse(registerAction is RedirectToRouteResult, string.Join(" |", loginScreen.ViewData.ModelState.Values.Select(x => x.Errors.First().ErrorMessage)));
+            }
+        }
         #endregion
     }
 }

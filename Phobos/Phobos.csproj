@@ -382,6 +382,7 @@
     <Content Include="Views\AdminLTE\Home\TestA.cshtml" />
     <Content Include="Views\AdminLTE\Home\TestB.cshtml" />
     <Content Include="Views\AdminLTE\Account\Register.cshtml" />
+    <Content Include="Views\AdminLTE\Account\ForgotPassword.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

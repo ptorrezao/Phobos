@@ -12,9 +12,17 @@ namespace Phobos.Library.TestServices
 {
     public class UserManagementService : IUserManagementService
     {
+        static List<string> users = new List<string>();
         public bool CheckIfRegisterIsAllowed(string name, string userName, string password, string confirmPassword, out string error)
         {
+            if (users.Any(x => x == userName))
+            {
+                error = "Duplicated User";
+                return false;
+            }
+
             error = "";
+            users.Add(userName);
             return true;
         }
 
@@ -26,7 +34,6 @@ namespace Phobos.Library.TestServices
 
         public bool CheckIfUserIsValid(string username, string password, out string msg)
         {
-
             if (username == "fakeUser")
             {
                 msg = "Non Existing User";
@@ -77,6 +84,44 @@ namespace Phobos.Library.TestServices
             };
         }
 
-        
+        public bool RecoverProfile(string userName, out string error)
+        {
+            error = "";
+            if (userName == "NonExistingUser")
+            {
+                error = "Non Existing User";
+                return false;
+            }
+
+            if (userName == "UserWithoutEmail")
+            {
+                error = "User Without Email";
+                return false;
+            }
+            return true;
+        }
+
+        public bool CheckSecurityMesurements(string userName, string password, string confirmPassword, out string error)
+        {
+            if (string.IsNullOrEmpty(password))
+            {
+                error = "Password does not match";
+                return false;
+            }
+
+            if (password.Length<=3)
+            {
+                error = "Password Should have more than";
+                return false;
+            }
+
+            if (password!= confirmPassword)
+            {
+                error = "Password does not match";
+                return false;
+            }
+            error = "";
+            return true;
+        }
     }
 }

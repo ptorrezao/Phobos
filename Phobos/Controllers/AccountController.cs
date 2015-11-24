@@ -9,7 +9,7 @@ using System.Web.Security;
 
 namespace Phobos.Controllers
 {
-    [PhobosInitializationFilterAttribute]
+    [PhobosInitializationFilter]
     public class AccountController : Controller
     {
         private IAuthenticationService AuthenticationService;
@@ -73,19 +73,41 @@ namespace Phobos.Controllers
             {
                 if (this.UserManagement.CheckIfRegisterIsAllowed(user.Name, user.UserName, user.Password, user.ConfirmPassword, out error))
                 {
-                    if (this.UserManagement.RegisterUser(user.Name, user.UserName, user.Password, user.ConfirmPassword, out error))
+                    if (this.UserManagement.CheckSecurityMesurements( user.UserName, user.Password, user.ConfirmPassword, out error))
                     {
-                        AuthenticationService.Login(user.UserName, false);
+                        if (this.UserManagement.RegisterUser(user.Name, user.UserName, user.Password, user.ConfirmPassword, out error))
+                        {
+                            AuthenticationService.Login(user.UserName, false);
 
-                        SessionManager.UserAccount = UserAccountViewModel.AsUserAccountViewModel(this.UserManagement.GetUser(user.UserName));
+                            SessionManager.UserAccount = UserAccountViewModel.AsUserAccountViewModel(this.UserManagement.GetUser(user.UserName));
 
-                        return RedirectToAction("Index", "Home");
+                            return RedirectToAction("Index", "Home");
+                        }
                     }
                 }
 
                 error = string.IsNullOrEmpty(error) ? "Something went wrong, please try again later." : error;
                 ModelState.AddModelError("", error);
             }
+            return View(user);
+        }
+
+        [AllowAnonymous]
+        public ActionResult ForgotPassword()
+        {
+            return View(new RecoverProfileViewModel());
+        }
+
+        [HttpPost, AllowAnonymous]
+        public ActionResult ForgotPassword(RecoverProfileViewModel user)
+        {
+            var error = "";
+            if (ModelState.IsValid && this.UserManagement.RecoverProfile(user.Usename, out error))
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            ViewBag.Message = error;
             return View(user);
         }
     }
