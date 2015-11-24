@@ -58,5 +58,35 @@ namespace Phobos.Controllers
 
             return RedirectToAction("Index", "Home");
         }
+
+        [AllowAnonymous]
+        public ActionResult Register()
+        {
+            return View(new RegisterViewModel());
+        }
+
+        [HttpPost, AllowAnonymous]
+        public ActionResult Register(RegisterViewModel user)
+        {
+            var error = "";
+            if (ModelState.IsValid)
+            {
+                if (this.UserManagement.CheckIfRegisterIsAllowed(user.Name, user.UserName, user.Password, user.ConfirmPassword, out error))
+                {
+                    if (this.UserManagement.RegisterUser(user.Name, user.UserName, user.Password, user.ConfirmPassword, out error))
+                    {
+                        AuthenticationService.Login(user.UserName, false);
+
+                        SessionManager.UserAccount = UserAccountViewModel.AsUserAccountViewModel(this.UserManagement.GetUser(user.UserName));
+
+                        return RedirectToAction("Index", "Home");
+                    }
+                }
+
+                error = string.IsNullOrEmpty(error) ? "Something went wrong, please try again later." : error;
+                ModelState.AddModelError("", error);
+            }
+            return View(user);
+        }
     }
 }

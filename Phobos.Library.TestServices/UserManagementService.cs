@@ -12,6 +12,18 @@ namespace Phobos.Library.TestServices
 {
     public class UserManagementService : IUserManagementService
     {
+        public bool CheckIfRegisterIsAllowed(string name, string userName, string password, string confirmPassword, out string error)
+        {
+            error = "";
+            return true;
+        }
+
+        public bool RegisterUser(string name, string userName, string password, string confirmPassword, out string error)
+        {
+            error = "";
+            return true;
+        }
+
         public bool CheckIfUserIsValid(string username, string password, out string msg)
         {
 
@@ -64,5 +76,7 @@ namespace Phobos.Library.TestServices
                 Username = "ptorrezao"
             };
         }
+
+        
     }
 }

@@ -1,0 +1,75 @@
+﻿@model RegisterViewModel
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>@ViewBag.PageTitle</title>
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    @Styles.Render("~/Content/bootstrap")
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    @Styles.Render("~/Content/AdminLTE")
+    @Styles.Render("~/Content/iCheck")
+    <!--[if lt IE 9]>
+        @Scripts.Render("~/Content/respond")
+        @Scripts.Render("~/Content/html5shiv")
+    <![endif]-->
+</head>
+<body class="hold-transition login-page">
+    <div class="login-box">
+        <div class="login-logo">
+            <a href="@Url.Content("~")" id="logo-text"> &nbsp; @ViewBag.PageTitle</a>
+        </div>
+        <div class="login-box-body">
+            <p id="login-box-msg">Create an Account</p>
+            @using (Html.BeginForm())
+            {
+                <div class="form-group has-feedback">
+                    @Html.TextBoxFor(u => u.Name, new { @class = "form-control", @type = "name", @placeholder = "Name" })
+                    <span class="glyphicon glyphicon-user form-control-feedback"></span>
+                </div>
+                <div class="form-group has-feedback">
+                    @Html.TextBoxFor(u => u.UserName, new { @class = "form-control", @type = "email", @placeholder = "Email" })
+                    <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+                </div>
+                <div class="form-group has-feedback">
+                    @Html.TextBoxFor(u => u.Password, new { @class = "form-control", @type = "password", @placeholder = "Password" })
+                    <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+                </div>
+                <div class="form-group has-feedback">
+                    @Html.TextBoxFor(u => u.ConfirmPassword, new { @class = "form-control", @type = "password", @placeholder = "Confirm Password" })
+                    <span class="glyphicon glyphicon-ok-sign form-control-feedback"></span>
+                </div>
+                <div class="row">
+                    <div class="col-xs-offset-8 col-xs-4">
+                        <button type="submit" class="btn btn-primary btn-block btn-flat">Register</button>
+                    </div>
+                </div>
+            }
+            <a href="@Url.Action("Login")">I already have an account.</a><br>
+        </div>
+    </div>
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/iCheck")
+    @Scripts.Render("~/bundles/shuffleLetters")
+    <script>
+      $(function () {
+        $('input').iCheck({
+          checkboxClass: 'icheckbox_square-blue',
+          radioClass: 'iradio_square-blue',
+          increaseArea: '20%' 
+        });
+        $("#logo-text").shuffleLetters();
+        $("#login-box-msg").shuffleLetters();
+        $(".login-box-body a").shuffleLetters();
+        $(".login-box-body button").shuffleLetters();
+        $("#login-check span").shuffleLetters();
+      });
+    </script>
+</body>
+</html>
