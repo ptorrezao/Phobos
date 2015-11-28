@@ -1,5 +1,5 @@
 ﻿@{
-    List<SideTabViewModel> sideTabs = ViewBag.SideTabs;
+    List<SideTabViewModel> sideTabs = ViewBag.SideTabs?? new List<SideTabViewModel>();
 }
 <header class="main-header">
     <a href="@Url.Content("~")" class="logo">

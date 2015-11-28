@@ -10,7 +10,8 @@ namespace Phobos
         {
             bundles.UseCdn = true;
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
-                        "~/Scripts/jquery-{version}.js"));
+                        "~/Scripts/jquery-{version}.js",
+                        "~/Scripts/jquery.unobtrusive-ajax.min.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
                         "~/Scripts/jquery.validate*"));
@@ -49,12 +50,32 @@ namespace Phobos
             bundles.Add(new StyleBundle("~/Content/iCheck").Include(
                     "~/Content/plugins/iCheck/square/blue.css"));
 
+            bundles.Add(new StyleBundle("~/Content/daterangepicker").Include(
+            "~/Content/plugins/daterangepicker/daterangepicker-bs3.css"));
+
+            bundles.Add(new StyleBundle("~/Content/datepicker").Include(
+"~/Content/plugins/datepicker/datepicker3.css"));
+            
             bundles.Add(new ScriptBundle("~/bundles/iCheck").Include(
                      "~/Content/plugins/iCheck/icheck.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/timeago").Include(
                     "~/Content/plugins/timeago/jquery.timeago.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/input-mask").Include(
+              "~/Content/plugins/input-mask/jquery.inputmask.js",
+              "~/Content/plugins/input-mask/jquery.inputmask.date.extensions.js",
+              "~/Content/plugins/input-mask/jquery.inputmask.extensions.js",
+              "~/Content/plugins/input-mask/jquery.inputmask.numeric.extensions.js",
+              "~/Content/plugins/input-mask/jquery.inputmask.phone.extensions.js",
+              "~/Content/plugins/input-mask/jquery.inputmask.regex.extensions.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/daterangepicker").Include(
+  "~/Content/plugins/daterangepicker/moment.js",
+  "~/Content/plugins/daterangepicker/daterangepicker.js"
+  ));
+            bundles.Add(new ScriptBundle("~/bundles/datepicker").Include(
+                    "~/Content/plugins/datepicker/bootstrap-datepicker.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/shuffleLetters").Include(
                    "~/Content/plugins/shuffleLetters/jquery.shuffleLetters.js"));

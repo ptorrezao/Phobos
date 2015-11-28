@@ -9,6 +9,8 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
     @Styles.Render("~/Content/AdminLTE")
+    @Styles.Render("~/Content/datepicker")
+    @Styles.Render("~/Content/daterangepicker")
     <!--[if lt IE 9]>
         @Scripts.Render("~/Content/respond")
         @Scripts.Render("~/Content/html5shiv")
@@ -23,7 +25,6 @@
             @RenderSection("_ContentHeader", required: false)
             <section class="content">
                 @RenderBody()
-                @ViewBag.PageTitle
             </section>
         </div>
         @Html.Partial("_MainFooter")
@@ -34,6 +35,10 @@
     @Scripts.Render("~/bundles/bootstrap")
     @Scripts.Render("~/bundles/AdminLTE")
     @Scripts.Render("~/bundles/timeago")
+    @Scripts.Render("~/bundles/datepicker")
+    @Scripts.Render("~/bundles/input-mask")
+    @Scripts.Render("~/bundles/daterangepicker")
+    @Scripts.Render("~/bundles/iCheck")
     @RenderSection("scripts", required: false)
 </body>
 </html>

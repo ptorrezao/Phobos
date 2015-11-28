@@ -2,6 +2,7 @@ using Ninject;
 using Phobos.Library.Interfaces;
 using Phobos.Library.Interfaces.Services;
 using Phobos.Library.Models.ViewModels;
+using StackExchange.Profiling;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -47,53 +48,71 @@ namespace Phobos
 
         private static void ResolveFooter(ActionExecutingContext filterContext)
         {
-            UrlHelper helper = new UrlHelper(filterContext.RequestContext, RouteTable.Routes);
-            filterContext.Controller.ViewBag.Version = Assembly.GetAssembly(typeof(MvcApplication)).GetName().Version.ToString();
-            filterContext.Controller.ViewBag.CompanyUrl = helper.Action("", "", new { });
-            filterContext.Controller.ViewBag.CompanyName = "PTZ";
-            filterContext.Controller.ViewBag.PageTitle = "Phobos";
+            using (MiniProfiler.Current.Step("ResolveFooter"))
+            {
+                UrlHelper helper = new UrlHelper(filterContext.RequestContext, RouteTable.Routes);
+                filterContext.Controller.ViewBag.Version = Assembly.GetAssembly(typeof(MvcApplication)).GetName().Version.ToString();
+                filterContext.Controller.ViewBag.CompanyUrl = helper.Action("", "", new { });
+                filterContext.Controller.ViewBag.CompanyName = "PTZ";
+                filterContext.Controller.ViewBag.PageTitle = "Phobos";
+            }
         }
 
         private void ResolveUserTasks(ActionExecutingContext filterContext)
         {
-            filterContext.Controller.ViewBag.UserTasks = UserTaskViewModel.AsListOfUserTaskViewModel(this.userManagementService.GetLastTasks(filterContext.HttpContext.User.Identity.Name, 10));
+            using (MiniProfiler.Current.Step("ResolveUserTasks"))
+            {
+                filterContext.Controller.ViewBag.UserTasks = UserTaskViewModel.AsListOfUserTaskViewModel(this.userManagementService.GetLastTasks(filterContext.HttpContext.User.Identity.Name, 10));
+            }
         }
 
         private void ResolveUserMessages(ActionExecutingContext filterContext)
         {
-            filterContext.Controller.ViewBag.UserMessages = UserMessageViewModel.AsListOfUserMessageViewModel(this.userManagementService.GetLastMessages(filterContext.HttpContext.User.Identity.Name, 10));
+            using (MiniProfiler.Current.Step("ResolveUserMessages"))
+            {
+                filterContext.Controller.ViewBag.UserMessages = UserMessageViewModel.AsListOfUserMessageViewModel(this.userManagementService.GetLastMessages(filterContext.HttpContext.User.Identity.Name, 10));
+            }
         }
 
         private void ResolveUserNotifications(ActionExecutingContext filterContext)
         {
-            filterContext.Controller.ViewBag.UserNotifications = UserNotificationViewModel.AsListOfUserNotificationViewModel(this.userManagementService.GetLastNotifications(filterContext.HttpContext.User.Identity.Name, 10));
+            using (MiniProfiler.Current.Step("ResolveUserNotifications"))
+            {
+                filterContext.Controller.ViewBag.UserNotifications = UserNotificationViewModel.AsListOfUserNotificationViewModel(this.userManagementService.GetLastNotifications(filterContext.HttpContext.User.Identity.Name, 10));
+            }
         }
 
         private void ResolveMenus(ActionExecutingContext filterContext)
         {
-            UrlHelper helper = new UrlHelper(filterContext.RequestContext, RouteTable.Routes);
-            string currentControllerName = (string)filterContext.RouteData.Values["controller"];
-            string currentActionName = (string)filterContext.RouteData.Values["action"];
-
-            var menus = navigationService.GetMenusForUser(SessionManager.UserAccount.Username);
-
-            menus.ForEach(menu =>
+            using (MiniProfiler.Current.Step("ResolveMenus"))
             {
-                menu.IsActive = (currentControllerName == menu.Controller && currentActionName == menu.Action);
-                menu.Url = helper.Action(menu.Action, menu.Controller, new { });
-            });
+                UrlHelper helper = new UrlHelper(filterContext.RequestContext, RouteTable.Routes);
+                string currentControllerName = (string)filterContext.RouteData.Values["controller"];
+                string currentActionName = (string)filterContext.RouteData.Values["action"];
 
-            filterContext.Controller.ViewBag.Menus = menus;
+                var menus = navigationService.GetMenusForUser(SessionManager.UserAccount.Username);
+
+                menus.ForEach(menu =>
+                {
+                    menu.IsActive = (currentControllerName == menu.Controller && currentActionName == menu.Action);
+                    menu.Url = helper.Action(menu.Action, menu.Controller, new { });
+                });
+
+                filterContext.Controller.ViewBag.Menus = menus;
+            }
         }
 
         private void ResolveCurrentUser(ActionExecutingContext filterContext)
         {
-            if (SessionManager.UserAccount == null)
+            using (MiniProfiler.Current.Step("ResolveCurrentUser"))
             {
-                SessionManager.UserAccount = UserAccountViewModel.AsUserAccountViewModel(this.userManagementService.GetUser(filterContext.HttpContext.User.Identity.Name));
-            }
+                if (SessionManager.UserAccount == null)
+                {
+                    SessionManager.UserAccount = UserAccountViewModel.AsUserAccountViewModel(this.userManagementService.GetUser(filterContext.HttpContext.User.Identity.Name));
+                }
 
-            filterContext.Controller.ViewBag.UserAccount = SessionManager.UserAccount;
+                filterContext.Controller.ViewBag.UserAccount = SessionManager.UserAccount;
+            }
         }
 
         public override void OnActionExecuted(ActionExecutedContext filterContext)

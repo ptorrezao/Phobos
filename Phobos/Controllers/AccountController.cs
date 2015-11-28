@@ -1,5 +1,7 @@
-﻿using Phobos.Library.Interfaces;
+﻿using Phobos.ActionFilter;
+using Phobos.Library.Interfaces;
 using Phobos.Library.Models.ViewModels;
+using StackExchange.Profiling;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,11 +15,11 @@ namespace Phobos.Controllers
     public class AccountController : Controller
     {
         private IAuthenticationService AuthenticationService;
-        private IUserManagementService UserManagement;
+        private IUserManagementService userManagementService;
 
         public AccountController(IUserManagementService usrMngSvc, IAuthenticationService authSvc)
         {
-            this.UserManagement = usrMngSvc;
+            this.userManagementService = usrMngSvc;
             this.AuthenticationService = authSvc;
         }
 
@@ -30,22 +32,29 @@ namespace Phobos.Controllers
         [HttpPost, AllowAnonymous]
         public ActionResult Login(AccountViewModel user)
         {
+
             var error = "";
             if (ModelState.IsValid)
             {
-                if (this.UserManagement.CheckIfUserIsValid(user.UserName, user.Password, out error))
+                using (MiniProfiler.Current.Step("CheckIfUserIsValid"))
                 {
-                    AuthenticationService.Login(user.UserName, user.RememberMe);
+                    if (this.userManagementService.CheckIfUserIsValid(user.UserName, user.Password, out error))
+                    {
+                        using (MiniProfiler.Current.Step("GetUser"))
+                        {
+                            AuthenticationService.Login(user.UserName, user.RememberMe);
 
-                    SessionManager.UserAccount = UserAccountViewModel.AsUserAccountViewModel(this.UserManagement.GetUser(user.UserName));
+                            SessionManager.UserAccount = UserAccountViewModel.AsUserAccountViewModel(this.userManagementService.GetUser(user.UserName));
 
-                    return RedirectToAction("Index", "Home");
+                            return RedirectToAction("Index", "Home");
+                        }
+                    }
                 }
-                else
-                {
-                    error = string.IsNullOrEmpty(error) ? "Something went wrong, please try again later." : error;
-                    ModelState.AddModelError("", error);
-                }
+            }
+            else
+            {
+                error = string.IsNullOrEmpty(error) ? "Something went wrong, please try again later." : error;
+                ModelState.AddModelError("", error);
             }
             return View(user);
         }
@@ -71,23 +80,32 @@ namespace Phobos.Controllers
             var error = "";
             if (ModelState.IsValid)
             {
-                if (this.UserManagement.CheckIfRegisterIsAllowed(user.Name, user.UserName, user.Password, user.ConfirmPassword, out error))
+                using (MiniProfiler.Current.Step("CheckIfRegisterIsAllowed"))
                 {
-                    if (this.UserManagement.CheckSecurityMesurements( user.UserName, user.Password, user.ConfirmPassword, out error))
+                    if (this.userManagementService.CheckIfRegisterIsAllowed(user.Name, user.UserName, user.Password, user.ConfirmPassword, out error))
                     {
-                        if (this.UserManagement.RegisterUser(user.Name, user.UserName, user.Password, user.ConfirmPassword, out error))
+                        using (MiniProfiler.Current.Step("CheckSecurityMesurements"))
                         {
-                            AuthenticationService.Login(user.UserName, false);
+                            if (this.userManagementService.CheckSecurityMesurements(user.UserName, user.Password, user.ConfirmPassword, out error))
+                            {
+                                using (MiniProfiler.Current.Step("RegisterUser"))
+                                {
+                                    if (this.userManagementService.RegisterUser(user.Name, user.UserName, user.Password, user.ConfirmPassword, out error))
+                                    {
+                                        AuthenticationService.Login(user.UserName, false);
 
-                            SessionManager.UserAccount = UserAccountViewModel.AsUserAccountViewModel(this.UserManagement.GetUser(user.UserName));
+                                        SessionManager.UserAccount = UserAccountViewModel.AsUserAccountViewModel(this.userManagementService.GetUser(user.UserName));
 
-                            return RedirectToAction("Index", "Home");
+                                        return RedirectToAction("Index", "Home");
+                                    }
+                                }
+                            }
                         }
                     }
-                }
 
-                error = string.IsNullOrEmpty(error) ? "Something went wrong, please try again later." : error;
-                ModelState.AddModelError("", error);
+                    error = string.IsNullOrEmpty(error) ? "Something went wrong, please try again later." : error;
+                    ModelState.AddModelError("", error);
+                }
             }
             return View(user);
         }
@@ -102,13 +120,34 @@ namespace Phobos.Controllers
         public ActionResult ForgotPassword(RecoverProfileViewModel user)
         {
             var error = "";
-            if (ModelState.IsValid && this.UserManagement.RecoverProfile(user.Usename, out error))
+            using (MiniProfiler.Current.Step("RecoverProfile"))
             {
-                return RedirectToAction("Login", "Account");
+                if (ModelState.IsValid && this.userManagementService.RecoverProfile(user.Usename, out error))
+                {
+                    return RedirectToAction("Login", "Account");
+                }
             }
 
             ViewBag.Message = error;
             return View(user);
+        }
+
+        [ActionAutorize]
+        public ActionResult EditProfile()
+        {
+            var model = SessionManager.UserAccount;
+            if (model == null)
+            {
+                model = SessionManager.UserAccount = UserAccountViewModel.AsUserAccountViewModel(this.userManagementService.GetUser(this.User.Identity.Name));
+            }
+
+            return View(model);
+        }
+
+        [HttpPost, ActionAutorize]
+        public ActionResult EditProfile(UserAccountViewModel model)
+        {
+            return PartialView("_ProfileDetails", model);
         }
     }
 }

@@ -80,7 +80,7 @@ namespace Phobos.Library.TestServices
                 MemberSinceDate = new DateTime(1988, 10, 3),
                 Position = "Software Engineer",
                 CurrentStatus = UserStatusEnum.Online,
-                Username = "ptorrezao"
+                Username = username
             };
         }
 

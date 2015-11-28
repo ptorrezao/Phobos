@@ -1,5 +1,5 @@
 ﻿@{
-    List<SideTabViewModel> sideTabs = ViewBag.SideTabs;
+    List<SideTabViewModel> sideTabs = ViewBag.SideTabs ?? new List<SideTabViewModel>();
 }
 @if (sideTabs.Count > 0)
 {

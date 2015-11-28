@@ -1,0 +1,89 @@
+﻿@model UserAccountViewModel
+@section _ContentHeader {
+    <section class="content-header">
+        <h1>
+            User Profile
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li class="active">User profile</li>
+        </ol>
+    </section>
+}
+<section class="content">
+    <div class="row">
+        <div class="col-md-3" id="profileDetails">
+            @Html.Partial("_ProfileDetails", Model)
+        </div>
+        <div class="col-md-9">
+            <div class="nav-tabs-custom">
+                <ul class="nav nav-tabs">
+                    <li class="active"><a href="#profile" data-toggle="tab">Profile</a></li>
+                </ul>
+                <div class="tab-content">
+                    <div class="active tab-pane" id="profile">
+                        @using (Ajax.BeginForm("EditProfile", "Account", new { }, new AjaxOptions()
+                        {
+                            UpdateTargetId = "profileDetails"
+                        }, new { @class = "form-horizontal" }))
+                        {
+                            @Html.HiddenFor(x => x.CurrentStatus)
+                            @Html.HiddenFor(x => x.FavoriteLinks)
+                            @Html.HiddenFor(x => x.ImageAlt)
+                            @Html.HiddenFor(x => x.ImageUrl)
+                            @Html.HiddenFor(x => x.Username)
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.FirstName, new { @class = "col-sm-2 control-label" })
+                                <div class="col-sm-10">
+                                    @Html.TextBoxFor(x => x.FirstName, new { @class = "form-control" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.LastName, new { @class = "col-sm-2 control-label" })
+                                <div class="col-sm-10">
+                                    @Html.TextBoxFor(x => x.LastName, new { @class = "form-control" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.MemberSince, new { @class = "col-sm-2 control-label" })
+                                <div class="col-sm-10">
+                                    <div class="input-group">
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-calendar"></i>
+                                        </div>
+                                        @Html.TextBoxFor(x => x.MemberSince, new { @class = "form-control" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(x => x.Position, new { @class = "col-sm-2 control-label" })
+                                <div class="col-sm-10">
+                                    @Html.TextBoxFor(x => x.Position, new { @class = "form-control" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-offset-2 col-sm-10">
+                                    <button type="submit" class="btn btn-danger">Submit</button>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section scripts {
+    <script>
+        $(function () {
+            $("#@Html.IdFor(x => x.MemberSince)").inputmask("dd/mm/yyyy", { "placeholder": "dd/mm/yyyy" });
+            $("#@Html.IdFor(x => x.MemberSince)").datepicker();
+            $('input').iCheck({
+                checkboxClass: 'icheckbox_square-blue',
+                radioClass: 'iradio_square-blue',
+                increaseArea: '20%'
+            });
+        });
+    </script>
+}
