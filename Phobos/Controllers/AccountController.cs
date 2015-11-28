@@ -147,6 +147,11 @@ namespace Phobos.Controllers
         [HttpPost, ActionAutorize]
         public ActionResult EditProfile(UserAccountViewModel model)
         {
+            if (ModelState.IsValid)
+            {
+                var userAccount = UserAccountViewModel.AsUserAccount(model);
+                this.userManagementService.UpdateAccount(userAccount);
+            }
             return PartialView("_ProfileDetails", model);
         }
     }

@@ -128,5 +128,10 @@ namespace Phobos.Library.TestServices
         {
             return true;
         }
+
+        public bool UpdateAccount(UserAccount userAccount)
+        {
+            return true;
+        }
     }
 }

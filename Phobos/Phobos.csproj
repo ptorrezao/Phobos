@@ -344,6 +344,8 @@
     <Content Include="Content\plugins\input-mask\jquery.inputmask.phone.extensions.js" />
     <Content Include="Content\plugins\input-mask\jquery.inputmask.regex.extensions.js" />
     <Content Include="Content\plugins\input-mask\phone-codes\readme.txt" />
+    <Content Include="Content\plugins\ohSnap\ohsnap.js" />
+    <Content Include="Content\plugins\ohSnap\ohsnap.min.js" />
     <Content Include="Content\plugins\shuffleLetters\jquery.shuffleLetters.js" />
     <Content Include="Content\plugins\timeago\jquery.timeago.js" />
     <Content Include="Content\Site.css" />

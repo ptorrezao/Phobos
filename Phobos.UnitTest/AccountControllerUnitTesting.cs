@@ -346,5 +346,51 @@ namespace Phobos.UnitTest
             }
         }
         #endregion
+
+        #region EditProfile
+        [TestMethod]
+        public void AccountController_EditProfile()
+        {
+            AccountController controller = new AccountController(this.usrMngSvc, this.mockAuth);
+            ActionResult registerAction = controller.EditProfile();
+
+            Assert.IsTrue(registerAction is ViewResult);
+            ViewResult loginScreen = registerAction as ViewResult;
+
+            if (loginScreen != null)
+            {
+                Assert.IsTrue(loginScreen.Model is UserAccountViewModel);
+                var model = loginScreen.Model as UserAccountViewModel;
+                model.Username = this.localNameUser;
+
+                registerAction = controller.EditProfile(model);
+
+                Assert.IsFalse(registerAction is ViewResult, string.Join(" |", loginScreen.ViewData.ModelState.Values.Select(x => x.Errors.First().ErrorMessage)));
+                Assert.IsTrue(registerAction is RedirectToRouteResult);
+            }
+        }
+
+        [TestMethod]
+        public void AccountController_EditProfile_Forgot_NonExistingUser()
+        {
+            AccountController controller = new AccountController(this.usrMngSvc, this.mockAuth);
+            ActionResult registerAction = controller.EditProfile();
+
+            Assert.IsTrue(registerAction is ViewResult);
+            ViewResult loginScreen = registerAction as ViewResult;
+
+            if (loginScreen != null)
+            {
+                Assert.IsTrue(loginScreen.Model is UserAccountViewModel);
+                var model = loginScreen.Model as UserAccountViewModel;
+                model.Username = "NonExistingUser";
+
+                registerAction = controller.EditProfile(model);
+
+                Assert.IsFalse(registerAction is RedirectToRouteResult, string.Join(" |", loginScreen.ViewData.ModelState.Values.Select(x => x.Errors.First().ErrorMessage)));
+            }
+        }
+
+        #endregion
     }
 }

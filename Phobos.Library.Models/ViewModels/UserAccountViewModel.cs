@@ -50,14 +50,16 @@ namespace Phobos.Library.Models.ViewModels
         public List<MenuEntriesViewModel> FavoriteLinks { get; set; }
 
         [DisplayName("First Name")]
-        public string FirstName { get;  set; }
+        public string FirstName { get; set; }
 
         [DisplayName("Last Name")]
-        public string LastName { get;  set; }
+        public string LastName { get; set; }
 
+        [DisplayName("Date of Birth")]
+        public DateTime BirthDate { get; set; }
         public static UserAccountViewModel AsUserAccountViewModel(UserAccount model)
         {
-            var viewModel= new UserAccountViewModel()
+            var viewModel = new UserAccountViewModel()
             {
                 CurrentStatus = model.CurrentStatus,
                 FavoriteLinks = new List<MenuEntriesViewModel>(),
@@ -68,7 +70,7 @@ namespace Phobos.Library.Models.ViewModels
                 MemberSince = model.MemberSinceDate,
                 Username = model.Username,
                 Position = model.Position,
-                UseGravatar=true
+                UseGravatar = true
             };
 
             if (viewModel.UseGravatar)
@@ -83,12 +85,24 @@ namespace Phobos.Library.Models.ViewModels
                     sb.Append(hashBytes[i].ToString("X2").ToLower());
                 }
 
-                viewModel.ImageUrl = @"http://www.gravatar.com/avatar/" + sb.ToString() +".jpg";
+                viewModel.ImageUrl = @"http://www.gravatar.com/avatar/" + sb.ToString() + ".jpg";
             }
 
             return viewModel;
         }
 
-        
+        public static UserAccount AsUserAccount(UserAccountViewModel model)
+        {
+            return new UserAccount()
+            {
+                Position = model.Position,
+                BirthDate = model.BirthDate,
+                CurrentStatus = model.CurrentStatus,
+                FirstName = model.FirstName,
+                LastName = model.LastName,
+                MemberSinceDate = model.MemberSince,
+                Username = model.Username
+            };
+        }
     }
 }

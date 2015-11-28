@@ -25,7 +25,9 @@
             @RenderSection("_ContentHeader", required: false)
             <section class="content">
                 @RenderBody()
+                <div id="ohsnap"></div>
             </section>
+           
         </div>
         @Html.Partial("_MainFooter")
         @Html.Partial("_ControlSidebar")
@@ -40,5 +42,7 @@
     @Scripts.Render("~/bundles/daterangepicker")
     @Scripts.Render("~/bundles/iCheck")
     @RenderSection("scripts", required: false)
+
+   
 </body>
 </html>

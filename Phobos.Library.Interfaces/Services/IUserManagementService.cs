@@ -20,5 +20,6 @@ namespace Phobos.Library.Interfaces
         bool RecoverProfile(string userName, out string error);
         bool CheckSecurityMesurements(string userName, string password, string confirmPassword, out string error);
         bool CheckIfActionIsAllowed(string currentControllerName, string currentActionName, string username);
+        bool UpdateAccount(UserAccount userAccount);
     }
 }
