@@ -1,5 +1,6 @@
 ﻿using Phobos.ActionFilter;
 using Phobos.Library.Interfaces;
+using Phobos.Library.Interfaces.Services;
 using Phobos.Library.Models.ViewModels;
 using StackExchange.Profiling;
 using System;
@@ -16,11 +17,13 @@ namespace Phobos.Controllers
     {
         private IAuthenticationService AuthenticationService;
         private IUserManagementService userManagementService;
+        private IAuditTrailService auditTrailService;
 
-        public AccountController(IUserManagementService usrMngSvc, IAuthenticationService authSvc)
+        public AccountController(IUserManagementService usrMngSvc, IAuthenticationService authSvc, IAuditTrailService auditTrailService)
         {
             this.userManagementService = usrMngSvc;
             this.AuthenticationService = authSvc;
+            this.auditTrailService = auditTrailService;
         }
 
         [AllowAnonymous]
@@ -45,6 +48,8 @@ namespace Phobos.Controllers
                             AuthenticationService.Login(user.UserName, user.RememberMe);
 
                             SessionManager.UserAccount = UserAccountViewModel.AsUserAccountViewModel(this.userManagementService.GetUser(user.UserName));
+
+                            this.auditTrailService.LogMessage(string.Format("A new user ({0}) had been created.", user.UserName), user.UserName, user);
 
                             return RedirectToAction("Index", "Home");
                         }
@@ -96,6 +101,8 @@ namespace Phobos.Controllers
 
                                         SessionManager.UserAccount = UserAccountViewModel.AsUserAccountViewModel(this.userManagementService.GetUser(user.UserName));
 
+                                        this.auditTrailService.LogMessage(string.Format("A new user ({0}) had been created.", user.UserName), user.UserName, user);
+
                                         return RedirectToAction("Index", "Home");
                                     }
                                 }
@@ -124,6 +131,8 @@ namespace Phobos.Controllers
             {
                 if (ModelState.IsValid && this.userManagementService.RecoverProfile(user.Usename, out error))
                 {
+                    this.auditTrailService.LogMessage(string.Format("The user {0} had request a new password.", SessionManager.UserAccount.Username), SessionManager.UserAccount.Username, user);
+
                     return RedirectToAction("Login", "Account");
                 }
             }
@@ -150,7 +159,10 @@ namespace Phobos.Controllers
             if (ModelState.IsValid)
             {
                 var userAccount = UserAccountViewModel.AsUserAccount(model);
+
                 this.userManagementService.UpdateAccount(userAccount);
+
+                this.auditTrailService.LogMessage(string.Format("The user {0} had changed his profile.", SessionManager.UserAccount.Username), SessionManager.UserAccount.Username, userAccount);
             }
             return PartialView("_ProfileDetails", model);
         }

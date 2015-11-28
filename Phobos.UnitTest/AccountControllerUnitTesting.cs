@@ -13,12 +13,14 @@ using System.Web;
 using System.Security.Principal;
 using System.Web.Routing;
 using System.Collections.Specialized;
+using Phobos.Library.Interfaces.Services;
 
 namespace Phobos.UnitTest
 {
     [TestClass]
     public class AccountControllerUnitTesting
     {
+        private IAuditTrailService auditTrail;
         private IUserManagementService usrMngSvc;
         private string localNameUser = "Name of the User";
         private string localUser = "testUser";
@@ -58,6 +60,7 @@ namespace Phobos.UnitTest
 
 
             this.usrMngSvc = new UserManagementService();
+            this.auditTrail = new AuditTrailService();
 
             this.mockAuth = mockRepo.DynamicMock<IAuthenticationService>();
             mockAuth.Expect(x => x.Login(localUser, true));
@@ -67,7 +70,7 @@ namespace Phobos.UnitTest
         [TestMethod]
         public void AccountController_Login_ExistingUser()
         {
-            AccountController controller = new AccountController(this.usrMngSvc, this.mockAuth);
+            AccountController controller = new AccountController(this.usrMngSvc, this.mockAuth, this.auditTrail);
             ActionResult loginAction = controller.Login();
 
             Assert.IsTrue(loginAction is ViewResult);
@@ -91,7 +94,7 @@ namespace Phobos.UnitTest
         [TestMethod]
         public void AccountController_Login_NonExistingUser()
         {
-            AccountController controller = new AccountController(this.usrMngSvc, this.mockAuth);
+            AccountController controller = new AccountController(this.usrMngSvc, this.mockAuth, this.auditTrail);
             ActionResult loginAction = controller.Login();
 
             Assert.IsTrue(loginAction is ViewResult);
@@ -113,7 +116,7 @@ namespace Phobos.UnitTest
         [TestMethod]
         public void AccountController_Login_UnexpectedError()
         {
-            AccountController controller = new AccountController(this.usrMngSvc, this.mockAuth);
+            AccountController controller = new AccountController(this.usrMngSvc, this.mockAuth, this.auditTrail);
             ActionResult loginAction = controller.Login();
 
             Assert.IsTrue(loginAction is ViewResult);
@@ -137,7 +140,7 @@ namespace Phobos.UnitTest
         [TestMethod]
         public void AccountController_Logout()
         {
-            AccountController controller = new AccountController(this.usrMngSvc, this.mockAuth);
+            AccountController controller = new AccountController(this.usrMngSvc, this.mockAuth, this.auditTrail);
             ActionResult loginAction = controller.Logout();
 
             Assert.IsTrue(loginAction is RedirectToRouteResult);
@@ -148,7 +151,7 @@ namespace Phobos.UnitTest
         [TestMethod]
         public void AccountController_Register()
         {
-            AccountController controller = new AccountController(this.usrMngSvc, this.mockAuth);
+            AccountController controller = new AccountController(this.usrMngSvc, this.mockAuth, this.auditTrail);
             ActionResult registerAction = controller.Register();
 
             Assert.IsTrue(registerAction is ViewResult);
@@ -173,7 +176,7 @@ namespace Phobos.UnitTest
         [TestMethod]
         public void AccountController_RegisterDuplicatedUser()
         {
-            AccountController controller = new AccountController(this.usrMngSvc, this.mockAuth);
+            AccountController controller = new AccountController(this.usrMngSvc, this.mockAuth, this.auditTrail);
             ActionResult registerAction;
             string newUser = Guid.NewGuid().ToString();
             for (int i = 0; i <= 1; i++)
@@ -208,7 +211,7 @@ namespace Phobos.UnitTest
         [TestMethod]
         public void AccountController_RegisterWithEmptyPwd()
         {
-            AccountController controller = new AccountController(this.usrMngSvc, this.mockAuth);
+            AccountController controller = new AccountController(this.usrMngSvc, this.mockAuth, this.auditTrail);
             ActionResult registerAction = controller.Register();
 
             Assert.IsTrue(registerAction is ViewResult);
@@ -233,7 +236,7 @@ namespace Phobos.UnitTest
         [TestMethod]
         public void AccountController_RegisterWithDiferentPwd()
         {
-            AccountController controller = new AccountController(this.usrMngSvc, this.mockAuth);
+            AccountController controller = new AccountController(this.usrMngSvc, this.mockAuth, this.auditTrail);
             ActionResult registerAction = controller.Register();
 
             Assert.IsTrue(registerAction is ViewResult);
@@ -258,7 +261,7 @@ namespace Phobos.UnitTest
         [TestMethod]
         public void AccountController_Register_CheckSecurtiyMesurements()
         {
-            AccountController controller = new AccountController(this.usrMngSvc, this.mockAuth);
+            AccountController controller = new AccountController(this.usrMngSvc, this.mockAuth, this.auditTrail);
             ActionResult registerAction = controller.Register();
 
             Assert.IsTrue(registerAction is ViewResult);
@@ -285,7 +288,7 @@ namespace Phobos.UnitTest
         [TestMethod]
         public void AccountController_Forgot()
         {
-            AccountController controller = new AccountController(this.usrMngSvc, this.mockAuth);
+            AccountController controller = new AccountController(this.usrMngSvc, this.mockAuth, this.auditTrail);
             ActionResult registerAction = controller.ForgotPassword();
 
             Assert.IsTrue(registerAction is ViewResult);
@@ -307,7 +310,7 @@ namespace Phobos.UnitTest
         [TestMethod]
         public void AccountController_Forgot_NonExistingUser()
         {
-            AccountController controller = new AccountController(this.usrMngSvc, this.mockAuth);
+            AccountController controller = new AccountController(this.usrMngSvc, this.mockAuth, this.auditTrail);
             ActionResult registerAction = controller.ForgotPassword();
 
             Assert.IsTrue(registerAction is ViewResult);
@@ -328,7 +331,7 @@ namespace Phobos.UnitTest
         [TestMethod]
         public void AccountController_Forgot_UserNonHaveEmailOnProfile()
         {
-            AccountController controller = new AccountController(this.usrMngSvc, this.mockAuth);
+            AccountController controller = new AccountController(this.usrMngSvc, this.mockAuth, this.auditTrail);
             ActionResult registerAction = controller.ForgotPassword();
 
             Assert.IsTrue(registerAction is ViewResult);
@@ -351,7 +354,7 @@ namespace Phobos.UnitTest
         [TestMethod]
         public void AccountController_EditProfile()
         {
-            AccountController controller = new AccountController(this.usrMngSvc, this.mockAuth);
+            AccountController controller = new AccountController(this.usrMngSvc, this.mockAuth, this.auditTrail);
             ActionResult registerAction = controller.EditProfile();
 
             Assert.IsTrue(registerAction is ViewResult);
@@ -373,7 +376,7 @@ namespace Phobos.UnitTest
         [TestMethod]
         public void AccountController_EditProfile_Forgot_NonExistingUser()
         {
-            AccountController controller = new AccountController(this.usrMngSvc, this.mockAuth);
+            AccountController controller = new AccountController(this.usrMngSvc, this.mockAuth, this.auditTrail);
             ActionResult registerAction = controller.EditProfile();
 
             Assert.IsTrue(registerAction is ViewResult);

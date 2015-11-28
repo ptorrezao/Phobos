@@ -61,6 +61,7 @@ namespace Phobos
                 kernel.Bind<IUserManagementService>().To<UserManagementService>();
                 kernel.Bind<IAuthenticationService>().To<AuthenticationService>();
                 kernel.Bind<INavigationService>().To<NavigationService>();
+                kernel.Bind<IAuditTrailService>().To<AuditTrailService>();
             }
             return kernel;
         }
