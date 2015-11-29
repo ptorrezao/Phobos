@@ -82,35 +82,24 @@ namespace Phobos.Controllers
             var error = "";
             if (ModelState.IsValid)
             {
-                using (MiniProfiler.Current.Step("CheckIfRegisterIsAllowed"))
+                using (MiniProfiler.Current.Step("RegisterUser"))
                 {
-                    if (this.userManagementService.CheckIfRegisterIsAllowed(user.Name, user.UserName, user.Password, user.ConfirmPassword, out error))
+                    if (this.userManagementService.RegisterUser(user.Name, user.UserName, user.Password, user.ConfirmPassword, out error))
                     {
-                        using (MiniProfiler.Current.Step("CheckSecurityMesurements"))
-                        {
-                            if (this.userManagementService.CheckSecurityMesurements(user.UserName, user.Password, user.ConfirmPassword, out error))
-                            {
-                                using (MiniProfiler.Current.Step("RegisterUser"))
-                                {
-                                    if (this.userManagementService.RegisterUser(user.Name, user.UserName, user.Password, user.ConfirmPassword, out error))
-                                    {
-                                        AuthenticationService.Login(user.UserName, false);
+                        AuthenticationService.Login(user.UserName, false);
 
-                                        SessionManager.UserAccount = UserAccountViewModel.AsUserAccountViewModel(this.userManagementService.GetUser(user.UserName));
+                        SessionManager.UserAccount = UserAccountViewModel.AsUserAccountViewModel(this.userManagementService.GetUser(user.UserName));
 
-                                        this.auditTrailService.LogMessage(string.Format("A new user ({0}) had been created.", user.UserName), user.UserName, user);
+                        this.auditTrailService.LogMessage(string.Format("A new user ({0}) had been created.", user.UserName), user.UserName, user);
 
-                                        return RedirectToAction("Index", "Home");
-                                    }
-                                }
-                            }
-                        }
+                        return RedirectToAction("Index", "Home");
                     }
-
-                    error = string.IsNullOrEmpty(error) ? "Something went wrong, please try again later." : error;
-                    ModelState.AddModelError("", error);
                 }
+
+                error = string.IsNullOrEmpty(error) ? "Something went wrong, please try again later." : error;
+                ModelState.AddModelError("", error);
             }
+
             return View(user);
         }
 

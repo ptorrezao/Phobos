@@ -13,6 +13,11 @@ namespace Phobos.Library.CoreServices
 {
     public class UserManagementCoreService : IUserManagementService
     {
+        public UserManagementCoreService()
+        {
+
+        }
+
         #region Injects
         [Inject]
         public IUserManagementRepo Repository { get; set; }
@@ -63,7 +68,7 @@ namespace Phobos.Library.CoreServices
             }
         }
 
-        public bool CheckIfRegisterIsAllowed(string name, string userName, string password, string confirmPassword, out string msg)
+        bool CheckIfRegisterIsAllowed(string name, string userName, string password, string confirmPassword, out string msg)
         {
             msg = "";
 
@@ -154,7 +159,7 @@ namespace Phobos.Library.CoreServices
             }
         }
 
-        public bool CheckSecurityMesurements(string userName, string password, string confirmPassword, out string msg)
+        bool CheckSecurityMesurements(string userName, string password, string confirmPassword, out string msg)
         {
             msg = "";
             bool haveMinimumLength, haveMinimunQtdOfUpper, haveMinimunQtdOfLower, haveMinimunQtdOfDigits;
@@ -225,11 +230,18 @@ namespace Phobos.Library.CoreServices
 
         public bool RegisterUser(string name, string userName, string password, string confirmPassword, out string error)
         {
+            UserAccount selectedUser = null;
             error = "";
             if (password == confirmPassword)
             {
-                var selectedUser = this.Repository.CreateUser(name, userName, password);
-                return true;
+                if (this.CheckIfRegisterIsAllowed(name, userName, password, confirmPassword, out error))
+                {
+                    if (this.CheckSecurityMesurements(userName, password, confirmPassword, out error))
+                    {
+                        selectedUser = this.Repository.CreateUser(name, userName, password);
+                    }
+                }
+                return selectedUser != null;
             }
             else
             {
@@ -244,7 +256,7 @@ namespace Phobos.Library.CoreServices
         public bool UpdateAccount(UserAccount userAccount)
         {
             return this.Repository.UpdateAccount(userAccount);
-        } 
+        }
         #endregion
 
         #region Password Verifications

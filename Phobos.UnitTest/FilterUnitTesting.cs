@@ -8,7 +8,6 @@ using System.Security.Principal;
 using System.Web.Mvc;
 using System.Web.Routing;
 using System.Collections.Specialized;
-using Phobos.Library.TestServices;
 using Phobos.ActionFilter;
 
 namespace Phobos.UnitTest
@@ -51,7 +50,6 @@ namespace Phobos.UnitTest
             requestContext.Expect(x => x.RouteData).Return(new RouteData());
             request.Expect(req => req.Headers).Return(new NameValueCollection());
 
-            this.usrMngSvc = new UserManagementService();
             this.mockAuth = mockRepo.DynamicMock<IAuthenticationService>();
         }
 

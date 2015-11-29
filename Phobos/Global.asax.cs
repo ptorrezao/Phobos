@@ -1,8 +1,10 @@
 ﻿using Ninject;
 using Ninject.Web.Common;
+using Phobos.Library.CoreServices;
+using Phobos.Library.CoreServices.Db;
 using Phobos.Library.Interfaces;
+using Phobos.Library.Interfaces.Repos;
 using Phobos.Library.Interfaces.Services;
-using Phobos.Library.TestServices;
 using StackExchange.Profiling;
 using System;
 using System.Collections.Generic;
@@ -58,10 +60,17 @@ namespace Phobos
             if (kernel == null)
             {
                 kernel = new StandardKernel();
-                kernel.Bind<IUserManagementService>().To<UserManagementService>();
+                kernel.Bind<ICoreRepo>().To<CoreRepo>();
+                kernel.Bind<IUserManagementRepo>().To<UserManagementRepo>();
+                kernel.Bind<IUserManagementService>().To<UserManagementCoreService>();
+
                 kernel.Bind<IAuthenticationService>().To<AuthenticationService>();
-                kernel.Bind<INavigationService>().To<NavigationService>();
-                kernel.Bind<IAuditTrailService>().To<AuditTrailService>();
+
+                kernel.Bind<INavigationService>().To<NavigationCoreService>();
+
+                kernel.Bind<IAuditTrailService>().To<AuditTrailCoreService>();
+
+                kernel.Bind<IMessageService>().To<MessageCoreService>();
             }
             return kernel;
         }

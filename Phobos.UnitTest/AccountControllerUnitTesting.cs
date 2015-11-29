@@ -14,6 +14,7 @@ using System.Security.Principal;
 using System.Web.Routing;
 using System.Collections.Specialized;
 using Phobos.Library.Interfaces.Services;
+using Phobos.Library.CoreServices;
 
 namespace Phobos.UnitTest
 {
@@ -30,6 +31,16 @@ namespace Phobos.UnitTest
         [TestInitialize]
         public void initialize()
         {
+            var kernel = NinjectWebCommon.CreatePublicKernel();
+            _sut = kernel.Resolve<HomeController>();
+
+
+
+
+
+
+
+
             var mockRepo = new MockRepository();
             var context = mockRepo.DynamicMock<HttpContextBase>();
             var request = mockRepo.DynamicMock<HttpRequestBase>();
@@ -59,7 +70,7 @@ namespace Phobos.UnitTest
 
 
 
-            this.usrMngSvc = new UserManagementService();
+            this.usrMngSvc = new UserManagementCoreService();
             this.auditTrail = new AuditTrailService();
 
             this.mockAuth = mockRepo.DynamicMock<IAuthenticationService>();

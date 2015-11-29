@@ -6,11 +6,15 @@ using System.Text;
 using System.Threading.Tasks;
 using Phobos.Library.Models;
 using System.Security.Cryptography;
+using Ninject;
 
 namespace Phobos.Library.CoreServices.Db
 {
     public class UserManagementRepo : IUserManagementRepo
     {
+        [Inject]
+        public ICoreRepo CoreRepository { get; set; }
+
         public bool AddFailedLoginAttempt(string userName)
         {
             using (var context = new PhobosCoreContext())
@@ -49,18 +53,16 @@ namespace Phobos.Library.CoreServices.Db
         {
             using (var context = new PhobosCoreContext())
             {
-                var salt = context.Configurations.FirstOrDefault(x => x.Key == "PasswordSalt");
-                if (salt != default(Configuration))
-                {
-                    var newUser = new UserAccount();
-                    newUser.FirstName = name;
-                    newUser.Username = userName;
-                    newUser.Password = GetSaltedHashPassword(password, salt.Value);
-                    context.Users.Add(newUser);
-                    return newUser;
-                }
+                Configuration salt = CoreRepository.GetConfiguration("PasswordSalt");
 
-                return null;
+                var newUser = new UserAccount();
+                newUser.FirstName = name;
+                newUser.Username = userName;
+                newUser.Password = GetSaltedHashPassword(password, salt.Value);
+                newUser.MemberSinceDate = DateTime.Now;
+                context.Users.Add(newUser);
+                context.SaveChanges();
+                return newUser;
             }
         }
 

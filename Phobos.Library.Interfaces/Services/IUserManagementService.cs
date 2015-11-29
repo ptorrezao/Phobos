@@ -15,10 +15,8 @@ namespace Phobos.Library.Interfaces
         List<UserMessage> GetLastMessages(string userName, int qtd);
         List<UserNotification> GetLastNotifications(string userName, int qtd);
         List<UserTask> GetLastTasks(string userName, int qtd);
-        bool CheckIfRegisterIsAllowed(string name, string userName, string password, string confirmPassword, out string error);
         bool RegisterUser(string name, string userName, string password, string confirmPassword, out string error);
         bool RecoverProfile(string userName, out string error);
-        bool CheckSecurityMesurements(string userName, string password, string confirmPassword, out string error);
         bool CheckIfActionIsAllowed(string currentControllerName, string currentActionName, string username);
         bool UpdateAccount(UserAccount userAccount);
     }

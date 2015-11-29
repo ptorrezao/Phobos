@@ -466,6 +466,14 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Phobos.Library.CoreServices.Db\Phobos.Library.CoreServices.Db.csproj">
+      <Project>{97213fb7-4a99-4c99-8222-d757f33206d7}</Project>
+      <Name>Phobos.Library.CoreServices.Db</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Phobos.Library.CoreServices\Phobos.Library.CoreServices.csproj">
+      <Project>{800f9ccc-16f2-4d12-aedb-3f6362399ed2}</Project>
+      <Name>Phobos.Library.CoreServices</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Phobos.Library.Interfaces\Phobos.Library.Interfaces.csproj">
       <Project>{d504107e-d9b7-442f-81a1-f4a60616b65a}</Project>
       <Name>Phobos.Library.Interfaces</Name>
@@ -473,10 +481,6 @@
     <ProjectReference Include="..\Phobos.Library.Models\Phobos.Library.Models.csproj">
       <Project>{b61b11e0-0298-48d7-b0fa-7d44b25562d3}</Project>
       <Name>Phobos.Library.Models</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Phobos.Library.TestServices\Phobos.Library.TestServices.csproj">
-      <Project>{5c2eef0b-4059-4e83-81a1-9c27b98700b3}</Project>
-      <Name>Phobos.Library.TestServices</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

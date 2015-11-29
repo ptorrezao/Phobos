@@ -44,6 +44,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MessageCoreService.cs" />
+    <Compile Include="AuditTrailCoreService.cs" />
+    <Compile Include="NavigationCoreService.cs" />
     <Compile Include="UserManagementService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
