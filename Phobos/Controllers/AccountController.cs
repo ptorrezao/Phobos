@@ -35,7 +35,6 @@ namespace Phobos.Controllers
         [HttpPost, AllowAnonymous]
         public ActionResult Login(AccountViewModel user)
         {
-
             var error = "";
             if (ModelState.IsValid)
             {
@@ -48,8 +47,6 @@ namespace Phobos.Controllers
                             AuthenticationService.Login(user.UserName, user.RememberMe);
 
                             SessionManager.UserAccount = UserAccountViewModel.AsUserAccountViewModel(this.userManagementService.GetUser(user.UserName));
-
-                            this.auditTrailService.LogMessage(string.Format("A new user ({0}) had been created.", user.UserName), user.UserName, user);
 
                             return RedirectToAction("Index", "Home");
                         }

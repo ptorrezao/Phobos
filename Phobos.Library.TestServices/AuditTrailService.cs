@@ -9,9 +9,17 @@ namespace Phobos.Library.TestServices
 {
     public class AuditTrailService : IAuditTrailService
     {
+        public void LogInfoMessage(string logMessage, string userName, DateTime now)
+        {
+        }
+
         public void LogMessage(string message, string user, object userAccount)
         {
             
+        }
+
+        public void LogWarningMessage(string msg, string userName, DateTime now)
+        {
         }
     }
 }

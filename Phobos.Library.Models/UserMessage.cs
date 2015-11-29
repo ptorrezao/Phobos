@@ -11,6 +11,6 @@ namespace Phobos.Library.Models
         public string Message { get;  set; }
         public DateTime SentDate { get;  set; }
         public string Title { get;  set; }
-        public UserAccount User { get;  set; }
+        public virtual UserAccount User { get; set; }
     }
 }

@@ -13,6 +13,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Phobos.Library.Models", "Ph
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Phobos.UnitTest", "Phobos.UnitTest\Phobos.UnitTest.csproj", "{CBFE7F13-EE49-438F-AE62-EFAC2F0DD0E2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Phobos.Library.CoreServices", "Phobos.Library.CoreServices\Phobos.Library.CoreServices.csproj", "{800F9CCC-16F2-4D12-AEDB-3F6362399ED2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Phobos.Library.CoreServices.Db", "Phobos.Library.CoreServices.Db\Phobos.Library.CoreServices.Db.csproj", "{97213FB7-4A99-4C99-8222-D757F33206D7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +43,14 @@ Global
 		{CBFE7F13-EE49-438F-AE62-EFAC2F0DD0E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CBFE7F13-EE49-438F-AE62-EFAC2F0DD0E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CBFE7F13-EE49-438F-AE62-EFAC2F0DD0E2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{800F9CCC-16F2-4D12-AEDB-3F6362399ED2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{800F9CCC-16F2-4D12-AEDB-3F6362399ED2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{800F9CCC-16F2-4D12-AEDB-3F6362399ED2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{800F9CCC-16F2-4D12-AEDB-3F6362399ED2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{97213FB7-4A99-4C99-8222-D757F33206D7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{97213FB7-4A99-4C99-8222-D757F33206D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{97213FB7-4A99-4C99-8222-D757F33206D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{97213FB7-4A99-4C99-8222-D757F33206D7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

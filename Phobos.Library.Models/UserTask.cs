@@ -10,5 +10,7 @@ namespace Phobos.Library.Models
     {
         public string Title { get; set; }
         public double Percentage { get; set; }
+        public virtual UserAccount User { get; set; }
+
     }
 }

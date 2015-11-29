@@ -10,5 +10,7 @@ namespace Phobos.Library.Interfaces.Services
     public interface IAuditTrailService
     {
         void LogMessage(string message, string user, object userAccount);
+        void LogInfoMessage(string logMessage, string userName, DateTime now);
+        void LogWarningMessage(string msg, string userName, DateTime now);
     }
 }
