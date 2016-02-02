@@ -15,7 +15,6 @@ namespace Phobos.UnitTest
     [TestClass]
     public class FilterUnitTesting
     {
-        private IUserManagementService usrMngSvc;
         private IAuthenticationService mockAuth;
         private MockRepository mockRepo;
         private HttpContextBase context;

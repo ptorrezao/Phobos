@@ -21,6 +21,5 @@ namespace Phobos.Library.CoreServices.Db
         public DbSet<UserMessage> UserMessages { get;set; }
         public DbSet<UserNotification> UserNotifications { get;set; }
         public DbSet<UserTask> UserTasks { get;set; }
-
     }
 }

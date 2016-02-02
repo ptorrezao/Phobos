@@ -12,7 +12,6 @@ using System.Web.Security;
 
 namespace Phobos.Controllers
 {
-    [PhobosInitialization]
     public class AccountController : Controller
     {
         private IAuthenticationService AuthenticationService;
@@ -128,6 +127,7 @@ namespace Phobos.Controllers
         }
 
         [ActionAutorize]
+        [PhobosInitialization]
         public ActionResult EditProfile()
         {
             var model = SessionManager.UserAccount;
@@ -139,7 +139,9 @@ namespace Phobos.Controllers
             return View(model);
         }
 
-        [HttpPost, ActionAutorize]
+        [HttpPost]
+        [ActionAutorize]
+        [PhobosInitialization]
         public ActionResult EditProfile(UserAccountViewModel model)
         {
             if (ModelState.IsValid)

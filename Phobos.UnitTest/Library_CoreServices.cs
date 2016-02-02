@@ -12,7 +12,6 @@ namespace Phobos.UnitTest
     [TestClass]
     public class Library_CoreServices
     {
-        string username = "";
         string name = "John";
         string goodPassword = "GoodPassword123";
         string badPassword = "BadPassword";
