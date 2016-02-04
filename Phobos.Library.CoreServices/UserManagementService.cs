@@ -8,6 +8,7 @@ using Phobos.Library.Interfaces.Repos;
 using Ninject;
 using Phobos.Library.Interfaces.Services;
 using System.Text.RegularExpressions;
+using System.Security.Cryptography;
 
 namespace Phobos.Library.CoreServices
 {
@@ -27,6 +28,9 @@ namespace Phobos.Library.CoreServices
 
         [Inject]
         public IMessageService NotificationService { get; set; }
+
+        [Inject]
+        public ICoreRepo CoreRepository { get; set; }
         #endregion
 
         #region IUserManagementService
@@ -88,6 +92,8 @@ namespace Phobos.Library.CoreServices
 
         public bool CheckIfUserIsValid(string userName, string password, out string msg)
         {
+            Configuration salt = CoreRepository.GetConfiguration("PasswordSalt");
+
             var selectedUser = this.Repository.GetUser(userName);
             msg = "";
 
@@ -97,7 +103,7 @@ namespace Phobos.Library.CoreServices
                 if (!selectedUser.IsLocked)
                 {
                     //// Check if pwd is correct
-                    if (password.ToLower() == selectedUser.Password.ToLower())
+                    if (GetSaltedHashPassword(password, salt.Value) == selectedUser.Password)
                     {
                         //// Update the user info to have last login.
                         if (this.Repository.UpdateLastLoginDate(userName, DateTime.Now))
@@ -163,6 +169,21 @@ namespace Phobos.Library.CoreServices
 
                 return false;
             }
+        }
+
+        private string GetSaltedHashPassword(string password, string saltString)
+        {
+            MD5 md5 = System.Security.Cryptography.MD5.Create();
+            byte[] inputBytes = System.Text.Encoding.ASCII.GetBytes(password + saltString);
+            byte[] hashBytes = md5.ComputeHash(inputBytes);
+
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < hashBytes.Length; i++)
+            {
+                sb.Append(hashBytes[i].ToString("X2").ToLower());
+            }
+
+            return sb.ToString();
         }
 
         bool CheckSecurityMesurements(string userName, string password, string confirmPassword, out string msg)
@@ -287,9 +308,9 @@ namespace Phobos.Library.CoreServices
             int minimunQtdOfDigits = 1;
 
             haveMinimumLength = password.Length > minimumLength;
-            haveMinimunQtdOfUpper = uppercaseCharacterMatcher.Matches(password).Count > minimunQtdOfUpper;
-            haveMinimunQtdOfLower = lowerCharacterMatcher.Matches(password).Count > minimunQtdOfLower;
-            haveMinimunQtdOfDigits = lowerCharacterDigits.Matches(password).Count > minimunQtdOfDigits;
+            haveMinimunQtdOfUpper = uppercaseCharacterMatcher.Matches(password).Count >= minimunQtdOfUpper;
+            haveMinimunQtdOfLower = lowerCharacterMatcher.Matches(password).Count >= minimunQtdOfLower;
+            haveMinimunQtdOfDigits = lowerCharacterDigits.Matches(password).Count >= minimunQtdOfDigits;
             msg = "The password does not meet the security mesuraments:";
             if (!haveMinimumLength)
             {

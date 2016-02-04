@@ -33,6 +33,8 @@ namespace Phobos
 
             log4net.Config.XmlConfigurator.Configure(new FileInfo(Server.MapPath("~/Web.config")));
 
+            var coreRepo = kernel.Get<ICoreRepo>();
+            coreRepo.AddConfiguration("PasswordSalt", "Phobos");
         }
 
         protected override IKernel CreateKernel()
@@ -70,6 +72,7 @@ namespace Phobos
 
                 kernel.Bind<IMessageService>().To<MessageCoreService>();
             }
+
             return kernel;
         }
 
