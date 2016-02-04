@@ -118,6 +118,12 @@ namespace Phobos.Library.CoreServices
                         //// Add Login attempt.
                         this.Repository.AddFailedLoginAttempt(userName);
 
+                        //// Lock user
+                        if (selectedUser.FailedAttempts > 3)
+                        {
+                            this.Repository.LockUserAccount(userName);
+                        }
+
                         //// Password is diferent than expected
                         msg = string.Format("Was requested a login user with the username({0}) but the passwords didn't match.", userName);
 
@@ -204,6 +210,8 @@ namespace Phobos.Library.CoreServices
                 const string valid = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
                 StringBuilder res = new StringBuilder();
                 Random rnd = new Random();
+                selectedUser.Password = "";
+
                 while (!CheckPassword(selectedUser.Password))
                 {
                     var length = 8;
@@ -213,6 +221,8 @@ namespace Phobos.Library.CoreServices
                     }
                     selectedUser.Password = res.ToString();
                 }
+
+                this.Repository.UpdateAccount(selectedUser);
 
                 return NotificationService.SendMessage(selectedUser.Username, string.Format("Your new password is {0}", selectedUser.Password));
             }
@@ -280,27 +290,31 @@ namespace Phobos.Library.CoreServices
             haveMinimunQtdOfUpper = uppercaseCharacterMatcher.Matches(password).Count > minimunQtdOfUpper;
             haveMinimunQtdOfLower = lowerCharacterMatcher.Matches(password).Count > minimunQtdOfLower;
             haveMinimunQtdOfDigits = lowerCharacterDigits.Matches(password).Count > minimunQtdOfDigits;
-            msg = "";
+            msg = "The password does not meet the security mesuraments:";
             if (!haveMinimumLength)
             {
-                msg += string.Format("The password does not meet the security mesuraments Minimum Lenth: {0} ", minimumLength);
+                msg += string.Format(Environment.NewLine + " Minimum Lenth: {0} ", minimumLength);
             }
 
             if (!haveMinimunQtdOfUpper)
             {
-                msg += string.Format("The password does not meet the security mesuraments Minimum Qtd of Uppercases: {0} ", minimunQtdOfUpper);
+                msg += string.Format(Environment.NewLine + " Minimum Qtd of Uppercases: {0} ", minimunQtdOfUpper);
             }
 
             if (!haveMinimunQtdOfLower)
             {
-                msg += string.Format("The password does not meet the security mesuraments Minimum Qtd of Lowercases: {0} ", minimunQtdOfLower);
+                msg += string.Format(Environment.NewLine + " Minimum Qtd of Lowercases: {0} ", minimunQtdOfLower);
             }
 
             if (!haveMinimunQtdOfDigits)
             {
-                msg += string.Format("The password does not meet the security mesuraments Minimum Qtd of Digits: {0} ", minimunQtdOfDigits);
+                msg += string.Format(Environment.NewLine + " Minimum Qtd of Digits: {0} ", minimunQtdOfDigits);
             }
 
+            if (haveMinimumLength && haveMinimunQtdOfDigits && haveMinimunQtdOfLower && haveMinimunQtdOfUpper)
+            {
+                msg = "";
+            }
             return haveMinimumLength && haveMinimunQtdOfDigits && haveMinimunQtdOfLower && haveMinimunQtdOfUpper;
         }
         #endregion

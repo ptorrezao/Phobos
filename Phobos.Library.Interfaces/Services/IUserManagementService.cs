@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Phobos.Library.Interfaces.Services;
 
 namespace Phobos.Library.Interfaces
 {

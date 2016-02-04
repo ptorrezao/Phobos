@@ -28,12 +28,18 @@
             <p id="login-box-msg">Sign in to start your session</p>
             @using (Html.BeginForm())
             {
+                <div style="color:red;">
+                    @Html.ValidationSummary(true)
+                </div>
+                
                 <div class="form-group has-feedback">
                     @Html.TextBoxFor(u => u.UserName, new { @class = "form-control", @type = "email", @placeholder = "Email" })
+                    @Html.ValidationMessageFor(u => u.UserName)
                     <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
                 </div>
                 <div class="form-group has-feedback">
                     @Html.TextBoxFor(u => u.Password, new { @class = "form-control", @type = "password", @placeholder = "Password" })
+                    @Html.ValidationMessageFor(u => u.Password)
                     <span class="glyphicon glyphicon-lock form-control-feedback"></span>
                 </div>
                 <div class="row">

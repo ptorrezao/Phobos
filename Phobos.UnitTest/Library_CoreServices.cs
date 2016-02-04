@@ -6,6 +6,7 @@ using Ninject;
 using Phobos.Library.Models;
 using System.Collections.Generic;
 using Phobos.Library.Interfaces.Repos;
+using Phobos.UnitTest.Repos;
 
 namespace Phobos.UnitTest
 {
@@ -16,22 +17,28 @@ namespace Phobos.UnitTest
         string goodPassword = "GoodPassword123";
         string badPassword = "BadPassword";
 
-
-        IUserManagementService usrMngSvc = new UserManagementCoreService();
+        IUserManagementService usrMngSvc;
 
         [TestInitialize]
         public void Initialize()
         {
             var kernel = MvcApplication.GetKernel();
+
+            kernel.Unbind<ICoreRepo>();
+            kernel.Bind<ICoreRepo>().To<TestCoreRepo>();
+
+            kernel.Unbind<IUserManagementRepo>();
+            kernel.Bind<IUserManagementRepo>().To<TestUserManagementRepo>();
+
             usrMngSvc = kernel.Get<IUserManagementService>();
 
             var coreRepo = kernel.Get<ICoreRepo>();
             coreRepo.AddConfiguration("PasswordSalt", "Phobos");
         }
-        
-        #region RegisterUser
 
+        #region RegisterUser
         [TestMethod]
+        [TestCategory("UserAccount")]
         public void RegisterUser_Sucessfully()
         {
             var nonexisingUser = Guid.NewGuid().ToString().Substring(0, 10) + "@email.com";
@@ -42,6 +49,7 @@ namespace Phobos.UnitTest
         }
 
         [TestMethod]
+        [TestCategory("UserAccount")]
         public void RegisterUser_DiferentPasswords()
         {
             var nonexisingUser = Guid.NewGuid().ToString().Substring(0, 10) + "@email.com";
@@ -52,6 +60,7 @@ namespace Phobos.UnitTest
         }
 
         [TestMethod]
+        [TestCategory("UserAccount")]
         public void RegisterUser_DupplicatedUser()
         {
             var nonexisingUser = Guid.NewGuid().ToString().Substring(0, 10) + "@email.com";
@@ -64,6 +73,7 @@ namespace Phobos.UnitTest
         }
 
         [TestMethod]
+        [TestCategory("UserAccount")]
         public void RegisterUser_PasswordWithoutMinimumSecurity()
         {
             var nonexisingUser = Guid.NewGuid().ToString().Substring(0, 10) + "@email.com";
@@ -74,57 +84,154 @@ namespace Phobos.UnitTest
         }
         #endregion
 
-        #region NotImplemented
-        public void CheckIfActionIsAllowed()
+        #region UpdateAccount
+        [TestMethod]
+        [TestCategory("UserAccount")]
+        public void UpdateAccount_ChangeName()
         {
-            throw new NotImplementedException();
-            // usrMngSvc.CheckIfActionIsAllowed(controller, auhtorizedAction, username);
+            //// Create User
+            var username = Guid.NewGuid().ToString().Substring(0, 10) + "@email.com";
+            var error = "";
+            var oldName = "A";
+            var newName = "B";
+            var sucess = usrMngSvc.RegisterUser(oldName, username, goodPassword, goodPassword, out error);
+
+            Assert.IsTrue(sucess, error);
+            if (sucess)
+            {
+                var user = usrMngSvc.GetUser(username);
+                user.FirstName = newName;
+
+                sucess = usrMngSvc.UpdateAccount(user);
+                Assert.IsTrue(sucess, "Couldn't update user.");
+
+                user = usrMngSvc.GetUser(username);
+                Assert.IsTrue(user.FirstName == newName, "The names doesn't match.");
+            }
         }
-        public bool CheckIfRegisterIsAllowed(string name, string userName, string password, string confirmPassword, out string error)
+        #endregion
+
+        #region CheckIfUserIsValid
+        [TestMethod]
+        [TestCategory("UserAccount")]
+        public void CheckIfUserIsValid()
         {
-            throw new NotImplementedException();
+            //// Create User
+            var username = Guid.NewGuid().ToString().Substring(0, 10) + "@email.com";
+            var error = "";
+            var sucess = usrMngSvc.RegisterUser(Guid.NewGuid().ToString().Substring(0, 10), username, goodPassword, goodPassword, out error);
+
+            Assert.IsTrue(sucess, error);
+            if (sucess)
+            {
+                sucess = usrMngSvc.CheckIfUserIsValid(username, goodPassword, out error);
+                Assert.IsTrue(sucess, error);
+            }
         }
 
-        public bool CheckIfUserIsValid(string userName, string password, out string error)
+        [TestMethod]
+        [TestCategory("UserAccount")]
+        public void CheckIfUserIsValid_WithBadPassword()
         {
-            throw new NotImplementedException();
+            //// Create User
+            var username = Guid.NewGuid().ToString().Substring(0, 10) + "@email.com";
+            var error = "";
+            var sucess = usrMngSvc.RegisterUser(Guid.NewGuid().ToString().Substring(0, 10), username, goodPassword, goodPassword, out error);
+
+            Assert.IsTrue(sucess, error);
+            if (sucess)
+            {
+                sucess = usrMngSvc.CheckIfUserIsValid(username, badPassword, out error);
+                Assert.IsTrue(!sucess, error);
+            }
         }
 
-        public bool CheckSecurityMesurements(string userName, string password, string confirmPassword, out string error)
+        [TestMethod]
+        [TestCategory("UserAccount")]
+        public void CheckIfUserIsValid_WithLockedUser()
         {
-            throw new NotImplementedException();
+            //// Create User
+            var username = Guid.NewGuid().ToString().Substring(0, 10) + "@email.com";
+            var error = "";
+            var sucess = usrMngSvc.RegisterUser(Guid.NewGuid().ToString().Substring(0, 10), username, goodPassword, goodPassword, out error);
+
+            Assert.IsTrue(sucess, error);
+            if (sucess)
+            {
+                for (int i = 0; i <= 4; i++)
+                {
+                    sucess = usrMngSvc.CheckIfUserIsValid(username, badPassword, out error);
+                }
+                sucess = error.Contains("The user account is locked");
+
+                Assert.IsTrue(sucess, error);
+            }
         }
 
-        public List<UserMessage> GetLastMessages(string userName, int qtd)
+        [TestMethod]
+        [TestCategory("UserAccount")]
+        public void CheckIfUserIsValid_WithNonExistingUser()
         {
-            throw new NotImplementedException();
+            //// Create User
+            var error = "";
+            var username = Guid.NewGuid().ToString().Substring(0, 10) + "@email.com";
+            var sucess = usrMngSvc.CheckIfUserIsValid(username, goodPassword, out error);
+
+            Assert.IsTrue(!sucess, error);
         }
 
-        public List<UserNotification> GetLastNotifications(string userName, int qtd)
+        [TestMethod]
+        [TestCategory("UserAccount")]
+        public void CheckIfUserIsValid_WithOldLockedUser()
         {
-            throw new NotImplementedException();
+            //// Create User
+            var username = Guid.NewGuid().ToString().Substring(0, 10) + "@email.com";
+            var error = "";
+            var sucess = usrMngSvc.RegisterUser(Guid.NewGuid().ToString().Substring(0, 10), username, goodPassword, goodPassword, out error);
+
+            var user = usrMngSvc.GetUser(username);
+            user.LockedDate = DateTime.MinValue;
+            user.IsLocked = true;
+
+            sucess = usrMngSvc.UpdateAccount(user);
+
+            user = usrMngSvc.GetUser(username);
+            sucess = user.IsLocked;
+            Assert.IsTrue(sucess, "The user isn't locked");
+
+            sucess = usrMngSvc.CheckIfUserIsValid(username, goodPassword, out error);
+            Assert.IsTrue(sucess, error);
+        }
+        #endregion
+
+        #region RecoverProfile
+        [TestMethod]
+        [TestCategory("UserAccount")]
+        public void RecoverProfile()
+        {
+            var username = Guid.NewGuid().ToString().Substring(0, 10) + "@email.com";
+            var error = "";
+            var sucess = usrMngSvc.RegisterUser(Guid.NewGuid().ToString().Substring(0, 10), username, goodPassword, goodPassword, out error);
+
+            Assert.IsTrue(sucess, error);
+            if (sucess)
+            {
+                var user = usrMngSvc.GetUser(username);
+                sucess = usrMngSvc.RecoverProfile(username, out error);
+
+                sucess = usrMngSvc.GetUser(username).Password != goodPassword;
+                Assert.IsTrue(sucess, "");
+            }
         }
 
-        public List<UserTask> GetLastTasks(string userName, int qtd)
+        [TestMethod]
+        [TestCategory("UserAccount")]
+        public void RecoverProfile_NonExistingUser()
         {
-            throw new NotImplementedException();
-        }
-
-        public UserAccount GetUser(string userName)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool RecoverProfile(string userName, out string error)
-        {
-            throw new NotImplementedException();
-        }
-
-
-
-        public bool UpdateAccount(UserAccount userAccount)
-        {
-            throw new NotImplementedException();
+            var username = Guid.NewGuid().ToString().Substring(0, 10) + "@email.com";
+            var error = "";
+            var sucess = usrMngSvc.RecoverProfile(username, out error);
+            Assert.IsTrue(!sucess, error);
         }
         #endregion
     }

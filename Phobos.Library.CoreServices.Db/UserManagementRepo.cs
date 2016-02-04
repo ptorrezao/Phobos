@@ -1,4 +1,5 @@
-﻿using Phobos.Library.Interfaces.Repos;
+﻿using Phobos.Library.Interfaces;
+using Phobos.Library.Interfaces.Repos;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -154,6 +155,25 @@ namespace Phobos.Library.CoreServices.Db
             }
         }
 
+        public bool LockUserAccount(string userName)
+        {
+            using (var context = new PhobosCoreContext())
+            {
+                var selectedUser = context.Users.FirstOrDefault(x => x.Username == userName);
+
+                if (selectedUser != default(UserAccount))
+                {
+                    selectedUser.LockedDate = DateTime.Now;
+                    selectedUser.IsLocked = true;
+
+                    context.SaveChanges();
+                    return true;
+                }
+
+                return false;
+            }
+        }
+
         public bool UpdateAccount(UserAccount userAccount)
         {
             using (var context = new PhobosCoreContext())
@@ -210,5 +230,7 @@ namespace Phobos.Library.CoreServices.Db
 
             return sb.ToString();
         }
+
+
     }
 }

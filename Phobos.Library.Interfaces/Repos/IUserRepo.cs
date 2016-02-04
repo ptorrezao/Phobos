@@ -13,6 +13,7 @@ namespace Phobos.Library.Interfaces.Repos
         UserAccount GetUser(string userName);
         bool AddFailedLoginAttempt(string userName);
         bool UnlockUserAccount(string userName);
+        bool LockUserAccount(string userName);
         bool UpdateLastLoginDate(string userName, DateTime now);
         ActionAuthorization GetAutorizationForAction(string currentControllerName, string currentActionName);
         UserAccount CreateUser(string name, string userName, string password);

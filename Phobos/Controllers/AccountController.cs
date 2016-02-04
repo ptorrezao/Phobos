@@ -50,13 +50,12 @@ namespace Phobos.Controllers
                             return RedirectToAction("Index", "Home");
                         }
                     }
+                    error = string.IsNullOrEmpty(error) ? "Something went wrong, please try again later." : error;
+                    ModelState.AddModelError("UserName", error);
                 }
             }
-            else
-            {
-                error = string.IsNullOrEmpty(error) ? "Something went wrong, please try again later." : error;
-                ModelState.AddModelError("", error);
-            }
+         
+        
             return View(user);
         }
 
@@ -96,7 +95,7 @@ namespace Phobos.Controllers
                 }
 
                 error = string.IsNullOrEmpty(error) ? "Something went wrong, please try again later." : error;
-                ModelState.AddModelError("", error);
+                ModelState.AddModelError("ConfirmPassword", error);
             }
 
             return View(user);

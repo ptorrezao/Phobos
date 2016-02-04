@@ -51,12 +51,5 @@ namespace Phobos.UnitTest
 
             this.mockAuth = mockRepo.DynamicMock<IAuthenticationService>();
         }
-
-
-        [TestMethod]
-        public void HomeControllerIsNotAllowedToUser()
-        {
-            Assert.Fail("NOT IMPLEMENTED!");
-        }
     }
 }
