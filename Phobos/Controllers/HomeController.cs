@@ -14,7 +14,7 @@ namespace Phobos.Controllers
     {
         readonly log4net.ILog logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-        [ActionAutorize]
+        [ActionAutorize(true)]
        // [SideTab("TestA", "Home", "fa-home", Order = 0)]
       //  [SideTab("TestB", "Home", "fa-home", Order = 0)]
         public ActionResult Index()

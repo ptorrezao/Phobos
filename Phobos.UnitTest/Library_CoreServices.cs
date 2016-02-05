@@ -5,6 +5,7 @@ using Phobos.Library.Interfaces;
 using Ninject;
 using Phobos.Library.Models;
 using System.Collections.Generic;
+using System.Linq;
 using Phobos.Library.Interfaces.Repos;
 using Phobos.UnitTest.Repos;
 
@@ -233,6 +234,66 @@ namespace Phobos.UnitTest
             var sucess = usrMngSvc.RecoverProfile(username, out error);
             Assert.IsTrue(!sucess, error);
         }
+        #endregion
+
+        #region Messages
+        [TestMethod]
+        [TestCategory("Messages")]
+        public void GetLastMessages()
+        {
+            var nonexisingUser = Guid.NewGuid().ToString().Substring(0, 10) + "@email.com";
+            var error = "";
+            var sucess = usrMngSvc.RegisterUser(name, nonexisingUser, goodPassword, goodPassword, out error);
+
+            Assert.IsTrue(sucess, error);
+
+            var messages = usrMngSvc.GetLastMessages(nonexisingUser, 10);
+
+            if (messages.Any(x => x.User.Username != nonexisingUser))
+            {
+                Assert.Fail("There are messages from another userr.");
+            }
+        } 
+        #endregion
+
+        #region Notifications
+        [TestMethod]
+        [TestCategory("Notifications")]
+        public void GetLastNotifications()
+        {
+            var nonexisingUser = Guid.NewGuid().ToString().Substring(0, 10) + "@email.com";
+            var error = "";
+            var sucess = usrMngSvc.RegisterUser(name, nonexisingUser, goodPassword, goodPassword, out error);
+
+            Assert.IsTrue(sucess, error);
+
+            var messages = usrMngSvc.GetLastNotifications(nonexisingUser, 10);
+
+            if (messages.Any(x => x.User.Username != nonexisingUser))
+            {
+                Assert.Fail("There are Notifications from another userr.");
+            }
+        } 
+        #endregion
+
+        #region Tasks
+        [TestMethod]
+        [TestCategory("Tasks")]
+        public void GetLastTasks()
+        {
+            var nonexisingUser = Guid.NewGuid().ToString().Substring(0, 10) + "@email.com";
+            var error = "";
+            var sucess = usrMngSvc.RegisterUser(name, nonexisingUser, goodPassword, goodPassword, out error);
+
+            Assert.IsTrue(sucess, error);
+
+            var messages = usrMngSvc.GetLastTasks(nonexisingUser, 10);
+
+            if (messages.Any(x => x.User.Username != nonexisingUser))
+            {
+                Assert.Fail("There are Tasks from another userr.");
+            }
+        } 
         #endregion
     }
 }

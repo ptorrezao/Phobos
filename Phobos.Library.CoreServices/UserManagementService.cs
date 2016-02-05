@@ -9,6 +9,7 @@ using Ninject;
 using Phobos.Library.Interfaces.Services;
 using System.Text.RegularExpressions;
 using System.Security.Cryptography;
+using Phobos.Library.Utils;
 
 namespace Phobos.Library.CoreServices
 {
@@ -103,7 +104,7 @@ namespace Phobos.Library.CoreServices
                 if (!selectedUser.IsLocked)
                 {
                     //// Check if pwd is correct
-                    if (GetSaltedHashPassword(password, salt.Value) == selectedUser.Password)
+                    if (password.GetAsHash(salt.Value) == selectedUser.Password)
                     {
                         //// Update the user info to have last login.
                         if (this.Repository.UpdateLastLoginDate(userName, DateTime.Now))
@@ -171,20 +172,6 @@ namespace Phobos.Library.CoreServices
             }
         }
 
-        private string GetSaltedHashPassword(string password, string saltString)
-        {
-            MD5 md5 = System.Security.Cryptography.MD5.Create();
-            byte[] inputBytes = System.Text.Encoding.ASCII.GetBytes(password + saltString);
-            byte[] hashBytes = md5.ComputeHash(inputBytes);
-
-            StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < hashBytes.Length; i++)
-            {
-                sb.Append(hashBytes[i].ToString("X2").ToLower());
-            }
-
-            return sb.ToString();
-        }
 
         bool CheckSecurityMesurements(string userName, string password, string confirmPassword, out string msg)
         {
@@ -261,6 +248,8 @@ namespace Phobos.Library.CoreServices
 
         public bool RegisterUser(string name, string userName, string password, string confirmPassword, out string error)
         {
+            Configuration salt = CoreRepository.GetConfiguration("PasswordSalt");
+
             UserAccount selectedUser = null;
             error = "";
             if (password == confirmPassword)
@@ -269,7 +258,8 @@ namespace Phobos.Library.CoreServices
                 {
                     if (this.CheckSecurityMesurements(userName, password, confirmPassword, out error))
                     {
-                        selectedUser = this.Repository.CreateUser(name, userName, password);
+
+                        selectedUser = this.Repository.CreateUser(name, userName, password.GetAsHash(salt.Value));
                     }
                 }
                 return selectedUser != null;

@@ -12,11 +12,14 @@ namespace Phobos.ActionFilter
     public class ActionAutorizeAttribute : ActionFilterAttribute
     {
         private IUserManagementService userManagementService;
+        private bool AllowEvenIfNotCreated;
 
-        public ActionAutorizeAttribute() : this(MvcApplication.GetKernel().Get<IUserManagementService>()) { }
+        public ActionAutorizeAttribute() : this(false, MvcApplication.GetKernel().Get<IUserManagementService>()) { }
+        public ActionAutorizeAttribute(bool allowEvenIfNotCreated) : this(allowEvenIfNotCreated, MvcApplication.GetKernel().Get<IUserManagementService>()) { }
 
-        public ActionAutorizeAttribute(IUserManagementService userMngSvc)
+        public ActionAutorizeAttribute(bool allowEvenIfNotCreated, IUserManagementService userMngSvc)
         {
+            this.AllowEvenIfNotCreated = allowEvenIfNotCreated;
             this.userManagementService = userMngSvc;
         }
 
@@ -25,7 +28,7 @@ namespace Phobos.ActionFilter
             string currentControllerName = (string)filterContext.RouteData.Values["controller"];
             string currentActionName = (string)filterContext.RouteData.Values["action"];
 
-            if (!userManagementService.CheckIfActionIsAllowed(currentControllerName, currentActionName, SessionManager.UserAccount.Username))
+            if (!userManagementService.CheckIfActionIsAllowed(currentControllerName, currentActionName, SessionManager.UserAccount.Username)  && !this.AllowEvenIfNotCreated)
             {
                 filterContext.Result = new RedirectToRouteResult(new RouteValueDictionary(new { controller = "Account", action = "Login" }));
                 base.OnActionExecuting(filterContext);

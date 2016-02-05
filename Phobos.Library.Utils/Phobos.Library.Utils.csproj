@@ -1,14 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{800F9CCC-16F2-4D12-AEDB-3F6362399ED2}</ProjectGuid>
+    <ProjectGuid>{4F4C6207-23AD-4170-98B6-2D217710920E}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Phobos.Library.CoreServices</RootNamespace>
-    <AssemblyName>Phobos.Library.CoreServices</AssemblyName>
+    <RootNamespace>Phobos.Library.Utils</RootNamespace>
+    <AssemblyName>Phobos.Library.Utils</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -30,44 +30,18 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Ninject, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
-      <HintPath>..\packages\Ninject.3.2.2.0\lib\net45-full\Ninject.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MessageCoreService.cs" />
-    <Compile Include="AuditTrailCoreService.cs" />
-    <Compile Include="NavigationCoreService.cs" />
-    <Compile Include="UserManagementService.cs" />
+    <Compile Include="Extensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Phobos.Library.Interfaces\Phobos.Library.Interfaces.csproj">
-      <Project>{d504107e-d9b7-442f-81a1-f4a60616b65a}</Project>
-      <Name>Phobos.Library.Interfaces</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Phobos.Library.Models\Phobos.Library.Models.csproj">
-      <Project>{b61b11e0-0298-48d7-b0fa-7d44b25562d3}</Project>
-      <Name>Phobos.Library.Models</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Phobos.Library.Utils\Phobos.Library.Utils.csproj">
-      <Project>{4f4c6207-23ad-4170-98b6-2d217710920e}</Project>
-      <Name>Phobos.Library.Utils</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

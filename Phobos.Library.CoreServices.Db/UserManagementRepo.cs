@@ -59,7 +59,7 @@ namespace Phobos.Library.CoreServices.Db
                 var newUser = new UserAccount();
                 newUser.FirstName = name;
                 newUser.Username = userName;
-                newUser.Password = GetSaltedHashPassword(password, salt.Value);
+                newUser.Password = password;
                 newUser.MemberSinceDate = DateTime.Now;
                 context.Users.Add(newUser);
                 context.SaveChanges();

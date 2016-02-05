@@ -122,6 +122,10 @@
       <Project>{b61b11e0-0298-48d7-b0fa-7d44b25562d3}</Project>
       <Name>Phobos.Library.Models</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Phobos.Library.Utils\Phobos.Library.Utils.csproj">
+      <Project>{4f4c6207-23ad-4170-98b6-2d217710920e}</Project>
+      <Name>Phobos.Library.Utils</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Phobos\Phobos.csproj">
       <Project>{8ec49575-13f9-488f-89bc-ff81ccc3fc15}</Project>
       <Name>Phobos</Name>

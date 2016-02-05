@@ -7,6 +7,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using Phobos.Library.Utils;
 
 namespace Phobos.UnitTest.Repos
 {
@@ -68,9 +69,6 @@ namespace Phobos.UnitTest.Repos
         {
             if (!list.Any(x => x.Username == userName))
             {
-                Configuration salt = CoreRepository.GetConfiguration("PasswordSalt");
-                password = GetSaltedHashPassword(password, salt.Value);
-
                 list.Add(new UserAccount() { Username = userName, FirstName = name, Password = password });
                 return list.First(x => x.Username == userName);
             }
@@ -104,20 +102,6 @@ namespace Phobos.UnitTest.Repos
         public List<UserTask> GetLastTasksForUser(string userName, int qtd)
         {
             throw new NotImplementedException();
-        }
-        private string GetSaltedHashPassword(string password, string saltString)
-        {
-            MD5 md5 = System.Security.Cryptography.MD5.Create();
-            byte[] inputBytes = System.Text.Encoding.ASCII.GetBytes(password + saltString);
-            byte[] hashBytes = md5.ComputeHash(inputBytes);
-
-            StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < hashBytes.Length; i++)
-            {
-                sb.Append(hashBytes[i].ToString("X2").ToLower());
-            }
-
-            return sb.ToString();
         }
     }
 }
