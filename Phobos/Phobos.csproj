@@ -144,6 +144,7 @@
     <Compile Include="ActionFilter\SideTabFilterAttribute.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
+    <Compile Include="App_Start\HtmlHelpers.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Services\AuthenticationService.cs" />
     <Compile Include="ActionFilter\PhobosInitializationAttribute.cs" />

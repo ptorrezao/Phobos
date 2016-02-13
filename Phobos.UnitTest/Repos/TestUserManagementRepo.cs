@@ -28,7 +28,6 @@ namespace Phobos.UnitTest.Repos
             return list.FirstOrDefault(x => x.Username == userName);
         }
 
-
         public bool LockUserAccount(string userName)
         {
             var usr = this.GetUser(userName);

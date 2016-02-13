@@ -54,6 +54,7 @@ namespace Phobos
                 filterContext.Controller.ViewBag.Version = Assembly.GetAssembly(typeof(MvcApplication)).GetName().Version.ToString();
                 filterContext.Controller.ViewBag.CompanyUrl = helper.Action("", "", new { });
                 filterContext.Controller.ViewBag.CompanyName = "PTZ";
+                filterContext.Controller.ViewBag.ShortPageTitle = "";
                 filterContext.Controller.ViewBag.PageTitle = "Phobos";
             }
         }
