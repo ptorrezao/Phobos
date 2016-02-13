@@ -239,6 +239,7 @@ namespace Phobos.UnitTest
         #region Messages
         [TestMethod]
         [TestCategory("Messages")]
+        [ExpectedException(typeof(NotImplementedException))]
         public void GetLastMessages()
         {
             var nonexisingUser = Guid.NewGuid().ToString().Substring(0, 10) + "@email.com";
@@ -259,6 +260,7 @@ namespace Phobos.UnitTest
         #region Notifications
         [TestMethod]
         [TestCategory("Notifications")]
+        [ExpectedException(typeof(NotImplementedException))]
         public void GetLastNotifications()
         {
             var nonexisingUser = Guid.NewGuid().ToString().Substring(0, 10) + "@email.com";
@@ -279,6 +281,7 @@ namespace Phobos.UnitTest
         #region Tasks
         [TestMethod]
         [TestCategory("Tasks")]
+        [ExpectedException(typeof(NotImplementedException))]
         public void GetLastTasks()
         {
             var nonexisingUser = Guid.NewGuid().ToString().Substring(0, 10) + "@email.com";

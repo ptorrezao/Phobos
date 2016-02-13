@@ -1,0 +1,37 @@
+﻿@using Phobos.Helpers
+@model IEnumerable<MessageMailBoxFolderViewModel>
+@{
+    var classClosed = (Model == null || Model.Count() == 0) ? "collapsed-box" : "";
+}
+<div class="box box-solid">
+    <div class="box-header with-border">
+        <h3 class="box-title">Folders</h3>
+        <div class="box-tools">
+            <button class="btn btn-box-tool" data-widget="collapse">
+                @if (string.IsNullOrEmpty(classClosed))
+                {
+                    @Html.FontAwesome("minus")
+                }
+            </button>
+        </div>
+    </div>
+    <div class="box-body no-padding @classClosed">
+        <ul class="nav nav-pills nav-stacked">
+            @foreach (var item in Model)
+            {
+                var selectedCssClass = item.Selected ? "active" : "";
+                <text>
+                    <li class="@selectedCssClass">
+                        <a href="@Url.Action("Index", new { Id = item.FolderId })">
+                            @Html.FontAwesome(item.Icon, item.IconColor) &nbsp; @item.Name
+                            @if (item.QtdNewMessages > 0)
+                            {
+                                <span class="label label-primary pull-right">@item.QtdNewMessages</span>
+                            }
+                        </a>
+                    </li>
+                </text>
+            }
+        </ul>
+    </div>
+</div>

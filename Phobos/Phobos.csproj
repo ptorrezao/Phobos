@@ -146,6 +146,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\HtmlHelpers.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\MessageController.cs" />
     <Compile Include="Services\AuthenticationService.cs" />
     <Compile Include="ActionFilter\PhobosInitializationAttribute.cs" />
     <Compile Include="App_Utils\CustomViewEngine.cs" />
@@ -458,6 +459,10 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\AdminLTE\Account\EditProfile.cshtml" />
     <Content Include="Views\AdminLTE\Account\_ProfileDetails.cshtml" />
+    <Content Include="Views\AdminLTE\Message\Index.cshtml" />
+    <Content Include="Views\AdminLTE\Message\_FolderBox.cshtml" />
+    <Content Include="Views\AdminLTE\Message\_TagsBox.cshtml" />
+    <Content Include="Views\AdminLTE\Message\_FolderContentItemList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

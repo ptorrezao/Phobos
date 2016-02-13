@@ -1,0 +1,27 @@
+﻿@model MessageMailBoxViewModel
+
+@section _ContentHeader {
+    <section class="content-header">
+        <h1>
+            Mailbox
+            @if (Model.CurrentFolder.QtdNewMessages > 0)
+            {
+                <small>@Model.CurrentFolder.QtdNewMessages new messages</small>
+            }
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="@Url.Content("~")"><i class="fa fa-home"></i> Home</a></li>
+            <li class="active">Mailbox</li>
+        </ol>
+    </section>
+}
+<div class="row">
+    <div class="col-md-3">
+        <a href="@Url.Action("Compose")" class="btn btn-primary btn-block margin-bottom">Compose</a>
+        @Html.Partial("_FolderBox", Model.Folders)
+        @Html.Partial("_TagsBox", Model.Tags)
+    </div>
+    <div class="col-md-9">
+        @Html.Partial("_FolderContentItemList", Model.CurrentFolder)
+    </div>
+</div>

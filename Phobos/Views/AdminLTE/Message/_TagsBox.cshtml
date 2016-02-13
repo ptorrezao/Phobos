@@ -1,0 +1,32 @@
+﻿@using Phobos.Helpers
+@model IEnumerable<MessageMailBoxTagsViewModel>
+@{
+    var classClosed = (Model == null || Model.Count() == 0) ? "collapsed-box" : "";
+}
+<div class="box box-solid">
+    <div class="box-header with-border">
+        <h3 class="box-title">Labels</h3>
+        <div class="box-tools">
+            <button class="btn btn-box-tool" data-widget="collapse">
+                @if (string.IsNullOrEmpty(classClosed))
+                {
+                    @Html.FontAwesome("minus")
+                }
+            </button>
+        </div>
+    </div>
+    <div class="box-body no-padding @classClosed">
+        <ul class="nav nav-pills nav-stacked">
+            @foreach (var item in Model)
+            {
+                <text>
+                    <li>
+                        <a href="#">
+                            @Html.FontAwesome(item.Icon, item.IconColor) @item.Title
+                        </a>
+                    </li>
+                </text>
+            }
+        </ul>
+    </div><!-- /.box-body -->
+</div><!-- /.box -->
