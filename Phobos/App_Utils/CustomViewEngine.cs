@@ -64,6 +64,7 @@ namespace Phobos
                     viewLocations.Add("~/Views/AdminLTE/Shared/{0}.cshtml");
                     break;
             }
+            viewLocations.Add("~/Views/Shared/{0}.cshtml");
 
             return viewLocations.ToArray();
         }

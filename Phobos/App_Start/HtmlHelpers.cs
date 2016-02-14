@@ -21,7 +21,14 @@ namespace Phobos.Helpers
             }
             return MvcHtmlString.Create(builder.ToString());
         }
+        public static MvcHtmlString FontAwesome(this HtmlHelper htmlHelper, string link, string value, TextColor? color = null)
+        {
+            var builder = new TagBuilder("a");
+            builder.InnerHtml = HtmlHelpers.FontAwesome(htmlHelper, value, color).ToString();
+            builder.Attributes["href"] = link;
 
+            return MvcHtmlString.Create(builder.ToString());
+        }
         public static MvcHtmlString FirstWordInBold(this HtmlHelper htmlHelper, string value)
         {
             var finalValue = value;

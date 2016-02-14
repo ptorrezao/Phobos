@@ -37,6 +37,8 @@ namespace Phobos
             bundles.Add(new StyleBundle("~/Content/bootstrap").Include(
                       "~/Content/css/bootstrap.css"));
 
+            bundles.Add(new StyleBundle("~/Content/MvcGrid").Include(
+          "~/Content/MvcGrid/mvc-grid.css"));
 
             bundles.Add(new StyleBundle("~/Content/font-awesome", "https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css").Include(
               "~/Content/themes/font-awesome.css"));
@@ -62,6 +64,9 @@ namespace Phobos
 
             bundles.Add(new ScriptBundle("~/bundles/timeago").Include(
                     "~/Content/plugins/timeago/jquery.timeago.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/MvcGrid").Include(
+                 "~/Scripts/MvcGrid/mvc-grid.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/input-mask").Include(
               "~/Content/plugins/input-mask/jquery.inputmask.js",

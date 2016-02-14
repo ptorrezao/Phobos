@@ -1,78 +1,55 @@
 ﻿@using Phobos.Helpers
+
 @model MessageMailBoxFolderViewModel
 <div class="box box-primary">
     <div class="box-header with-border">
         <h3 class="box-title">@Model.Name</h3>
         <div class="box-tools pull-right">
             <div class="has-feedback">
-                <input type="text" class="form-control input-sm" placeholder="Search Mail">
+                <input type="text" class="form-control input-sm grid-search" placeholder="Search Mail">
                 <span class="glyphicon glyphicon-search form-control-feedback"></span>
             </div>
         </div>
     </div>
     <div class="box-body no-padding">
-        <div class="mailbox-controls">
-            <button class="btn btn-default btn-sm checkbox-toggle"><i class="fa fa-square-o"></i></button>
-            <div class="btn-group">
-                <button class="btn btn-default btn-sm"><i class="fa fa-trash-o"></i></button>
-                <button class="btn btn-default btn-sm"><i class="fa fa-reply"></i></button>
-                <button class="btn btn-default btn-sm"><i class="fa fa-share"></i></button>
-            </div>
-            <button class="btn btn-default btn-sm"><i class="fa fa-refresh"></i></button>
-            <div class="pull-right">
-                1-50/ @Model.Messages.Count()
-                <div class="btn-group">
-                    <button class="btn btn-default btn-sm"><i class="fa fa-chevron-left"></i></button>
-                    <button class="btn btn-default btn-sm"><i class="fa fa-chevron-right"></i></button>
-                </div>
-            </div>
-        </div>
-        <div class="table-responsive mailbox-messages">
-            <table class="table table-hover table-striped">
-                <tbody>
-                    @foreach (var item in Model.Messages)
-                    {
-                        <tr>
-                            <td><input type="checkbox"></td>
-                            <td class="mailbox-star">
-                                <a href="#">
-                                    @Html.FontAwesome(item.IsFavorite ? "star" : "star-o", TextColor.Yellow)
-                                </a>
-                            </td>
-                            <td class="mailbox-name">
-                                <a href="@Url.Action("ReadMessage", new {id =item.MessageId})">@item.Sender</a>
-                            </td>
-                            <td class="mailbox-subject">
-                                <b>@item.Title</b> - @item.Intro
-                            </td>
-                            <td class="mailbox-attachment">
-                                @if (item.HasAttachment)
-                                {
-                                    @Html.FontAwesome("paperclip")
-                                }
-                            <td class="mailbox-date">@Html.TimeAgo(item.Date)</td>
-                            </tr>
-                    }
-                </tbody>
-            </table>
-        </div>
-    </div>
-    <div class="box-footer no-padding">
-        <div class="mailbox-controls">
-            <button class="btn btn-default btn-sm checkbox-toggle"><i class="fa fa-square-o"></i></button>
-            <div class="btn-group">
-                <button class="btn btn-default btn-sm"><i class="fa fa-trash-o"></i></button>
-                <button class="btn btn-default btn-sm"><i class="fa fa-reply"></i></button>
-                <button class="btn btn-default btn-sm"><i class="fa fa-share"></i></button>
-            </div>
-            <button class="btn btn-default btn-sm"><i class="fa fa-refresh"></i></button>
-            <div class="pull-right">
-                1-50/@Model.Messages.Count()
-                <div class="btn-group">
-                    <button class="btn btn-default btn-sm"><i class="fa fa-chevron-left"></i></button>
-                    <button class="btn btn-default btn-sm"><i class="fa fa-chevron-right"></i></button>
-                </div>
-            </div>
-        </div>
+   
+    @(Html
+        .Grid(Model.Messages)
+        .Build(columns =>
+        {
+            columns.Add(model => model)
+                    .RenderedAs(model => "<input type='checkbox'>")
+                    .Encoded(false);
+            columns.Add(model => model.IsFavorite)
+                    .Encoded(false)
+                    .Filterable(false)
+                    .RenderedAs(model => Html.FontAwesome("#", model.IsFavorite ? "star" : "star-o", TextColor.Yellow));
+            columns.Add(model => model.Sender)
+                    .Encoded(false)
+                    .Filterable(false)
+                    .RenderedAs(model => "<a href=" + Url.Action("ReadMessage", new { id = model.MessageId }) + ">" + model.Sender + "</a>");
+            columns.Add(model => model.Title)
+                    .Encoded(false)
+                    .RenderedAs(model => string.Format("<b>{0}</b> - {1}", model.Title, model.Intro));
+            columns.Add(model => model.HasAttachment)
+                    .Encoded(false)
+                    .Filterable(false)
+                    .RenderedAs(model => model.HasAttachment ? Html.FontAwesome("paperclip") : MvcHtmlString.Create(""));
+            columns.Add(model => model.Date)
+                  .Encoded(false)
+                  .Filterable(false)
+                  .RenderedAs(model => Html.TimeAgo(model.Date));
+        })
+        .Filterable(false)
+        .Sortable(false)
+                .Css("hideTh box-footer no-padding")
+        .Pageable(pager =>
+        {
+            pager.PagesToDisplay = 0;
+            pager.InitialPage = 1;
+            pager.RowsPerPage =10;
+        })
+    )
+    
     </div>
 </div>

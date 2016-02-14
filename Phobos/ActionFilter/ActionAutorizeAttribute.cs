@@ -27,11 +27,18 @@ namespace Phobos.ActionFilter
         {
             string currentControllerName = (string)filterContext.RouteData.Values["controller"];
             string currentActionName = (string)filterContext.RouteData.Values["action"];
-
-            if (!userManagementService.CheckIfActionIsAllowed(currentControllerName, currentActionName, SessionManager.UserAccount.Username)  && !this.AllowEvenIfNotCreated)
+            if (SessionManager.UserAccount == null)
             {
                 filterContext.Result = new RedirectToRouteResult(new RouteValueDictionary(new { controller = "Account", action = "Login" }));
                 base.OnActionExecuting(filterContext);
+            }
+            else
+            {
+                if (!userManagementService.CheckIfActionIsAllowed(currentControllerName, currentActionName, SessionManager.UserAccount.Username) && !this.AllowEvenIfNotCreated)
+                {
+                    filterContext.Result = new RedirectToRouteResult(new RouteValueDictionary(new { controller = "Account", action = "Login" }));
+                    base.OnActionExecuting(filterContext);
+                }
             }
         }
     }
