@@ -145,6 +145,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ActionFilter\ActionAutorizeAttribute.cs" />
+    <Compile Include="ActionFilter\HttpActionParamAttribute.cs" />
     <Compile Include="ActionFilter\SideTabFilterAttribute.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />

@@ -51,5 +51,19 @@ namespace Phobos.Controllers
         {
             return View();
         }
+
+        [HttpParamAction]
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult Remove(string[] selectedIds)
+        {
+            return null;
+        }
+
+        [HttpParamAction]
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult Reply(string[] selectedIds)
+        {
+            return null
+        }
     }
 }

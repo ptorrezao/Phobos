@@ -1,6 +1,9 @@
 ﻿@using Phobos.Helpers
 
 @model MessageMailBoxFolderViewModel
+
+@Html.BeginForm("Action", "Message", FormMethod.Post)
+
 @Html.SetPartialHelper("ButtonsForPager", (Func<HelperResult>)(ButtonsForPager))
 <div class="box box-primary">
     <div class="box-header with-border">
@@ -19,8 +22,8 @@
         .Named("mailbox")
         .Build(columns =>
         {
-            columns.Add(model => model)
-                    .RenderedAs(model => "<input type='checkbox' id='" + Guid.NewGuid().ToString() + "'>")
+            columns.Add(model => model.MessageId)
+                    .RenderedAs(model => "<input name='selectedIds' type='checkbox' value='" + model.MessageId.ToString() + "'>")
                     .Encoded(false);
             columns.Add(model => model.IsFavorite)
                     .Encoded(false)
@@ -44,7 +47,7 @@
         })
         .Filterable(false)
         .Sortable(false)
-                        .Css("hideTh box-footer no-padding mailbox")
+        .Css("hideTh box-footer no-padding mailbox")
         .Pageable(pager =>
         {
             pager.PagesToDisplay = 0;
@@ -54,17 +57,17 @@
         )
     </div>
 </div>
-
+@{
+    Html.EndForm();
+}
 
 @helper ButtonsForPager()
 {
-    <button class="btn btn-default btn-sm checkbox-toggle masterCheckbox"><i class="fa fa-square-o"></i></button>
+    <a class="btn btn-default btn-sm checkbox-toggle masterCheckbox"><i class="fa fa-square-o"></i></a>
     <div class="btn-group">
-        <button class="btn btn-default btn-sm"><i class="fa fa-trash-o"></i></button>
-        <button class="btn btn-default btn-sm"><i class="fa fa-reply"></i></button>
-        <button class="btn btn-default btn-sm"><i class="fa fa-share"></i></button>
+        <button name="remove" type="submit" class="btn btn-default btn-sm"><i class="fa fa-trash-o"></i></button>
+        <button name="reply" type="submit" class="btn btn-default btn-sm"><i class="fa fa-reply"></i></button>
     </div>
-
 }
 
 <script>
