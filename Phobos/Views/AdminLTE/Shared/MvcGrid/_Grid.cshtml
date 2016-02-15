@@ -3,7 +3,11 @@
 @model IGrid
 
 <div class="mvc-grid" data-name="@Model.Name">
-    <table class="table mvc-grid-table @Model.CssClasses">
+    @if (Model.Rows.Count() > 0 && Model.Pager != null)
+    {
+        @Html.Partial(Model.Pager.PartialViewName, Model.Pager)
+    }
+     <table class="table mvc-grid-table @Model.CssClasses">
         <thead>
             <tr>
                 @foreach (IGridColumn column in Model.Columns)

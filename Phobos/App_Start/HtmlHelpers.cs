@@ -1,10 +1,13 @@
-﻿using Phobos.Library.Models.Enums;
+﻿using NonFactors.Mvc.Grid;
+using Phobos.Library.Models.Enums;
+using Phobos.Library.Models.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.WebPages;
 
 namespace Phobos.Helpers
 {
@@ -66,7 +69,6 @@ namespace Phobos.Helpers
 
             return MvcHtmlString.Create(finalValue);
         }
-
         public static MvcHtmlString TimeAgo(this HtmlHelper htmlHelper, DateTime date)
         {
             const int SECOND = 1;
@@ -119,6 +121,21 @@ namespace Phobos.Helpers
             }
 
             return MvcHtmlString.Create(value);
+        }
+        public static HelperResult RenderHelper(this ViewDataDictionary<IGridPager> viewDataDictionary, string helperName)
+        {
+            Func<HelperResult> helper = viewDataDictionary[helperName] as Func<HelperResult>;
+            if (helper != null)
+            {
+                return helper();
+            }
+
+            return null;
+        }
+        public static HelperResult SetPartialHelper(this ViewDataDictionary<MessageMailBoxFolderViewModel> viewDataDictionary, string helperName, Func<HelperResult> partial)
+        {
+            viewDataDictionary.Add(helperName, partial);
+            return null;
         }
     }
 }

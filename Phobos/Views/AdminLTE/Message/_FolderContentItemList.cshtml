@@ -1,6 +1,8 @@
 ﻿@using Phobos.Helpers
 
 @model MessageMailBoxFolderViewModel
+@ViewData.SetPartialHelper("ButtonsForPager", (Func<HelperResult>)(ButtonsForPager))
+
 <div class="box box-primary">
     <div class="box-header with-border">
         <h3 class="box-title">@Model.Name</h3>
@@ -11,8 +13,8 @@
             </div>
         </div>
     </div>
+    
     <div class="box-body no-padding">
-
         @(Html
         .Grid(Model.Messages)
         .Build(columns =>
@@ -50,6 +52,17 @@
             pager.RowsPerPage = 16;
         })
         )
-
     </div>
 </div>
+
+
+@helper ButtonsForPager()
+{
+    <button class="btn btn-default btn-sm checkbox-toggle"><i class="fa fa-square-o"></i></button>
+    <div class="btn-group">
+        <button class="btn btn-default btn-sm"><i class="fa fa-trash-o"></i></button>
+        <button class="btn btn-default btn-sm"><i class="fa fa-reply"></i></button>
+        <button class="btn btn-default btn-sm"><i class="fa fa-share"></i></button>
+    </div>
+    <button class="btn btn-default btn-sm"><i class="fa fa-refresh"></i></button>
+}

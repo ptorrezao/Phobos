@@ -1,11 +1,12 @@
 ﻿@using NonFactors.Mvc.Grid;
-
+@using Phobos.Helpers;
 @model IGridPager
 
 @if (Model.TotalPages > 1)
 {
     <div class="mvc-grid-pager  @Model.CssClasses">
         <div class="mailbox-controls">
+            @ViewData.RenderHelper("ButtonsForPager")
             <div data-page="@(Model.CurrentPage)" class="btn btn-default btn-sm"><i class="fa fa-refresh"></i></div>
             <div class="pull-right">
                 @Model.CurrentPage/@Model.TotalPages
