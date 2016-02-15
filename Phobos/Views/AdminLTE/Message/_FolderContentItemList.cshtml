@@ -2,7 +2,7 @@
 
 @model MessageMailBoxFolderViewModel
 
-@Html.BeginForm("Action", "Message", FormMethod.Post)
+@{Html.BeginForm("Action", "Message", FormMethod.Post);}
 
 @Html.SetPartialHelper("ButtonsForPager", (Func<HelperResult>)(ButtonsForPager))
 <div class="box box-primary">
@@ -57,6 +57,24 @@
         )
     </div>
 </div>
+<div class="modal modal-primary fade" id="modalDelete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Delete Messages</h4>
+            </div>
+            <div class="modal-body">
+                Do you realy want to delete the selected messages?
+            </div>
+            <div class="modal-footer">
+                <button type="button" onclick="return false;" class="btn btn-outline pull-left" data-dismiss="modal">Close</button>
+                <button name="remove" type="submit" class="btn btn-outline">Delete</button>
+
+            </div>
+        </div>
+    </div>
+</div>
 @{
     Html.EndForm();
 }
@@ -65,7 +83,7 @@
 {
     <a class="btn btn-default btn-sm checkbox-toggle masterCheckbox"><i class="fa fa-square-o"></i></a>
     <div class="btn-group">
-        <button name="remove" type="submit" class="btn btn-default btn-sm"><i class="fa fa-trash-o"></i></button>
+        <button onclick="return false;" data-toggle="modal" data-target="#modalDelete" class="btn btn-default btn-sm"><i class="fa fa-trash-o"></i></button>
         <button name="reply" type="submit" class="btn btn-default btn-sm"><i class="fa fa-reply"></i></button>
     </div>
 }
