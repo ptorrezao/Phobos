@@ -71,6 +71,7 @@ namespace Phobos.Helpers
         }
         public static MvcHtmlString TimeAgo(this HtmlHelper htmlHelper, DateTime date)
         {
+            
             const int SECOND = 1;
             const int MINUTE = 60 * SECOND;
             const int HOUR = 60 * MINUTE;
@@ -122,19 +123,19 @@ namespace Phobos.Helpers
 
             return MvcHtmlString.Create(value);
         }
-        public static HelperResult RenderHelper(this ViewDataDictionary<IGridPager> viewDataDictionary, string helperName)
+        public static HelperResult SetPartialHelper(this HtmlHelper htmlHelper, string helperName, Func<HelperResult> partial)
         {
-            Func<HelperResult> helper = viewDataDictionary[helperName] as Func<HelperResult>;
+            htmlHelper.ViewData.Add(helperName, partial);
+            return null;
+        }
+        public static HelperResult RenderHelper(this HtmlHelper htmlHelper, string helperName)
+        {
+            Func<HelperResult> helper = htmlHelper.ViewData[helperName] as Func<HelperResult>;
             if (helper != null)
             {
                 return helper();
             }
 
-            return null;
-        }
-        public static HelperResult SetPartialHelper(this ViewDataDictionary<MessageMailBoxFolderViewModel> viewDataDictionary, string helperName, Func<HelperResult> partial)
-        {
-            viewDataDictionary.Add(helperName, partial);
             return null;
         }
     }

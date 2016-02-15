@@ -6,7 +6,7 @@
 {
     <div class="mvc-grid-pager  @Model.CssClasses">
         <div class="mailbox-controls">
-            @ViewData.RenderHelper("ButtonsForPager")
+            @Html.RenderHelper("ButtonsForPager")
             <div data-page="@(Model.CurrentPage)" class="btn btn-default btn-sm"><i class="fa fa-refresh"></i></div>
             <div class="pull-right">
                 @Model.CurrentPage/@Model.TotalPages
