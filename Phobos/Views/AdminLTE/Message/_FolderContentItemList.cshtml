@@ -12,14 +12,15 @@
             </div>
         </div>
     </div>
-    
+
     <div class="box-body no-padding">
         @(Html
         .Grid(Model.Messages)
+        .Named("mailbox")
         .Build(columns =>
         {
             columns.Add(model => model)
-                    .RenderedAs(model => "<input type='checkbox'>")
+                    .RenderedAs(model => "<input type='checkbox' id='" + Guid.NewGuid().ToString() + "'>")
                     .Encoded(false);
             columns.Add(model => model.IsFavorite)
                     .Encoded(false)
@@ -43,7 +44,7 @@
         })
         .Filterable(false)
         .Sortable(false)
-                .Css("hideTh box-footer no-padding")
+                        .Css("hideTh box-footer no-padding mailbox")
         .Pageable(pager =>
         {
             pager.PagesToDisplay = 0;
@@ -57,11 +58,27 @@
 
 @helper ButtonsForPager()
 {
-    <button class="btn btn-default btn-sm checkbox-toggle"><i class="fa fa-square-o"></i></button>
+    <button class="btn btn-default btn-sm checkbox-toggle masterCheckbox"><i class="fa fa-square-o"></i></button>
     <div class="btn-group">
         <button class="btn btn-default btn-sm"><i class="fa fa-trash-o"></i></button>
         <button class="btn btn-default btn-sm"><i class="fa fa-reply"></i></button>
         <button class="btn btn-default btn-sm"><i class="fa fa-share"></i></button>
     </div>
-    <button class="btn btn-default btn-sm"><i class="fa fa-refresh"></i></button>
+
 }
+
+<script>
+    $(document).ready(function () {
+        $(".masterCheckbox").click(function () {
+            $(".masterCheckbox").children("i").toggleClass("fa-square-o");
+            $(".masterCheckbox").children("i").toggleClass("fa-check-square-o");
+            $(".masterCheckbox").toggleClass("checked");
+
+            if ($(this).hasClass("checked")) {
+                $('.mailbox').find('input[type=checkbox]').prop('checked', true);
+            } else {
+                $('.mailbox').find('input[type=checkbox]').prop('checked', false);
+            }
+        });
+    });
+</script>

@@ -16,6 +16,7 @@
         @Scripts.Render("~/Content/respond")
         @Scripts.Render("~/Content/html5shiv")
     <![endif]-->
+    @Scripts.Render("~/bundles/jquery")
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
     @StackExchange.Profiling.MiniProfiler.RenderIncludes()
@@ -34,7 +35,6 @@
         @Html.Partial("_ControlSidebar")
         <div class="control-sidebar-bg"></div>
     </div>
-    @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @Scripts.Render("~/bundles/timeago")
     @Scripts.Render("~/bundles/datepicker")
