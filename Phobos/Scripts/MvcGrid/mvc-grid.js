@@ -55,7 +55,7 @@ var MvcGrid = (function () {
         for (var ind = 0; ind < pages.length; ind++) {
             this.applyPaging($(pages[ind]));
         }
-        var pages = grid.find('.mvc-grid-pager span');
+        pages = grid.find('.mvc-grid-pager span');
         for (var ind = 0; ind < pages.length; ind++) {
             this.applyPaging($(pages[ind]));
         }

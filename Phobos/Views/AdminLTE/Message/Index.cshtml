@@ -22,6 +22,6 @@
         @Html.Partial("_TagsBox", Model.Tags)
     </div>
     <div class="col-md-9">
-        @Html.AjaxGrid(Url.Action("IndexGrid"))
+        @Html.Partial("_FolderContentItemList", Model.CurrentFolder)
     </div>
 </div>

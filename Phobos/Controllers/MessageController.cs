@@ -28,7 +28,7 @@ namespace Phobos.Controllers
                     Messages = new List<MessageMailBoxItemViewModel>()
                 }
             };
-            for (int i = 1; i < 15; i++)
+            for (int i = 1; i < 50; i++)
             {
                 model.CurrentFolder.Messages.Add(new MessageMailBoxItemViewModel()
                 {
@@ -47,43 +47,9 @@ namespace Phobos.Controllers
             return View(model);
         }
 
-        [HttpGet]
-        public ActionResult IndexGrid(String search)
-        {
-            var model = new MessageMailBoxViewModel()
-            {
-                CurrentFolder = new MessageMailBoxFolderViewModel()
-                {
-                    Name = "Inbox",
-                    Icon = "Home",
-                    QtdNewMessages = 0,
-                    Selected = true,
-                    FolderId = 1,
-                    IconColor = TextColor.Black,
-                    Messages = new List<MessageMailBoxItemViewModel>()
-                }
-            };
-            for (int i = 1; i < 15; i++)
-            {
-                model.CurrentFolder.Messages.Add(new MessageMailBoxItemViewModel()
-                {
-                    Date = DateTime.Now.AddHours(-i),
-                    HasAttachment = false,
-                    Intro = "Trying to find a solution to this problem...",
-                    IsFavorite = i % 2 == 0,
-                    MessageId = i,
-                    Sender = "Alexander Pierce",
-                    Title = "AdminLTE 2.0 Issue "
-                });
-
-            }
-
-            return PartialView("_FolderContentItemList", model.CurrentFolder);
-        }
         public ActionResult Compose()
         {
             return View();
         }
-
     }
 }

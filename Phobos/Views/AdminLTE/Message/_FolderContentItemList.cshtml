@@ -12,8 +12,8 @@
         </div>
     </div>
     <div class="box-body no-padding">
-   
-    @(Html
+
+        @(Html
         .Grid(Model.Messages)
         .Build(columns =>
         {
@@ -47,9 +47,9 @@
         {
             pager.PagesToDisplay = 0;
             pager.InitialPage = 1;
-            pager.RowsPerPage =10;
+            pager.RowsPerPage = 16;
         })
-    )
-    
+        )
+
     </div>
 </div>

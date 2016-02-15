@@ -24,9 +24,9 @@ namespace Phobos
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
                       "~/Scripts/bootstrap.js"));
             bundles.Add(new ScriptBundle("~/bundles/AdminLTE").Include(
+               "~/Content/themes/AdminLTE/js/phobos.js",
                "~/Content/themes/AdminLTE/js/app.js",
-                "~/Content/themes/AdminLTE/js/phobos.js",
-                "~/Content/plugins/ohSnap/ohsnap.js"));
+               "~/Content/plugins/ohSnap/ohsnap.js"));
             
 
             bundles.Add(new ScriptBundle("~/bundles/respond", "https://oss.maxcdn.com/respond/1.4.2/respond.min.js").Include(
