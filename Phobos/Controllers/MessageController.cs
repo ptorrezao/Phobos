@@ -43,6 +43,24 @@ namespace Phobos.Controllers
 
             }
             model.Folders.Add(model.CurrentFolder);
+            model.Folders.Add(new MessageMailBoxFolderViewModel()
+            {
+                Name = "ALD",
+                Icon = "Tags",
+                QtdNewMessages = 0,
+                Selected = false,
+                FolderId = 1,
+                IconColor = TextColor.Red,
+                Messages = new List<MessageMailBoxItemViewModel>()
+            });
+            foreach (var item in model.Folders)
+            {
+                model.CurrentFolder.Folders.Add(new MessageMailBoxFolderItemViewModel()
+                {
+                    FolderId = item.FolderId,
+                    Title = item.Name
+                });
+            }
 
             return View(model);
         }
@@ -50,6 +68,20 @@ namespace Phobos.Controllers
         public ActionResult Compose()
         {
             return View();
+        }
+
+        public ActionResult MarkAsFavorite(int Id, string returnUrl)
+        {
+            if (!Url.IsLocalUrl(returnUrl))
+            {
+
+            }
+
+            return this.Redirect(returnUrl);
+        }
+        public ActionResult ReadMessage(int Id)
+        {
+            return this.RedirectToAction("Index");
         }
 
         [HttpParamAction]
@@ -61,7 +93,7 @@ namespace Phobos.Controllers
 
         [HttpParamAction]
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult Reply(string[] selectedIds)
+        public ActionResult Move(MessageMailBoxFolderViewModel model, string[] selectedIds)
         {
             return null;
         }

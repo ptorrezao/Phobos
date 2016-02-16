@@ -1,4 +1,5 @@
 ﻿@using Phobos.Helpers
+@using Phobos.Library.Utils
 
 @model MessageMailBoxFolderViewModel
 
@@ -28,7 +29,7 @@
             columns.Add(model => model.IsFavorite)
                     .Encoded(false)
                     .Filterable(false)
-                    .RenderedAs(model => Html.FontAwesome("#", model.IsFavorite ? "star" : "star-o", TextColor.Yellow));
+                    .RenderedAs(model => Html.FontAwesome(Url.Action("MarkAsFavorite", "Message", new { Id = model.MessageId, returnUrl = Request.RawUrl }), model.IsFavorite ? "star" : "star-o", TextColor.Yellow));
             columns.Add(model => model.Sender)
                     .Encoded(false)
                     .Filterable(false)
@@ -75,6 +76,26 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="modalFolder" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Move Emails to Folder</h4>
+            </div>
+            <div class="modal-body">
+                <label>
+                    Which folder do you put the selected emails.
+                </label>
+                @Html.DropDownListFor(model => model.NewFolderIdForMessages, Model.Folders.AsSelectListItem(Model.FolderId), new { @class = "form-control" })
+            </div>
+            <div class="modal-footer">
+                <button type="button" onclick="return false;" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+                <button name="move" type="submit" class="btn btn-primary">Move</button>
+            </div>
+        </div>
+    </div>
+</div>
 @{
     Html.EndForm();
 }
@@ -84,7 +105,7 @@
     <a class="btn btn-default btn-sm checkbox-toggle masterCheckbox"><i class="fa fa-square-o"></i></a>
     <div class="btn-group">
         <button onclick="return false;" data-toggle="modal" data-target="#modalDelete" class="btn btn-default btn-sm"><i class="fa fa-trash-o"></i></button>
-        <button name="reply" type="submit" class="btn btn-default btn-sm"><i class="fa fa-reply"></i></button>
+        <button onclick="return false;" data-toggle="modal" data-target="#modalFolder" type="submit" class="btn btn-default btn-sm"><i class="fa fa-folder-open"></i></button>
     </div>
 }
 

@@ -19,7 +19,10 @@
     <div class="col-md-3">
         <a href="@Url.Action("Compose")" class="btn btn-primary btn-block margin-bottom">Compose</a>
         @Html.Partial("_FolderBox", Model.Folders)
-        @Html.Partial("_TagsBox", Model.Tags)
+        @* 
+            Tags is not in place for the moment
+            @Html.Partial("_TagsBox", Model.Tags)
+        *@
     </div>
     <div class="col-md-9">
         @Html.Partial("_FolderContentItemList", Model.CurrentFolder)
