@@ -11,8 +11,9 @@
         <h3 class="box-title">@Model.Name</h3>
         <div class="box-tools pull-right">
             <div class="has-feedback">
-                <input type="text" class="form-control input-sm grid-search" placeholder="Search Mail">
+                <input type="text" class="form-control input-sm grid-search" placeholder="Search Mail" name="search">
                 <span class="glyphicon glyphicon-search form-control-feedback"></span>
+                <button id="searchButton" name="search" type="submit" style="display:none;"></button>
             </div>
         </div>
     </div>
@@ -121,6 +122,9 @@
             } else {
                 $('.mailbox').find('input[type=checkbox]').prop('checked', false);
             }
+        });
+        $(".grid-search").blur(function () {
+            $("#searchButton").click();
         });
     });
 </script>

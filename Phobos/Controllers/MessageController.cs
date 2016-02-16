@@ -88,14 +88,22 @@ namespace Phobos.Controllers
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult Remove(string[] selectedIds)
         {
-            return null;
+            return this.RedirectToAction("Index");
         }
 
         [HttpParamAction]
         [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult Search(string search)
+        {
+            return this.RedirectToAction("Index");
+        }
+
+        
+        [HttpParamAction]
+        [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult Move(MessageMailBoxFolderViewModel model, string[] selectedIds)
         {
-            return null;
+            return this.RedirectToAction("Index");
         }
     }
 }
