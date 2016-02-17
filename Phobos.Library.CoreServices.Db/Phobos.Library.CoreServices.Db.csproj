@@ -55,6 +55,7 @@
   <ItemGroup>
     <Compile Include="CoreRepo.cs" />
     <Compile Include="DbContext\PhobosCoreContext.cs" />
+    <Compile Include="MessageRepo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UserManagementRepo.cs" />
   </ItemGroup>

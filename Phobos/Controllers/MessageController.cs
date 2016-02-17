@@ -1,4 +1,7 @@
-﻿using Phobos.ActionFilter;
+﻿using AutoMapper;
+using Phobos.ActionFilter;
+using Phobos.Library.Interfaces;
+using Phobos.Library.Interfaces.Services;
 using Phobos.Library.Models.Enums;
 using Phobos.Library.Models.ViewModels;
 using System;
@@ -6,6 +9,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using AutoMapper.QueryableExtensions;
+using Phobos.Library.Models;
+using Ninject;
 
 namespace Phobos.Controllers
 {
@@ -13,54 +19,36 @@ namespace Phobos.Controllers
     [PhobosInitialization]
     public class MessageController : Controller
     {
+        private IUserManagementService userManagementService;
+        private IMessageService messageService;
+        private IAuditTrailService auditTrailService;
+
+        public MessageController(
+            IMessageService messageService,
+            IUserManagementService userManagementService,
+            IAuditTrailService auditTrailService)
+        {
+            this.userManagementService = userManagementService;
+            this.messageService = messageService;
+            this.auditTrailService = auditTrailService;
+        }
+
         public ActionResult Index(int? id)
         {
+            Mapper.CreateMap<UserMessage, MessageMailBoxItemViewModel>()
+                .ForMember(dest => dest.Sender, opts => opts.MapFrom(src => src.Sender.FirstName))
+                .ForMember(dest => dest.Intro, opts => opts.MapFrom(src => src.Message)); 
+            Mapper.CreateMap<UserMessageFolder, MessageMailBoxFolderViewModel>();
+            Mapper.CreateMap<UserMessageFolder, MessageMailBoxFolderItemViewModel>();
+
+            var foldersForUser = messageService.GetAllFoldersForUser(SessionManager.CurrentUsername);
+            var currentFolder = messageService.GetFolder(SessionManager.CurrentUsername, id);
+
             var model = new MessageMailBoxViewModel()
             {
-                CurrentFolder = new MessageMailBoxFolderViewModel()
-                {
-                    Name = "Inbox",
-                    Icon = "Home",
-                    QtdNewMessages = 0,
-                    Selected = true,
-                    FolderId = id ?? 0,
-                    IconColor = TextColor.Black,
-                    Messages = new List<MessageMailBoxItemViewModel>()
-                }
+                CurrentFolder = Mapper.Map<UserMessageFolder, MessageMailBoxFolderViewModel>(currentFolder),
+                Folders = Mapper.Map<List<UserMessageFolder>, List<MessageMailBoxFolderViewModel>>(foldersForUser)
             };
-            for (int i = 1; i < 50; i++)
-            {
-                model.CurrentFolder.Messages.Add(new MessageMailBoxItemViewModel()
-                {
-                    Date = DateTime.Now.AddHours(-i),
-                    HasAttachment = false,
-                    Intro = "Trying to find a solution to this problem...",
-                    IsFavorite = i % 2 == 0,
-                    MessageId = i,
-                    Sender = "Alexander Pierce",
-                    Title = "AdminLTE 2.0 Issue "
-                });
-
-            }
-            model.Folders.Add(model.CurrentFolder);
-            model.Folders.Add(new MessageMailBoxFolderViewModel()
-            {
-                Name = "ALD",
-                Icon = "Tags",
-                QtdNewMessages = 0,
-                Selected = false,
-                FolderId = 1,
-                IconColor = TextColor.Red,
-                Messages = new List<MessageMailBoxItemViewModel>()
-            });
-            foreach (var item in model.Folders)
-            {
-                model.CurrentFolder.Folders.Add(new MessageMailBoxFolderItemViewModel()
-                {
-                    FolderId = item.FolderId,
-                    Title = item.Name
-                });
-            }
 
             return View(model);
         }
@@ -79,6 +67,7 @@ namespace Phobos.Controllers
 
             return this.Redirect(returnUrl);
         }
+        
         public ActionResult ReadMessage(int Id)
         {
             return this.RedirectToAction("Index");
@@ -98,7 +87,6 @@ namespace Phobos.Controllers
             return this.RedirectToAction("Index");
         }
 
-        
         [HttpParamAction]
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult Move(MessageMailBoxFolderViewModel model, string[] selectedIds)

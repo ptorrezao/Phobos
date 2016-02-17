@@ -18,7 +18,8 @@ namespace Phobos.Library.CoreServices.Db
         public DbSet<Configuration> Configurations { get; set; }
         public DbSet<ActionAuthorization> ActionAuthorizations { get; set; }
         public DbSet<UserAccount> Users { get; set; }
-        public DbSet<UserMessage> UserMessages { get;set; }
+        public DbSet<UserMessage> UserMessages { get; set; }
+        public DbSet<UserMessageFolder> UserMessageFolders{ get; set; }
         public DbSet<UserNotification> UserNotifications { get;set; }
         public DbSet<UserTask> UserTasks { get;set; }
     }

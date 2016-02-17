@@ -24,8 +24,8 @@ namespace Phobos.Library.Models.ViewModels
             return new UserMessageViewModel()
             {
                 Message = item.Message,
-                User = UserAccountViewModel.AsUserAccountViewModel(item.User),
-                SentDate = item.SentDate,
+                User = UserAccountViewModel.AsUserAccountViewModel(item.Receiver),
+                SentDate = item.SendDate,
                 Title = item.Title
             };
         }

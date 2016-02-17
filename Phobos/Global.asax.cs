@@ -64,12 +64,12 @@ namespace Phobos
                 kernel = new StandardKernel();
                 kernel.Bind<ICoreRepo>().To<CoreRepo>();
                 kernel.Bind<IUserManagementRepo>().To<UserManagementRepo>();
+                kernel.Bind<IMessageRepo>().To<MessageRepo>();
 
                 kernel.Bind<IUserManagementService>().To<UserManagementCoreService>();
                 kernel.Bind<IAuthenticationService>().To<AuthenticationService>();
                 kernel.Bind<INavigationService>().To<NavigationCoreService>();
                 kernel.Bind<IAuditTrailService>().To<AuditTrailCoreService>();
-
                 kernel.Bind<IMessageService>().To<MessageCoreService>();
             }
 

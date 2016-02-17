@@ -22,7 +22,7 @@
                                 </div>
                                 <h4>
                                     @message.Title
-
+                                    &nbsp;
                                     <small><i class="fa fa-clock-o"></i> <span class="timeago" title="@message.SentDate.ToString("yyyy-MM-ddTHH:mm:ssZ")"></span> </small>
                                 </h4>
                                 <p>@message.Message</p>
@@ -31,7 +31,7 @@
                     </li>
                 </ul>
             </li>
-            <li class="footer"><a href="#">See All Messages</a></li>
+            <li class="footer"><a href="@Url.Action("Index","Message")">See All Messages</a></li>
         </ul>
     }
     else

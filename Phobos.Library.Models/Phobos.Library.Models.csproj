@@ -46,6 +46,7 @@
     <Compile Include="Enums\UserStatusEnum.cs" />
     <Compile Include="Configuration.cs" />
     <Compile Include="Message.cs" />
+    <Compile Include="UserMessageFolder.cs" />
     <Compile Include="UserRole.cs" />
     <Compile Include="UserAccount.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

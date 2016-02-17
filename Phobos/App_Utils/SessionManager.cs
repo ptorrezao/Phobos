@@ -43,6 +43,12 @@ namespace Phobos
             }
         }
 
-
+        public static string CurrentUsername
+        {
+            get
+            {
+                return SessionManager.UserAccount.Username;
+            }
+        }
     }
 }

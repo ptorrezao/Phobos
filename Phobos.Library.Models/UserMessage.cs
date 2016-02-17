@@ -13,9 +13,13 @@ namespace Phobos.Library.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-        public string Message { get;  set; }
-        public DateTime SentDate { get;  set; }
-        public string Title { get;  set; }
-        public virtual UserAccount User { get; set; }
+        public string Message { get; set; }
+        public DateTime SendDate { get; set; }
+        public string Title { get; set; }
+        public bool HasAttachment { get; set; }
+        public bool IsFavorite { get; set; }
+        public virtual UserAccount Receiver { get; set; }
+        public virtual UserAccount Sender { get; set; }
+        public virtual UserMessageFolder Folder { get; set; }
     }
 }

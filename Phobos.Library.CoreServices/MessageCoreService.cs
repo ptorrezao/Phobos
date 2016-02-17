@@ -1,4 +1,8 @@
-﻿using Phobos.Library.Interfaces.Services;
+﻿using Ninject;
+using Phobos.Library.Interfaces.Repos;
+using Phobos.Library.Interfaces.Services;
+using Phobos.Library.Models;
+using Phobos.Library.Models.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,9 +13,29 @@ namespace Phobos.Library.CoreServices
 {
     public class MessageCoreService : IMessageService
     {
-        public bool SendMessage(string username, string msg)
+        [Inject]
+        public IMessageRepo Repository { get; set; }
+
+        public bool SendMessage(string username, string v)
         {
-            return true;
+            throw new NotImplementedException();
+        }
+
+        public List<UserMessage> GetLastMessages(string userName, int qtd, bool orderDesc)
+        {
+            return this.Repository.GetLastMessages(userName, qtd, orderDesc);
+        }
+
+        public List<UserMessageFolder> GetAllFoldersForUser(string userName)
+        {
+            return this.Repository.GetAllFolders(userName);
+        }
+
+        public UserMessageFolder GetFolder(string userName, int? id)
+        {
+            UserMessageFolder folder = this.Repository.GetFolder(userName,id ?? 0);
+            folder.Messages = this.Repository.GetMessages(userName, folder.Id);
+            return folder;
         }
     }
 }

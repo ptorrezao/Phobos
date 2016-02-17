@@ -172,7 +172,6 @@ namespace Phobos.Library.CoreServices
             }
         }
 
-
         bool CheckSecurityMesurements(string userName, string password, string confirmPassword, out string msg)
         {
             msg = "";

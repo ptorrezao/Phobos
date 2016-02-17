@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Phobos.Library.Models;
 using System.Security.Cryptography;
 using Ninject;
+using Phobos.Library.Interfaces.Services;
 
 namespace Phobos.Library.CoreServices.Db
 {
@@ -15,6 +16,9 @@ namespace Phobos.Library.CoreServices.Db
     {
         [Inject]
         public ICoreRepo CoreRepository { get; set; }
+
+        [Inject]
+        public IMessageService MsgService { get; set; }
 
         public bool AddFailedLoginAttempt(string userName)
         {
@@ -79,18 +83,7 @@ namespace Phobos.Library.CoreServices.Db
 
         public List<UserMessage> GetLastMessagesForUser(string userName, int qtd)
         {
-            using (var context = new PhobosCoreContext())
-            {
-                var userMessages = context.UserMessages
-                    .Where(x => x.User.Username == userName);
-
-                if (userMessages.Count() == 0)
-                {
-                    return new List<UserMessage>();
-
-                }
-                return userMessages.Take(qtd).ToList();
-            }
+            return this.MsgService.GetLastMessages(userName, qtd, true);
         }
 
         public List<UserNotification> GetLastNotificationsForUser(string userName, int qtd)

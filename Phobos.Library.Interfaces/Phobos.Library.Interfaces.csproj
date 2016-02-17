@@ -41,6 +41,7 @@
   <ItemGroup>
     <Compile Include="Factories\IMessageServiceFactory.cs" />
     <Compile Include="Repos\ICoreRepo.cs" />
+    <Compile Include="Repos\IMessageRepo.cs" />
     <Compile Include="Repos\IUserRepo.cs" />
     <Compile Include="Services\IAuditTrailService.cs" />
     <Compile Include="Services\IAuthenticationService.cs" />

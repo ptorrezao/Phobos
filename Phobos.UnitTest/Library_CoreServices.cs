@@ -250,7 +250,7 @@ namespace Phobos.UnitTest
 
             var messages = usrMngSvc.GetLastMessages(nonexisingUser, 10);
 
-            if (messages.Any(x => x.User.Username != nonexisingUser))
+            if (messages.Any(x => x.Receiver.Username != nonexisingUser))
             {
                 Assert.Fail("There are messages from another userr.");
             }
