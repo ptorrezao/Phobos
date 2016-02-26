@@ -26,21 +26,6 @@ namespace Phobos.Library.Utils
             return sb.ToString();
         }
 
-        public static IEnumerable<SelectListItem> AsSelectListItem(this List<MessageMailBoxFolderItemViewModel> folders, object selectedValue)
-        {
-            var newList = new List<SelectListItem>();
-
-            foreach (MessageMailBoxFolderItemViewModel item in folders)
-            {
-                newList.Add(new SelectListItem()
-                {
-                    Selected = item.FolderId == (int)selectedValue,
-                    Text = item.Title,
-                    Value = item.FolderId.ToString()
-                });
-            }
-
-            return newList;
-        }
+    
     }
 }
