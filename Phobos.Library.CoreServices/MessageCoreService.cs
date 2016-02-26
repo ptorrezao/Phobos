@@ -18,7 +18,7 @@ namespace Phobos.Library.CoreServices
 
         public bool SendMessage(string username, string v)
         {
-            throw new NotImplementedException();
+            return false;
         }
 
         public List<UserMessage> GetLastMessages(string userName, int qtd, bool orderDesc)
