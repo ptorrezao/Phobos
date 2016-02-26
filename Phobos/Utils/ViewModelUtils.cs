@@ -3,11 +3,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using System.Web.WebPages.Html;
+using System.Web.Mvc;
 
-namespace Phobos.Library.Utils
+namespace Phobos.Utils
 {
-    public static class Extensions
+    public static class ViewModelUtils
     {
         public static IEnumerable<SelectListItem> AsSelectListItem(this List<MessageMailBoxFolderItemViewModel> folders, object selectedValue)
         {

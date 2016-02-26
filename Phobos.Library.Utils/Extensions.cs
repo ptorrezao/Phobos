@@ -5,7 +5,6 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
-using System.Web.Mvc;
 
 namespace Phobos.Library.Utils
 {
@@ -26,6 +25,5 @@ namespace Phobos.Library.Utils
             return sb.ToString();
         }
 
-    
     }
 }
