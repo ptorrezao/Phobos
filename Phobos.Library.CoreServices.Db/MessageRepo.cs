@@ -1,10 +1,12 @@
-﻿using Phobos.Library.Interfaces.Repos;
-using Phobos.Library.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Phobos.Library.Interfaces.Repos;
+using System.Data.Common;
 using System.Text;
 using System.Threading.Tasks;
+using Phobos.Library.Models;
+using System.Data.Entity;
 
 namespace Phobos.Library.CoreServices.Db
 {
@@ -12,22 +14,50 @@ namespace Phobos.Library.CoreServices.Db
     {
         public List<UserMessage> GetLastMessages(string userName, int qtd, bool orderDesc)
         {
-            throw new NotImplementedException();
+            using (var context = new PhobosCoreContext())
+            {
+                return context.UserMessages
+                    .Include(x => x.Receiver)
+                    .Include(x => x.Sender)
+                    .Include(x => x.Folder)
+                    .Where(x => x.Receiver.Username == userName).OrderByDescending(x => x.SendDate).Take(qtd).ToList();
+            }
         }
 
         public List<UserMessageFolder> GetAllFolders(string userName)
         {
-            throw new NotImplementedException();
+            using (var context = new PhobosCoreContext())
+            {
+                return context.UserMessageFolders
+                    .Include(x => x.User)
+                    .Where(x => x.User.Username == userName).ToList();
+            }
         }
 
         public UserMessageFolder GetFolder(string userName, int folderId)
         {
-            throw new NotImplementedException();
+            using (var context = new PhobosCoreContext())
+            {
+                var folder = context.UserMessageFolders
+                    .Include(x => x.User)
+                    .Where(x => x.User.Username == userName)
+                    .FirstOrDefault();
+                return folder;
+            }
         }
 
         public List<UserMessage> GetMessages(string userName, int folderId)
         {
-            throw new NotImplementedException();
+            using (var context = new PhobosCoreContext())
+            {
+                return context.UserMessages
+                    .Include(x => x.Receiver)
+                    .Include(x => x.Sender)
+                    .Include(x => x.Folder)
+                    .Where(x => x.Receiver.Username == userName && x.Folder.Id == x.Folder.Id)
+                    .OrderByDescending(x => x.SendDate)
+                    .ToList();
+            }
         }
     }
 }
