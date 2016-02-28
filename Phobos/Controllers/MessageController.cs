@@ -12,6 +12,8 @@ using System.Web.Mvc;
 using AutoMapper.QueryableExtensions;
 using Phobos.Library.Models;
 using Ninject;
+using Phobos.Library.Utils;
+using Phobos.App_Utils;
 
 namespace Phobos.Controllers
 {
@@ -35,21 +37,15 @@ namespace Phobos.Controllers
 
         public ActionResult Index(int? id)
         {
-            Mapper.CreateMap<UserMessage, MessageMailBoxItemViewModel>()
-                .ForMember(dest => dest.Sender, opts => opts.MapFrom(src => src.Sender.FirstName))
-                .ForMember(dest => dest.Intro, opts => opts.MapFrom(src => src.Message)); 
-            Mapper.CreateMap<UserMessageFolder, MessageMailBoxFolderViewModel>();
-            Mapper.CreateMap<UserMessageFolder, MessageMailBoxFolderItemViewModel>();
-
             var foldersForUser = messageService.GetAllFoldersForUser(SessionManager.CurrentUsername);
             var currentFolder = messageService.GetFolder(SessionManager.CurrentUsername, id);
+            var mapper = AutoMapperConfiguration.GetMapper();
 
             var model = new MessageMailBoxViewModel()
             {
-                CurrentFolder = Mapper.Map<UserMessageFolder, MessageMailBoxFolderViewModel>(currentFolder),
-                Folders = Mapper.Map<List<UserMessageFolder>, List<MessageMailBoxFolderViewModel>>(foldersForUser)
+                CurrentFolder = mapper.Map<UserMessageFolder, MessageMailBoxFolderViewModel>(currentFolder),
+                Folders = mapper.Map<List<UserMessageFolder>, List<MessageMailBoxFolderViewModel>>(foldersForUser)
             };
-
             return View(model);
         }
 
@@ -67,7 +63,7 @@ namespace Phobos.Controllers
 
             return this.Redirect(returnUrl);
         }
-        
+
         public ActionResult ReadMessage(int Id)
         {
             return this.RedirectToAction("Index");

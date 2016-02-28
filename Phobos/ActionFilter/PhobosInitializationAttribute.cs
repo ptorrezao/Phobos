@@ -1,6 +1,8 @@
 using Ninject;
+using Phobos.App_Utils;
 using Phobos.Library.Interfaces;
 using Phobos.Library.Interfaces.Services;
+using Phobos.Library.Models;
 using Phobos.Library.Models.ViewModels;
 using StackExchange.Profiling;
 using System;
@@ -18,9 +20,10 @@ namespace Phobos
         private IUserManagementService userManagementService;
         private INavigationService navigationService;
 
-        public PhobosInitializationAttribute() : this(
-            MvcApplication.GetKernel().Get<IUserManagementService>(),
-            MvcApplication.GetKernel().Get<INavigationService>())
+        public PhobosInitializationAttribute()
+            : this(
+                MvcApplication.GetKernel().Get<IUserManagementService>(),
+                MvcApplication.GetKernel().Get<INavigationService>())
         { }
 
         public PhobosInitializationAttribute(IUserManagementService userMngSvc, INavigationService navSvc)
@@ -71,7 +74,7 @@ namespace Phobos
         {
             using (MiniProfiler.Current.Step("ResolveUserMessages"))
             {
-                filterContext.Controller.ViewBag.UserMessages = UserMessageViewModel.AsListOfUserMessageViewModel(this.userManagementService.GetLastMessages(filterContext.HttpContext.User.Identity.Name, 10));
+                filterContext.Controller.ViewBag.UserMessages = AutoMapperConfiguration.GetMapper().Map<List<UserMessage>, List<UserMessageViewModel>>(this.userManagementService.GetLastMessages(filterContext.HttpContext.User.Identity.Name, 10));
             }
         }
 
@@ -109,7 +112,7 @@ namespace Phobos
             {
                 if (SessionManager.UserAccount == null)
                 {
-                    SessionManager.UserAccount = UserAccountViewModel.AsUserAccountViewModel(this.userManagementService.GetUser(filterContext.HttpContext.User.Identity.Name));
+                    SessionManager.UserAccount = AutoMapperConfiguration.GetMapper().Map<UserAccountViewModel>(this.userManagementService.GetUser(filterContext.HttpContext.User.Identity.Name));
                 }
 
                 filterContext.Controller.ViewBag.UserAccount = SessionManager.UserAccount;

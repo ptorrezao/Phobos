@@ -1,6 +1,8 @@
 ﻿using Phobos.ActionFilter;
+using Phobos.App_Utils;
 using Phobos.Library.Interfaces;
 using Phobos.Library.Interfaces.Services;
+using Phobos.Library.Models;
 using Phobos.Library.Models.ViewModels;
 using StackExchange.Profiling;
 using System;
@@ -45,7 +47,7 @@ namespace Phobos.Controllers
                         {
                             AuthenticationService.Login(user.UserName, user.RememberMe);
 
-                            SessionManager.UserAccount = UserAccountViewModel.AsUserAccountViewModel(this.userManagementService.GetUser(user.UserName));
+                            SessionManager.UserAccount = AutoMapperConfiguration.GetMapper().Map<UserAccountViewModel>(this.userManagementService.GetUser(user.UserName));
 
                             return RedirectToAction("Index", "Home");
                         }
@@ -54,8 +56,8 @@ namespace Phobos.Controllers
                     ModelState.AddModelError("UserName", error);
                 }
             }
-         
-        
+
+
             return View(user);
         }
 
@@ -86,7 +88,7 @@ namespace Phobos.Controllers
                     {
                         AuthenticationService.Login(user.UserName, false);
 
-                        SessionManager.UserAccount = UserAccountViewModel.AsUserAccountViewModel(this.userManagementService.GetUser(user.UserName));
+                        SessionManager.UserAccount = AutoMapperConfiguration.GetMapper().Map<UserAccountViewModel>(this.userManagementService.GetUser(user.UserName));
 
                         this.auditTrailService.LogMessage(string.Format("A new user ({0}) had been created.", user.UserName), user.UserName, user);
 
@@ -132,7 +134,7 @@ namespace Phobos.Controllers
             var model = SessionManager.UserAccount;
             if (model == null)
             {
-                model = SessionManager.UserAccount = UserAccountViewModel.AsUserAccountViewModel(this.userManagementService.GetUser(this.User.Identity.Name));
+                model = SessionManager.UserAccount = AutoMapperConfiguration.GetMapper().Map<UserAccountViewModel>(this.userManagementService.GetUser(this.User.Identity.Name));
             }
 
             return View(model);
@@ -145,7 +147,7 @@ namespace Phobos.Controllers
         {
             if (ModelState.IsValid)
             {
-                var userAccount = UserAccountViewModel.AsUserAccount(model);
+                var userAccount = AutoMapperConfiguration.GetMapper().Map<UserAccount>(model);
 
                 this.userManagementService.UpdateAccount(userAccount);
 

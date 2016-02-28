@@ -159,6 +159,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\HtmlHelpers.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="App_Utils\AutoMapperConfiguration.cs" />
     <Compile Include="Controllers\MessageController.cs" />
     <Compile Include="Services\AuthenticationService.cs" />
     <Compile Include="ActionFilter\PhobosInitializationAttribute.cs" />
@@ -509,6 +510,10 @@
     <ProjectReference Include="..\Phobos.Library.Models\Phobos.Library.Models.csproj">
       <Project>{b61b11e0-0298-48d7-b0fa-7d44b25562d3}</Project>
       <Name>Phobos.Library.Models</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Phobos.Library.Utils\Phobos.Library.Utils.csproj">
+      <Project>{4f4c6207-23ad-4170-98b6-2d217710920e}</Project>
+      <Name>Phobos.Library.Utils</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

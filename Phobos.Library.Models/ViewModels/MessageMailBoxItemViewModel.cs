@@ -14,6 +14,7 @@ namespace Phobos.Library.Models.ViewModels
         public string Intro { get; set; }
 
         public string Title { get; set; }
+        public string Message { get; set; }
 
         public bool HasAttachment { get; set; }
 

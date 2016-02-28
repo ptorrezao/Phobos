@@ -25,5 +25,9 @@ namespace Phobos.Library.Utils
             return sb.ToString();
         }
 
+        public static string TruncateLongString(this string str, int maxLength, string suffix)
+        {
+            return string.Format("{0}{1}", str.Substring(0, Math.Min(str.Length, maxLength)), (maxLength <= str.Length) ? suffix : "");
+        }
     }
 }

@@ -57,52 +57,6 @@ namespace Phobos.Library.Models.ViewModels
 
         [DisplayName("Date of Birth")]
         public DateTime BirthDate { get; set; }
-        public static UserAccountViewModel AsUserAccountViewModel(UserAccount model)
-        {
-            var viewModel = new UserAccountViewModel()
-            {
-                CurrentStatus = model.CurrentStatus,
-                FavoriteLinks = new List<MenuEntriesViewModel>(),
-                FirstName = model.FirstName,
-                LastName = model.LastName,
-                ImageUrl = "/Content/themes/AdminLTE/img/user2-160x160.jpg",
-                ImageAlt = model.FirstName + " " + model.LastName,
-                MemberSince = model.MemberSinceDate,
-                Username = model.Username,
-                Position = model.Position,
-                UseGravatar = true
-            };
-
-            if (viewModel.UseGravatar)
-            {
-                MD5 md5 = System.Security.Cryptography.MD5.Create();
-                byte[] inputBytes = System.Text.Encoding.ASCII.GetBytes(viewModel.Username);
-                byte[] hashBytes = md5.ComputeHash(inputBytes);
-
-                StringBuilder sb = new StringBuilder();
-                for (int i = 0; i < hashBytes.Length; i++)
-                {
-                    sb.Append(hashBytes[i].ToString("X2").ToLower());
-                }
-
-                viewModel.ImageUrl = @"http://www.gravatar.com/avatar/" + sb.ToString() + ".jpg";
-            }
-
-            return viewModel;
-        }
-
-        public static UserAccount AsUserAccount(UserAccountViewModel model)
-        {
-            return new UserAccount()
-            {
-                Position = model.Position,
-                BirthDate = model.BirthDate,
-                CurrentStatus = model.CurrentStatus,
-                FirstName = model.FirstName,
-                LastName = model.LastName,
-                MemberSinceDate = model.MemberSince,
-                Username = model.Username
-            };
-        }
+    
     }
 }
