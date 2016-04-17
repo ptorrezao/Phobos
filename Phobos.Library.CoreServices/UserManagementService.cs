@@ -207,6 +207,12 @@ namespace Phobos.Library.CoreServices
             return selectedUser;
         }
 
+        public List<UserAccount> GetAllUsers()
+        {
+            var listOfUsers = this.Repository.GetAllUsers();
+            return listOfUsers;
+        }
+
         public bool RecoverProfile(string userName, out string msg)
         {
             var selectedUser = this.Repository.GetUser(userName);
@@ -328,5 +334,8 @@ namespace Phobos.Library.CoreServices
             return haveMinimumLength && haveMinimunQtdOfDigits && haveMinimunQtdOfLower && haveMinimunQtdOfUpper;
         }
         #endregion
+
+
+       
     }
 }

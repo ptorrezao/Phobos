@@ -102,5 +102,10 @@ namespace Phobos.UnitTest.Repos
         {
             throw new NotImplementedException();
         }
+
+        public List<UserAccount> GetAllUsers()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

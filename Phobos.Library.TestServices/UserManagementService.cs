@@ -84,6 +84,24 @@ namespace Phobos.Library.TestServices
             };
         }
 
+        public List<UserAccount> GetAllUsers()
+        {
+            var list = new List<UserAccount>();
+
+            list.Add(new UserAccount()
+            {
+                FirstName = "Pedro",
+                LastName = "Torrezao",
+                BirthDate = new DateTime(1988, 10, 3),
+                MemberSinceDate = new DateTime(1988, 10, 3),
+                Position = "Software Engineer",
+                CurrentStatus = UserStatusEnum.Online,
+                Username = "Pedro.torrezao@gmail.com"
+            });
+
+            return list;
+        }
+
         public bool RecoverProfile(string userName, out string error)
         {
             error = "";
@@ -109,13 +127,13 @@ namespace Phobos.Library.TestServices
                 return false;
             }
 
-            if (password.Length<=3)
+            if (password.Length <= 3)
             {
                 error = "Password Should have more than";
                 return false;
             }
 
-            if (password!= confirmPassword)
+            if (password != confirmPassword)
             {
                 error = "Password does not match";
                 return false;
@@ -133,5 +151,7 @@ namespace Phobos.Library.TestServices
         {
             return true;
         }
+
+
     }
 }

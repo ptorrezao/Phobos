@@ -12,6 +12,7 @@ namespace Phobos.Library.Interfaces
     public interface IUserManagementService
     {
         bool CheckIfUserIsValid(string userName, string password, out string error);
+        List<UserAccount> GetAllUsers();
         UserAccount GetUser(string userName);
         List<UserMessage> GetLastMessages(string userName, int qtd);
         List<UserNotification> GetLastNotifications(string userName, int qtd);

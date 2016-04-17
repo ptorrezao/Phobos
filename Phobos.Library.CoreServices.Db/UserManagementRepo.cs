@@ -128,6 +128,16 @@ namespace Phobos.Library.CoreServices.Db
             }
         }
 
+        public List<UserAccount> GetAllUsers()
+        {
+            using (var context = new PhobosCoreContext())
+            {
+                var listOfUsers = context.Users.ToList();
+
+                return listOfUsers;
+            }
+        }
+
         public bool UnlockUserAccount(string userName)
         {
             using (var context = new PhobosCoreContext())
@@ -225,5 +235,8 @@ namespace Phobos.Library.CoreServices.Db
         }
 
 
+
+
+        
     }
 }

@@ -183,6 +183,10 @@
     <Content Include="Content\css\bootstrap.min.css" />
     <Content Include="Content\fonts\fontawesome-webfont.svg" />
     <Content Include="Content\MvcGrid\mvc-grid.css" />
+    <Content Include="Content\plugins\bootstrap-wysihtml5\bootstrap3-wysihtml5.all.js" />
+    <Content Include="Content\plugins\bootstrap-wysihtml5\bootstrap3-wysihtml5.all.min.js" />
+    <Content Include="Content\plugins\bootstrap-wysihtml5\bootstrap3-wysihtml5.css" />
+    <Content Include="Content\plugins\bootstrap-wysihtml5\bootstrap3-wysihtml5.min.css" />
     <Content Include="Content\plugins\datepicker\bootstrap-datepicker.js" />
     <Content Include="Content\plugins\datepicker\datepicker3.css" />
     <Content Include="Content\plugins\datepicker\locales\bootstrap-datepicker.ar.js" />
@@ -366,6 +370,13 @@
     <Content Include="Content\plugins\ohSnap\ohsnap.min.js" />
     <Content Include="Content\plugins\shuffleLetters\jquery.shuffleLetters.js" />
     <Content Include="Content\plugins\timeago\jquery.timeago.js" />
+    <Content Include="Content\plugins\typeahead\bloodhound.js" />
+    <Content Include="Content\plugins\typeahead\bloodhound.min.js" />
+    <Content Include="Content\plugins\typeahead\handlebars-v4.0.5.js" />
+    <Content Include="Content\plugins\typeahead\typeahead.bundle.js" />
+    <Content Include="Content\plugins\typeahead\typeahead.bundle.min.js" />
+    <Content Include="Content\plugins\typeahead\typeahead.jquery.js" />
+    <Content Include="Content\plugins\typeahead\typeahead.jquery.min.js" />
     <Content Include="Content\Site.css" />
     <Content Include="Content\themes\AdminLTE\css\AdminLTE.css" />
     <Content Include="Content\themes\AdminLTE\css\AdminLTE.min.css" />
@@ -487,6 +498,8 @@
     <Content Include="Views\AdminLTE\Shared\MvcGrid\_AjaxGrid.cshtml" />
     <Content Include="Views\AdminLTE\Shared\MvcGrid\_Grid.cshtml" />
     <Content Include="Views\AdminLTE\Shared\MvcGrid\_Pager.cshtml" />
+    <Content Include="Views\AdminLTE\Message\Compose.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\UserAccountViewModel.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -18,7 +18,8 @@ namespace Phobos.App_Utils
             var config = new MapperConfiguration(cfg =>
             {
                 cfg.CreateMap<UserMessage, MessageMailBoxItemViewModel>()
-                    .ForMember(dest => dest.Sender, opts => opts.MapFrom(src => src.Sender.FirstName))
+                    .ForMember(dest => dest.Sender, opts => opts.MapFrom(src => AutoMapperConfiguration.GetMapper().Map<UserAccountViewModel>(src.Sender)))
+                    .ForMember(dest => dest.Receiver, opts => opts.MapFrom(src => AutoMapperConfiguration.GetMapper().Map<UserAccountViewModel>(src.Receiver)))
                     .ForMember(dest => dest.Intro, opts => opts.MapFrom(src => src.Message.TruncateLongString(30, "...")));
                 cfg.CreateMap<UserMessageFolder, MessageMailBoxFolderViewModel>();
                 cfg.CreateMap<UserMessageFolder, MessageMailBoxFolderItemViewModel>();
@@ -47,5 +48,6 @@ namespace Phobos.App_Utils
             });
             return config.CreateMapper();
         }
+
     }
 }

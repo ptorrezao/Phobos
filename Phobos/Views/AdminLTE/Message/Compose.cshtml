@@ -1,0 +1,67 @@
+﻿@model MessageMailBoxItemViewModel
+
+@section _ContentHeader {
+    <section class="content-header">
+        <h1>
+            Mailbox
+            <small>Compose New Message</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="@Url.Content("~")"><i class="fa fa-home"></i> Home</a></li>
+            <li class="active">Mailbox</li>
+        </ol>
+    </section>
+}
+
+@section scripts{
+    <script>
+        $(function () {
+            $("#@Html.IdFor(m => m.Message)").wysihtml5();
+        });
+    </script>
+}
+<div class="row">
+    <div class="col-md-3">
+        <a href="@Url.Action("Compose")" class="btn btn-primary btn-block margin-bottom">Compose</a>
+        @Html.Action("GetFolderBox")
+        @*
+            Tags is not in place for the moment
+            @Html.Partial("_TagsBox", Model.Tags)
+        *@
+    </div>
+    <div class="col-md-9">
+        <div class="box box-primary">
+            @using (Html.BeginForm("Compose", "Message", FormMethod.Post, new { @enctype = "multipart/form-data" }))
+            {
+                <div class="box-header with-border">
+                    <h3 class="box-title">Compose New Message</h3>
+                </div>
+                <div class="box-body">
+                    <div class="form-group">
+                        @Html.EditorFor(m => m.Receiver)
+                    </div>
+                    <div class="form-group">
+                        @Html.EditorFor(m => m.Title, new { htmlAttributes = new { @class = "form-control", @placeholder = "Subject:" } })
+                    </div>
+                    <div class="form-group">
+                        @Html.TextAreaFor(m => m.Message, new { @class = "form-control", @style = "height: 300px" })
+                    </div>
+                    <div class="form-group">
+                        <div class="btn btn-default btn-file">
+                            <i class="fa fa-paperclip"></i> Attachment
+                            <input type="file" name="files">
+                        </div>
+                        <p class="help-block">Max. 32MB</p>
+                    </div>
+                </div>
+                <div class="box-footer">
+                    <div class="pull-right">
+                        <button type="submit" name="submit" value="Draft" class="btn btn-default"><i class="fa fa-pencil"></i> Draft</button>
+                        <button type="submit" name="submit" value="Send" class="btn btn-primary"><i class="fa fa-envelope-o"></i> Send</button>
+                    </div>
+                    <button name="submit" value="Discard"  class="btn btn-default"><i class="fa fa-times"></i> Discard</button>
+                </div>
+            }
+        </div>
+    </div>
+</div>

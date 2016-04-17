@@ -37,8 +37,8 @@ namespace Phobos.Controllers
 
         public ActionResult Index(int? id)
         {
-            var foldersForUser = messageService.GetAllFoldersForUser(SessionManager.CurrentUsername);
             var currentFolder = messageService.GetFolder(SessionManager.CurrentUsername, id);
+            var foldersForUser = messageService.GetAllFoldersForUser(SessionManager.CurrentUsername);
             var mapper = AutoMapperConfiguration.GetMapper();
 
             var model = new MessageMailBoxViewModel()
@@ -49,9 +49,39 @@ namespace Phobos.Controllers
             return View(model);
         }
 
+        public ActionResult GetFolderBox()
+        {
+            var mapper = AutoMapperConfiguration.GetMapper();
+
+            var foldersForUser = messageService.GetAllFoldersForUser(SessionManager.CurrentUsername);
+
+            return this.PartialView("_FolderBox", mapper.Map<List<UserMessageFolder>, List<MessageMailBoxFolderViewModel>>(foldersForUser));
+        }
+
+
         public ActionResult Compose()
         {
             return View();
+        }
+
+        [HttpParamAction]
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult Compose(string submit, MessageMailBoxItemViewModel model, IEnumerable<HttpPostedFileBase> files)
+        {
+            if (submit == "Send")
+            {
+                //// Send Message
+            }
+            else if (submit == "Draft")
+            {
+                //// Save Message as Draft
+            }
+            else if (submit == "Discard")
+            {
+                //// Delete the message
+            }
+
+            return this.View(model);
         }
 
         public ActionResult MarkAsFavorite(int Id, string returnUrl)

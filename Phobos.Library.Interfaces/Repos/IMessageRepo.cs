@@ -13,5 +13,7 @@ namespace Phobos.Library.Interfaces.Repos
         List<UserMessageFolder> GetAllFolders(string userName);
         UserMessageFolder GetFolder(string userName, int folderId);
         List<UserMessage> GetMessages(string userName, int folderId);
+
+        UserMessageFolder CreateDefaultFolder(string userName);
     }
 }

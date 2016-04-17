@@ -1,0 +1,80 @@
+﻿@model  UserAccountViewModel
+@using Phobos.Library.Utils;
+@using System.Web.Script.Serialization;
+@{
+    var identifier = Guid.NewGuid();
+    var list = new JavaScriptSerializer().Serialize(SessionManager.AllUsers);
+}
+
+<input class="typeahead form-control" id="@identifier" type="text" placeholder="To:" name="" >
+@Html.HiddenFor(m => m.Username)
+@Html.HiddenFor(m => m.BirthDate)
+@Html.HiddenFor(m => m.CurrentStatus)
+@Html.HiddenFor(m => m.FavoriteLinks)
+@Html.HiddenFor(m => m.FirstName)
+@Html.HiddenFor(m => m.FullName)
+@Html.HiddenFor(m => m.ImageAlt)
+@Html.HiddenFor(m => m.ImageUrl)
+@Html.HiddenFor(m => m.LastName)
+@Html.HiddenFor(m => m.MemberSince)
+@Html.HiddenFor(m => m.Position)
+@Html.HiddenFor(m => m.UseGravatar)
+
+<script>
+    $(document).ready(function (first) {
+        var users = new Bloodhound({
+            datumTokenizer: Bloodhound.tokenizers.obj.whitespace('FullName'),
+            queryTokenizer: Bloodhound.tokenizers.whitespace,
+            local: @Html.Raw(list)});
+
+        $('#@identifier').typeahead({
+            hint: true,
+            highlight: true,
+            minLength: 1,
+            classNames: {
+                menu: 'form-control',
+                wrapper: 'wrapper-typeahead',
+            },
+        },
+        {
+            name: 'users',
+            display: 'FullName',
+            source: users,
+            templates: {
+                empty: [
+                  '<div class="empty-message">',
+                    'Unable to find any User that match the current query',
+                  '</div>'
+                ].join('\n'),
+                suggestion: Handlebars.compile('<a><img src="{{ImageUrl}}" class="user-image" alt="User Image"><span class="hidden-xs">{{FullName}}</span></a><br>')
+            }
+        });
+
+        $('#@identifier').bind('typeahead:select', function(ev, suggestion) {
+            $("#@Html.IdFor(m=>m.Username)").val(suggestion.Username);
+            $("#@Html.IdFor(m => m.BirthDate)").val(suggestion.BirthDate);
+            $("#@Html.IdFor(m => m.CurrentStatus)").val(suggestion.CurrentStatus);
+            $("#@Html.IdFor(m => m.FavoriteLinks)").val(suggestion.FavoriteLinks);
+            $("#@Html.IdFor(m => m.FirstName)").val(suggestion.FirstName);
+            $("#@Html.IdFor(m => m.LastName)").val(suggestion.LastName);
+            $("#@Html.IdFor(m => m.ImageAlt)").val(suggestion.ImageAlt);
+            $("#@Html.IdFor(m => m.ImageUrl)").val(suggestion.ImageUrl);
+            $("#@Html.IdFor(m => m.Position)").val(suggestion.Position);
+            $("#@Html.IdFor(m => m.UseGravatar)").val(suggestion.UseGravatar);
+            $("#@Html.IdFor(m => m.MemberSince)").val(suggestion.MemberSince);
+        });
+    });
+</script>
+
+<style>
+    .tt-suggestion{
+        display: block;
+    }
+    .tt-suggestion img.user-image  {
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+        margin-right: 10px;
+        margin-top: -2px;
+    }
+</style>

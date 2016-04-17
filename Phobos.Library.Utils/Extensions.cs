@@ -1,4 +1,5 @@
-﻿using Phobos.Library.Models.ViewModels;
+﻿using Phobos.Library.Models;
+using Phobos.Library.Models.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,5 +30,14 @@ namespace Phobos.Library.Utils
         {
             return string.Format("{0}{1}", str.Substring(0, Math.Min(str.Length, maxLength)), (maxLength <= str.Length) ? suffix : "");
         }
+
+        public static string GetFullName(this UserAccount userAccount)
+        {
+            if (userAccount == null)
+                return "";
+
+            return string.Format("{0}{1}{2}", userAccount.FirstName, (!string.IsNullOrEmpty(userAccount.FirstName) && !string.IsNullOrEmpty(userAccount.LastName)) ? " " : "", userAccount.LastLoginDate);
+        }
+
     }
 }

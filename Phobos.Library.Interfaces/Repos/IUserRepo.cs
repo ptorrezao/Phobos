@@ -11,6 +11,7 @@ namespace Phobos.Library.Interfaces.Repos
     {
         bool CheckIfUserExist(string userName);
         UserAccount GetUser(string userName);
+        List<UserAccount> GetAllUsers();
         bool AddFailedLoginAttempt(string userName);
         bool UnlockUserAccount(string userName);
         bool LockUserAccount(string userName);

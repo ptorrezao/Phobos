@@ -42,6 +42,7 @@ namespace Phobos.Library.CoreServices.Db
                     .Include(x => x.User)
                     .Where(x => x.User.Username == userName)
                     .FirstOrDefault();
+
                 return folder;
             }
         }
@@ -57,6 +58,24 @@ namespace Phobos.Library.CoreServices.Db
                     .Where(x => x.Receiver.Username == userName && x.Folder.Id == x.Folder.Id)
                     .OrderByDescending(x => x.SendDate)
                     .ToList();
+            }
+        }
+
+        public UserMessageFolder CreateDefaultFolder(string userName)
+        {
+            using (var context = new PhobosCoreContext())
+            {
+                var folder = new UserMessageFolder()
+                {
+                    User = context.Users.First(x => x.Username == userName),
+                    Name = "Inbox",
+                };
+
+                context.UserMessageFolders.Add(folder);
+
+                context.SaveChanges();
+
+                return folder;
             }
         }
     }

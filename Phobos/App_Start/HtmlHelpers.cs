@@ -17,7 +17,10 @@ namespace Phobos.Helpers
         {
             var builder = new TagBuilder("i");
             builder.AddCssClass("fa");
-            builder.AddCssClass("fa-" + value.ToLower());
+            if (value != null)
+            {
+                builder.AddCssClass("fa-" + value.ToLower());
+            }
             if (color != null)
             {
                 builder.AddCssClass("text-" + color.ToString().ToLower());
@@ -27,7 +30,10 @@ namespace Phobos.Helpers
         public static MvcHtmlString FontAwesome(this HtmlHelper htmlHelper, string link, string value, TextColor? color = null)
         {
             var builder = new TagBuilder("a");
-            builder.InnerHtml = HtmlHelpers.FontAwesome(htmlHelper, value, color).ToString();
+            if (value != null)
+            {
+                builder.InnerHtml = HtmlHelpers.FontAwesome(htmlHelper, value, color).ToString();
+            }
             builder.Attributes["href"] = link;
 
             return MvcHtmlString.Create(builder.ToString());
@@ -71,7 +77,7 @@ namespace Phobos.Helpers
         }
         public static MvcHtmlString TimeAgo(this HtmlHelper htmlHelper, DateTime date)
         {
-            
+
             const int SECOND = 1;
             const int MINUTE = 60 * SECOND;
             const int HOUR = 60 * MINUTE;

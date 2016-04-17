@@ -12,6 +12,7 @@
     @Styles.Render("~/Content/datepicker")
     @Styles.Render("~/Content/daterangepicker")
     @Styles.Render("~/Content/MvcGrid")
+    @Styles.Render("~/Content/wysihtml5")
     <!--[if lt IE 9]>
         @Scripts.Render("~/Content/respond")
         @Scripts.Render("~/Content/html5shiv")
@@ -29,7 +30,7 @@
                 @RenderBody()
                 <div id="ohsnap"></div>
             </section>
-           
+
         </div>
         @Html.Partial("_MainFooter")
         @Html.Partial("_ControlSidebar")
@@ -43,6 +44,8 @@
     @Scripts.Render("~/bundles/iCheck")
     @Scripts.Render("~/bundles/MvcGrid")
     @Scripts.Render("~/bundles/AdminLTE")
+    @Scripts.Render("~/bundles/wysihtml5")
+    @Scripts.Render("~/bundles/typeahead")
     @RenderSection("scripts", required: false)
 </body>
 </html>

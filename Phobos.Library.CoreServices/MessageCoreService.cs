@@ -33,7 +33,13 @@ namespace Phobos.Library.CoreServices
 
         public UserMessageFolder GetFolder(string userName, int? id)
         {
-            UserMessageFolder folder = this.Repository.GetFolder(userName,id ?? 0);
+            UserMessageFolder folder = this.Repository.GetFolder(userName, id ?? 0);
+
+            if (folder == null && id == null)
+            {
+                folder = this.Repository.CreateDefaultFolder(userName);
+            }
+
             folder.Messages = this.Repository.GetMessages(userName, folder.Id);
             return folder;
         }
