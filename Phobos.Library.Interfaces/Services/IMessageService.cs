@@ -13,5 +13,8 @@ namespace Phobos.Library.Interfaces.Services
         List<UserMessage> GetLastMessages(string userName, int qtd, bool orderDesc);
         List<UserMessageFolder> GetAllFoldersForUser(string userName);
         UserMessageFolder GetFolder(string userName, int? id);
+        void SendMessage(string p, UserMessage createdMessage);
+        UserMessage SaveMessage(string p, UserMessage newMessage);
+        void DeleteMessage(int p);
     }
 }

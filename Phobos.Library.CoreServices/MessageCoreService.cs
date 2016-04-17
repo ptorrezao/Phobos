@@ -43,5 +43,15 @@ namespace Phobos.Library.CoreServices
             folder.Messages = this.Repository.GetMessages(userName, folder.Id);
             return folder;
         }
+
+        public void SendMessage(string userName, UserMessage createdMessage)
+        {
+            throw new NotImplementedException();
+        }
+
+        public UserMessage SaveMessage(string userName, UserMessage newMessage)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

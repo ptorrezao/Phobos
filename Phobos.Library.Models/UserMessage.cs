@@ -21,5 +21,6 @@ namespace Phobos.Library.Models
         public virtual UserAccount Receiver { get; set; }
         public virtual UserAccount Sender { get; set; }
         public virtual UserMessageFolder Folder { get; set; }
+        public List<string> Attachments { get; set; }
     }
 }
