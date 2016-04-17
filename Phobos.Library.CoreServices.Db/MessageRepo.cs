@@ -78,5 +78,33 @@ namespace Phobos.Library.CoreServices.Db
                 return folder;
             }
         }
+
+
+        public UserMessage SaveMessage(UserMessage sentMessage)
+        {
+            using (var context = new PhobosCoreContext())
+            {
+                sentMessage.Owner = context.Users.First(x => x.Username == sentMessage.Owner.Username);
+                sentMessage.Sender = context.Users.First(x => x.Username == sentMessage.Sender.Username);
+                sentMessage.Receiver = context.Users.First(x => x.Username == sentMessage.Receiver.Username);
+                context.UserMessages.Add(sentMessage);
+                context.SaveChanges();
+
+                return sentMessage;
+            }
+        }
+
+
+        public void DeleteMessage(int messageId)
+        {
+            using (var context = new PhobosCoreContext())
+            {
+                var msg = context.UserMessages.First(x => x.Id== messageId);
+
+                context.UserMessages.Remove(msg);
+
+                context.SaveChanges();
+            }
+        }
     }
 }

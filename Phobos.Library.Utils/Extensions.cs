@@ -38,6 +38,5 @@ namespace Phobos.Library.Utils
 
             return string.Format("{0}{1}{2}", userAccount.FirstName, (!string.IsNullOrEmpty(userAccount.FirstName) && !string.IsNullOrEmpty(userAccount.LastName)) ? " " : "", userAccount.LastLoginDate);
         }
-
     }
 }

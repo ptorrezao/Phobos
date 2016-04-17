@@ -3,6 +3,7 @@ using Phobos.Library.Interfaces.Repos;
 using Phobos.Library.Interfaces.Services;
 using Phobos.Library.Models;
 using Phobos.Library.Models.Enums;
+using Phobos.Library.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -46,12 +47,36 @@ namespace Phobos.Library.CoreServices
 
         public void SendMessage(string userName, UserMessage createdMessage)
         {
-            throw new NotImplementedException();
+            if (createdMessage.Sender.Username == userName)
+            {
+                //// Create a new instance of this message and send it;
+                var sentMessage = ObjectCopier.Clone<UserMessage>(createdMessage);
+                sentMessage.Id = 0;
+                sentMessage.Owner = sentMessage.Receiver;
+                sentMessage.SendDate = DateTime.Now;
+                this.Repository.SaveMessage(sentMessage);
+
+                //// Mark the current message as Sent.
+                createdMessage.Sent = true;
+                createdMessage.SendDate = DateTime.Now;
+
+                this.Repository.SaveMessage(createdMessage);
+            }
         }
 
         public UserMessage SaveMessage(string userName, UserMessage newMessage)
         {
-            throw new NotImplementedException();
+            if (newMessage.Sender.Username == userName)
+            {
+                return this.Repository.SaveMessage(newMessage);
+            }
+
+            return null;
+        }
+
+        public void DeleteMessage(int messageId)
+        {
+             this.Repository.DeleteMessage(messageId);
         }
     }
 }

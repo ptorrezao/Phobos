@@ -20,7 +20,9 @@ namespace Phobos.Library.Models
         public bool IsFavorite { get; set; }
         public virtual UserAccount Receiver { get; set; }
         public virtual UserAccount Sender { get; set; }
+        public virtual UserAccount Owner { get; set; }
         public virtual UserMessageFolder Folder { get; set; }
         public List<string> Attachments { get; set; }
+        public bool Sent { get; set; }
     }
 }
