@@ -27,18 +27,21 @@
         {
             columns.Add(model => model.MessageId)
                     .RenderedAs(model => "<input name='selectedIds' type='checkbox' value='" + model.MessageId.ToString() + "'>")
+                    .Css("smallColumn")
                     .Encoded(false);
             columns.Add(model => model.IsFavorite)
                     .Encoded(false)
+                    .Css("smallColumn")
                     .Filterable(false)
                     .RenderedAs(model => Html.FontAwesome(Url.Action("MarkAsFavorite", "Message", new { Id = model.MessageId, returnUrl = Request.RawUrl }), model.IsFavorite ? "star" : "star-o", TextColor.Yellow));
             columns.Add(model => model.Sender)
                     .Encoded(false)
                     .Filterable(false)
-                    .RenderedAs(model => "<a href=" + Url.Action("ReadMessage", new { id = model.MessageId }) + ">" + model.Sender + "</a>");
+                    .RenderedAs(model => "<a href=" + Url.Action("ReadMessage", new { id = model.MessageId }) + ">" + model.Sender.FullName + "</a>");
             columns.Add(model => model.Title)
+                    .Css("fiftyColumn")
                     .Encoded(false)
-                    .RenderedAs(model => string.Format("<b>{0}</b> - {1}", model.Title, model.Intro));
+                    .RenderedAs(model => string.Format("<strong>{0}</strong> - {1}", model.Title, @System.Text.RegularExpressions.Regex.Replace(model.Intro, @"<[^>]*>", String.Empty)));
             columns.Add(model => model.HasAttachment)
                     .Encoded(false)
                     .Filterable(false)
@@ -50,7 +53,7 @@
         })
         .Filterable(false)
         .Sortable(false)
-                .Css("hideTh  table-hover table-striped box-footer no-padding mailbox")
+        .Css("hideTh  table-hover table-striped box-footer no-padding mailbox")
         .Pageable(pager =>
         {
             pager.PagesToDisplay = 0;
@@ -129,3 +132,13 @@
         });
     });
 </script>
+
+<style>
+    .smallColumn {
+        width:20px;
+    }
+
+    .fiftyColumn {
+        width:50%;
+    }
+</style>

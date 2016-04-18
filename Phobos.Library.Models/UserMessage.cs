@@ -10,11 +10,17 @@ namespace Phobos.Library.Models
 {
     public class UserMessage
     {
+        public UserMessage()
+        {
+            Message = "";
+            MessageDate = DateTime.Now;
+        }
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public string Message { get; set; }
-        public DateTime SendDate { get; set; }
+        public DateTime? SendDate { get; set; }
+        public DateTime MessageDate { get; set; }
         public string Title { get; set; }
         public bool HasAttachment { get; set; }
         public bool IsFavorite { get; set; }

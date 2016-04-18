@@ -1,5 +1,6 @@
 using Ninject;
 using Phobos.App_Utils;
+using Phobos.Controllers;
 using Phobos.Library.Interfaces;
 using Phobos.Library.Interfaces.Services;
 using Phobos.Library.Models;
@@ -36,15 +37,31 @@ namespace Phobos
         {
             ResolveCurrentUser(filterContext); // Gets the user from Session or retrevies it again from Service
 
-            ResolveMenus(filterContext); // Gets the Menus.
+            if (SessionManager.UserAccount == null)
+            {
+                if (SessionManager.UserAccount == null)
+                {
+                    new AuthenticationService().Logout();
 
-            ResolveUserMessages(filterContext); // Get Usermessages
+                    SessionManager.UserAccount = null;
 
-            ResolveUserNotifications(filterContext); // Get Usermessages
+                    filterContext.Result = new RedirectResult("/Account/Login");
+                }
+            }
+            else
+            {
+                ResolveMenus(filterContext); // Gets the Menus.
 
-            ResolveUserTasks(filterContext); // Get UserTasks
+                ResolveUserMessages(filterContext); // Get Usermessages
 
-            ResolveFooter(filterContext); // Get version
+                ResolveUserNotifications(filterContext); // Get Usermessages
+
+                ResolveUserTasks(filterContext); // Get UserTasks
+
+                ResolveFooter(filterContext); // Get version
+
+            }
+
 
             base.OnActionExecuting(filterContext);
         }

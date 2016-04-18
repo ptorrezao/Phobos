@@ -1,0 +1,19 @@
+﻿@model  UserAccountViewModel
+@using Phobos.Library.Utils;
+@using System.Web.Script.Serialization;
+@{
+    var list = new JavaScriptSerializer().Serialize(SessionManager.AllUsers);
+}
+
+@Html.HiddenFor(m => m.Username)
+@Html.HiddenFor(m => m.BirthDate)
+@Html.HiddenFor(m => m.CurrentStatus)
+@Html.HiddenFor(m => m.FavoriteLinks)
+@Html.HiddenFor(m => m.FirstName)
+@Html.HiddenFor(m => m.FullName)
+@Html.HiddenFor(m => m.ImageAlt)
+@Html.HiddenFor(m => m.ImageUrl)
+@Html.HiddenFor(m => m.LastName)
+@Html.HiddenFor(m => m.MemberSince)
+@Html.HiddenFor(m => m.Position)
+@Html.HiddenFor(m => m.UseGravatar)

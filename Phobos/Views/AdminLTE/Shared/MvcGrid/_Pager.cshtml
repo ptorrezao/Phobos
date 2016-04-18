@@ -2,8 +2,6 @@
 @using Phobos.Helpers;
 @model IGridPager
 
-@if (Model.TotalPages > 1)
-{
     <div class="mvc-grid-pager  @Model.CssClasses">
         <div class="mailbox-controls">
             @Html.RenderHelper("ButtonsForPager")
@@ -47,4 +45,3 @@
             </div>
         </div>
     </div>
-}

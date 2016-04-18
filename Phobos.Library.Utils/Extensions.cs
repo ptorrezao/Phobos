@@ -28,7 +28,7 @@ namespace Phobos.Library.Utils
 
         public static string TruncateLongString(this string str, int maxLength, string suffix)
         {
-            return string.Format("{0}{1}", str.Substring(0, Math.Min(str.Length, maxLength)), (maxLength <= str.Length) ? suffix : "");
+            return string.Format("{0}{1}", (str ?? "").Substring(0, Math.Min(str.Length, maxLength)), (maxLength <= str.Length) ? suffix : "");
         }
 
         public static string GetFullName(this UserAccount userAccount)

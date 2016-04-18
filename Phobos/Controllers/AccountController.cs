@@ -26,6 +26,7 @@ namespace Phobos.Controllers
             this.AuthenticationService = authSvc;
             this.auditTrailService = auditTrailService;
         }
+    
 
         [AllowAnonymous]
         public ActionResult Login()

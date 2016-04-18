@@ -1,4 +1,7 @@
-﻿@{
+﻿@using Phobos.Helpers
+@using Phobos.Library.Utils
+@using Phobos.Utils;
+@{
     List<UserMessageViewModel> userMessages = ViewBag.UserMessages;
 }
 <li class="dropdown messages-menu">
@@ -7,7 +10,7 @@
     {
         <a href="@Url.Action("Index","Message")" class="dropdown-toggle" data-toggle="dropdown">
             <i class="fa fa-envelope-o"></i>
-                <span class="label label-success">@userMessages.Count</span>
+            <span class="label label-success">@userMessages.Count</span>
         </a>
         <ul class="dropdown-menu">
             <li class="header">You have @userMessages.Count messages</li>
@@ -23,9 +26,9 @@
                                 <h4>
                                     @message.Title
                                     &nbsp;
-                                    <small><i class="fa fa-clock-o"></i> <span class="timeago" title="@message.SentDate.ToString("yyyy-MM-ddTHH:mm:ssZ")"></span> </small>
+                                    <small><i class="fa fa-clock-o"></i> <span title="@Html.TimeAgo(message.SentDate)"></span> </small>
                                 </h4>
-                                <p>@message.Message</p>
+                                <p>@System.Text.RegularExpressions.Regex.Replace(message.Message, @"<[^>]*>", String.Empty)</p>
                             </a>
                         }
                     </li>

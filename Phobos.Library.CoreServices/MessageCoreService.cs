@@ -1,4 +1,5 @@
 ﻿using Ninject;
+using Phobos.Library.Interfaces;
 using Phobos.Library.Interfaces.Repos;
 using Phobos.Library.Interfaces.Services;
 using Phobos.Library.Models;
@@ -16,6 +17,7 @@ namespace Phobos.Library.CoreServices
     {
         [Inject]
         public IMessageRepo Repository { get; set; }
+
 
         public bool SendMessage(string username, string v)
         {
@@ -54,6 +56,7 @@ namespace Phobos.Library.CoreServices
                 sentMessage.Id = 0;
                 sentMessage.Owner = sentMessage.Receiver;
                 sentMessage.SendDate = DateTime.Now;
+                sentMessage.MessageDate = DateTime.Now;
                 this.Repository.SaveMessage(sentMessage);
 
                 //// Mark the current message as Sent.

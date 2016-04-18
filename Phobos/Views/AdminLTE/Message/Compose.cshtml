@@ -53,6 +53,9 @@
                         </div>
                         <p class="help-block">Max. 32MB</p>
                     </div>
+                    @Html.HiddenFor(x => x.Date)
+                    @Html.EditorFor(x => x.Sender, "UserAccountViewModel_Hidden")
+                    @Html.EditorFor(x => x.Owner, "UserAccountViewModel_Hidden")
                 </div>
                 <div class="box-footer">
                     <div class="pull-right">

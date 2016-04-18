@@ -77,57 +77,25 @@ namespace Phobos.Helpers
         }
         public static MvcHtmlString TimeAgo(this HtmlHelper htmlHelper, DateTime date)
         {
+            var timeSpan = DateTime.Now - date;
 
-            const int SECOND = 1;
-            const int MINUTE = 60 * SECOND;
-            const int HOUR = 60 * MINUTE;
-            const int DAY = 24 * HOUR;
-            const int MONTH = 30 * DAY;
+            if (timeSpan <= TimeSpan.FromSeconds(60))
+                return MvcHtmlString.Create(string.Format("{0} seconds ago", timeSpan.Seconds));
 
-            var ts = new TimeSpan(DateTime.UtcNow.Ticks - date.Ticks);
-            var value = "";
-            double delta = Math.Abs(ts.TotalSeconds);
+            if (timeSpan <= TimeSpan.FromMinutes(60))
+                return MvcHtmlString.Create(timeSpan.Minutes > 1 ? String.Format("about {0} minutes ago", timeSpan.Minutes) : "about a minute ago");
 
-            if (delta < 1 * MINUTE)
-            {
-                value = ts.Seconds == 1 ? "one second ago" : ts.Seconds + " seconds ago";
-            }
-            if (delta < 2 * MINUTE)
-            {
-                value = "a minute ago";
-            }
-            if (delta < 45 * MINUTE)
-            {
-                value = ts.Minutes + " minutes ago";
-            }
-            if (delta < 90 * MINUTE)
-            {
-                value = "an hour ago";
-            }
-            if (delta < 24 * HOUR)
-            {
-                value = ts.Hours + " hours ago";
-            }
-            if (delta < 48 * HOUR)
-            {
-                value = "yesterday";
-            }
-            if (delta < 30 * DAY)
-            {
-                value = ts.Days + " days ago";
-            }
-            if (delta < 12 * MONTH)
-            {
-                int months = Convert.ToInt32(Math.Floor((double)ts.Days / 30));
-                value = months <= 1 ? "one month ago" : months + " months ago";
-            }
-            else
-            {
-                int years = Convert.ToInt32(Math.Floor((double)ts.Days / 365));
-                value = years <= 1 ? "one year ago" : years + " years ago";
-            }
+            if (timeSpan <= TimeSpan.FromHours(24))
+                return MvcHtmlString.Create(timeSpan.Hours > 1 ? String.Format("about {0} hours ago", timeSpan.Hours) : "about an hour ago");
 
-            return MvcHtmlString.Create(value);
+            if (timeSpan <= TimeSpan.FromDays(30))
+                return MvcHtmlString.Create(timeSpan.Days > 1 ? String.Format("about {0} days ago", timeSpan.Days) : "yesterday");
+
+            if (timeSpan <= TimeSpan.FromDays(365))
+                return MvcHtmlString.Create(timeSpan.Days > 30 ? String.Format("about {0} months ago", timeSpan.Days / 30) : "about a month ago");
+
+            return MvcHtmlString.Create(timeSpan.Days > 365 ? String.Format("about {0} years ago", timeSpan.Days / 365) : "about a year ago");
+
         }
         public static HelperResult SetPartialHelper(this HtmlHelper htmlHelper, string helperName, Func<HelperResult> partial)
         {

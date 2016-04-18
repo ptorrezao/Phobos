@@ -18,5 +18,6 @@ namespace Phobos
         {
             FormsAuthentication.SignOut();
         }
+
     }
 }

@@ -8,6 +8,7 @@ namespace Phobos.Library.Models.ViewModels
     public class MessageMailBoxItemViewModel
     {
         public bool IsFavorite { get; set; }
+        public UserAccountViewModel Owner { get; set; }
         public UserAccountViewModel Sender { get; set; }
         public UserAccountViewModel Receiver { get; set; }
         public string Intro { get; set; }

@@ -46,6 +46,9 @@ namespace Phobos.Controllers
                 CurrentFolder = mapper.Map<UserMessageFolder, MessageMailBoxFolderViewModel>(currentFolder),
                 Folders = mapper.Map<List<UserMessageFolder>, List<MessageMailBoxFolderViewModel>>(foldersForUser)
             };
+
+            SessionManager.CurrentFolderId = currentFolder.Id;
+
             return View(model);
         }
 
@@ -60,16 +63,21 @@ namespace Phobos.Controllers
 
         public ActionResult Compose()
         {
-            return View();
+            UserMessage model = new UserMessage() { };
+            model.Owner = model.Sender = userManagementService.GetUser(SessionManager.CurrentUsername);
+            MessageMailBoxItemViewModel newMessage = AutoMapperConfiguration.GetMapper().Map<MessageMailBoxItemViewModel>(model);
+            return View(newMessage);
         }
 
         [HttpParamAction]
         [AcceptVerbs(HttpVerbs.Post)]
+        [ValidateInput(false)]
         public ActionResult Compose(string submit, MessageMailBoxItemViewModel model, IEnumerable<HttpPostedFileBase> files)
         {
             if (submit == "Send")
             {
                 UserMessage newMessage = AutoMapperConfiguration.GetMapper().Map<UserMessage>(model);
+
                 newMessage.Attachments = this.SaveAttachements(files);
 
                 UserMessage createdMessage = messageService.SaveMessage(SessionManager.CurrentUsername, newMessage);
@@ -80,6 +88,7 @@ namespace Phobos.Controllers
             else if (submit == "Draft")
             {
                 UserMessage newMessage = AutoMapperConfiguration.GetMapper().Map<UserMessage>(model);
+
                 newMessage.Attachments = this.SaveAttachements(files);
 
                 UserMessage createdMessage = messageService.SaveMessage(SessionManager.CurrentUsername, newMessage);

@@ -11,7 +11,7 @@ namespace Phobos.Library.CoreServices.Db
     public class PhobosCoreContext : DbContext
     {
         public PhobosCoreContext()
-            : base("DefaultConnection")
+            : base("Phobos")
         {
         }
 

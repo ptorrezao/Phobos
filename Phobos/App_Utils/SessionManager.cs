@@ -34,7 +34,6 @@ namespace Phobos
         {
             get
             {
-
                 return (UserAccountViewModel)(HttpContext.Current.Session["userAccount"] ?? null);
             }
 
@@ -71,6 +70,22 @@ namespace Phobos
                 }
 
                 return listOfUserViewModel;
+            }
+        }
+
+        public static int CurrentFolderId
+        {
+            get
+            {
+                return (int)(HttpContext.Current.Session["CurrentFolderId"] ?? null);
+            }
+
+            set
+            {
+                if (HttpContext.Current != null)
+                {
+                    HttpContext.Current.Session["CurrentFolderId"] = value;
+                }
             }
         }
     }

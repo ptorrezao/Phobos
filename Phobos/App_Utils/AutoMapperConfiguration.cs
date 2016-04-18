@@ -17,7 +17,13 @@ namespace Phobos.App_Utils
         {
             var config = new MapperConfiguration(cfg =>
             {
+                cfg.CreateMap<MessageMailBoxItemViewModel, UserMessage>()
+                    .ForMember(dest => dest.MessageDate, opts => opts.MapFrom(src => src.Date))
+                    .ForMember(dest => dest.Sender, opts => opts.MapFrom(src => AutoMapperConfiguration.GetMapper().Map<UserAccount>(src.Sender)))
+                    .ForMember(dest => dest.Owner, opts => opts.MapFrom(src => AutoMapperConfiguration.GetMapper().Map<UserAccount>(src.Owner)))
+                    .ForMember(dest => dest.Receiver, opts => opts.MapFrom(src => AutoMapperConfiguration.GetMapper().Map<UserAccount>(src.Receiver)));
                 cfg.CreateMap<UserMessage, MessageMailBoxItemViewModel>()
+                    .ForMember(dest => dest.Date, opts => opts.MapFrom(src => src.MessageDate))
                     .ForMember(dest => dest.Sender, opts => opts.MapFrom(src => AutoMapperConfiguration.GetMapper().Map<UserAccountViewModel>(src.Sender)))
                     .ForMember(dest => dest.Receiver, opts => opts.MapFrom(src => AutoMapperConfiguration.GetMapper().Map<UserAccountViewModel>(src.Receiver)))
                     .ForMember(dest => dest.Intro, opts => opts.MapFrom(src => src.Message.TruncateLongString(30, "...")));
