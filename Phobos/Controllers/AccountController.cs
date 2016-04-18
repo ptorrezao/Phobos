@@ -8,8 +8,10 @@ using StackExchange.Profiling;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Routing;
 using System.Web.Security;
 
 namespace Phobos.Controllers
@@ -26,7 +28,21 @@ namespace Phobos.Controllers
             this.AuthenticationService = authSvc;
             this.auditTrailService = auditTrailService;
         }
-    
+
+        protected override void OnActionExecuted(ActionExecutedContext filterContext)
+        {
+            using (MiniProfiler.Current.Step("ResolveFooter"))
+            {
+                UrlHelper helper = new UrlHelper(filterContext.RequestContext, RouteTable.Routes);
+                filterContext.Controller.ViewBag.Version = Assembly.GetAssembly(typeof(MvcApplication)).GetName().Version.ToString();
+                filterContext.Controller.ViewBag.CompanyUrl = helper.Action("", "", new { });
+                filterContext.Controller.ViewBag.CompanyName = "PTZ";
+                filterContext.Controller.ViewBag.ShortPageTitle = "";
+                filterContext.Controller.ViewBag.PageTitle = "Phobos";
+            }
+
+            base.OnActionExecuted(filterContext);
+        }
 
         [AllowAnonymous]
         public ActionResult Login()
