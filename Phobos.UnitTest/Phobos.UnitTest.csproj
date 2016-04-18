@@ -104,6 +104,7 @@
     <Compile Include="Library_CoreServices.cs" />
     <Compile Include="Repos\TestCoreRepo.cs" />
     <Compile Include="Repos\TestUserManagementRepo.cs" />
+    <Compile Include="Phobos_UnitTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Phobos.Library.CoreServices.Db\Phobos.Library.CoreServices.Db.csproj">

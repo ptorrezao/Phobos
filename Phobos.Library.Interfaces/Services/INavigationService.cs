@@ -10,5 +10,6 @@ namespace Phobos.Library.Interfaces.Services
     public interface INavigationService
     {
         MenuEntriesListViewModel GetMenusForUser(string username);
+        bool CheckIfActionIsAllowed(string currentControllerName, string currentActionName, string username);
     }
 }

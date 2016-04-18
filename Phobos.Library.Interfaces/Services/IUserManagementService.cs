@@ -19,7 +19,7 @@ namespace Phobos.Library.Interfaces
         List<UserTask> GetLastTasks(string userName, int qtd);
         bool RegisterUser(string name, string userName, string password, string confirmPassword, out string error);
         bool RecoverProfile(string userName, out string error);
-        bool CheckIfActionIsAllowed(string currentControllerName, string currentActionName, string username);
+
         bool UpdateAccount(UserAccount userAccount);
     }
 }

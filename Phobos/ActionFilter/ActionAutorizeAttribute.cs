@@ -1,5 +1,6 @@
 ﻿using Ninject;
 using Phobos.Library.Interfaces;
+using Phobos.Library.Interfaces.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,16 +12,16 @@ namespace Phobos.ActionFilter
 {
     public class ActionAutorizeAttribute : ActionFilterAttribute
     {
-        private IUserManagementService userManagementService;
+        private INavigationService navigationService;
         private bool AllowEvenIfNotCreated;
 
-        public ActionAutorizeAttribute() : this(false, MvcApplication.GetKernel().Get<IUserManagementService>()) { }
-        public ActionAutorizeAttribute(bool allowEvenIfNotCreated) : this(allowEvenIfNotCreated, MvcApplication.GetKernel().Get<IUserManagementService>()) { }
+        public ActionAutorizeAttribute() : this(false, MvcApplication.GetKernel().Get<INavigationService>()) { }
+        public ActionAutorizeAttribute(bool allowEvenIfNotCreated) : this(allowEvenIfNotCreated, MvcApplication.GetKernel().Get<INavigationService>()) { }
 
-        public ActionAutorizeAttribute(bool allowEvenIfNotCreated, IUserManagementService userMngSvc)
+        public ActionAutorizeAttribute(bool allowEvenIfNotCreated, INavigationService userMngSvc)
         {
             this.AllowEvenIfNotCreated = allowEvenIfNotCreated;
-            this.userManagementService = userMngSvc;
+            this.navigationService = userMngSvc;
         }
 
         public override void OnActionExecuting(ActionExecutingContext filterContext)
@@ -34,7 +35,7 @@ namespace Phobos.ActionFilter
             }
             else
             {
-                if (!userManagementService.CheckIfActionIsAllowed(currentControllerName, currentActionName, SessionManager.UserAccount.Username) && !this.AllowEvenIfNotCreated)
+                if (!navigationService.CheckIfActionIsAllowed(currentControllerName, currentActionName, SessionManager.UserAccount.Username) && !this.AllowEvenIfNotCreated)
                 {
                     filterContext.Result = new RedirectToRouteResult(new RouteValueDictionary(new { controller = "Account", action = "Login" }));
                     base.OnActionExecuting(filterContext);

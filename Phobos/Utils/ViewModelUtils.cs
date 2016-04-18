@@ -11,13 +11,16 @@ namespace Phobos.Utils
     {
         public static IEnumerable<SelectListItem> AsSelectListItem(this List<MessageMailBoxFolderItemViewModel> folders, object selectedValue)
         {
-            var newList = new List<SelectListItem>();
+            int selectedValueId = -1;
+            var isSelectedIdValid = int.TryParse(selectedValue.ToString(), out selectedValueId);
 
+            var newList = new List<SelectListItem>();
+ 
             foreach (MessageMailBoxFolderItemViewModel item in folders)
             {
                 newList.Add(new SelectListItem()
                 {
-                    Selected = item.FolderId == (int)selectedValue,
+                    Selected = isSelectedIdValid && item.FolderId == selectedValueId,
                     Text = item.Title,
                     Value = item.FolderId.ToString()
                 });

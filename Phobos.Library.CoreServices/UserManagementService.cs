@@ -35,44 +35,7 @@ namespace Phobos.Library.CoreServices
         #endregion
 
         #region IUserManagementService
-        public bool CheckIfActionIsAllowed(string currentControllerName, string currentActionName, string username)
-        {
-            var selectedAction = this.Repository.GetAutorizationForAction(currentControllerName, currentActionName);
-
-            if (selectedAction != null)
-            {
-                if (selectedAction.Roles.Any(x => x.UserAccounts.Any(z => z.Username == username)) ||
-                    selectedAction.UserAccounts.Any(x => x.Username == username))
-                {
-                    var msg = string.Format("Was found action authorizations for the specified action/controller ({0}/{1}) for user {3}.", currentActionName, currentControllerName, username);
-
-                    AuditTrail.LogInfoMessage(msg, username, DateTime.Now);
-
-                    return true;
-                }
-                else
-                {
-                    //// Action is not authorized for this user
-
-                    var msg = string.Format("Was not found action authorizations for the specified action/controller ({0}/{1}) for user {3}.", currentActionName, currentControllerName, username);
-
-                    AuditTrail.LogInfoMessage(msg, username, DateTime.Now);
-
-                    return false;
-                }
-            }
-            else
-            {
-                //// Action is not authorized
-
-                var msg = string.Format("Was not found action authorizations for the specified action/controller ({0}/{1}).", currentActionName, currentControllerName);
-
-                AuditTrail.LogInfoMessage(msg, username, DateTime.Now);
-
-                return false;
-            }
-        }
-
+        
         bool CheckIfRegisterIsAllowed(string name, string userName, string password, string confirmPassword, out string msg)
         {
             msg = "";
