@@ -23,6 +23,7 @@ namespace Phobos.App_Utils
                     .ForMember(dest => dest.Owner, opts => opts.MapFrom(src => AutoMapperConfiguration.GetMapper().Map<UserAccount>(src.Owner)))
                     .ForMember(dest => dest.Receiver, opts => opts.MapFrom(src => AutoMapperConfiguration.GetMapper().Map<UserAccount>(src.Receiver)));
                 cfg.CreateMap<UserMessage, MessageMailBoxItemViewModel>()
+                    .ForMember(dest => dest.MessageId, opts => opts.MapFrom(src => src.Id))
                     .ForMember(dest => dest.Date, opts => opts.MapFrom(src => src.MessageDate))
                     .ForMember(dest => dest.Sender, opts => opts.MapFrom(src => AutoMapperConfiguration.GetMapper().Map<UserAccountViewModel>(src.Sender)))
                     .ForMember(dest => dest.Receiver, opts => opts.MapFrom(src => AutoMapperConfiguration.GetMapper().Map<UserAccountViewModel>(src.Receiver)))
@@ -33,6 +34,7 @@ namespace Phobos.App_Utils
                     .ForMember(dest => dest.Message, opts => opts.MapFrom(src => src.Message.TruncateLongString(30, "...")))
                     .ForMember(dest => dest.SentDate, opts => opts.MapFrom(src => src.SendDate))
                     .ForMember(dest => dest.Title, opts => opts.MapFrom(src => src.Title))
+                    .ForMember(dest => dest.Id, opts => opts.MapFrom(src => src.Id))
                     .ForMember(dest => dest.User, opts => opts.MapFrom(src => AutoMapperConfiguration.GetMapper().Map<UserAccountViewModel>(src.Receiver)));
                 cfg.CreateMap<UserAccount, UserAccountViewModel>()
                     .ForMember(dest => dest.CurrentStatus, opts => opts.MapFrom(src => src.CurrentStatus))

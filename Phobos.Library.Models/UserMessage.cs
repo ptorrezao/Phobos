@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace Phobos.Library.Models
 {
+    [Serializable]
     public class UserMessage
     {
         public UserMessage()

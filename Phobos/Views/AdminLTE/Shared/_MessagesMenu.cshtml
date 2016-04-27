@@ -19,7 +19,7 @@
                     <li>
                         @foreach (var message in userMessages)
                         {
-                            <a href="#">
+                            <a href="@Url.Action("ReadMessage","Message",new { id = message.Id})">
                                 <div class="pull-left">
                                     <img src="@message.User.ImageUrl" class="img-circle" alt="@message.User.FullName">
                                 </div>

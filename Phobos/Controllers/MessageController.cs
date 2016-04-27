@@ -83,7 +83,7 @@ namespace Phobos.Controllers
                 UserMessage createdMessage = messageService.SaveMessage(SessionManager.CurrentUsername, newMessage);
                 messageService.SendMessage(SessionManager.CurrentUsername, createdMessage);
 
-                this.RedirectToAction("Read", new { id = createdMessage.Id });
+                return this.RedirectToAction("Read", new { id = createdMessage.Id });
             }
             else if (submit == "Draft")
             {
@@ -93,7 +93,7 @@ namespace Phobos.Controllers
 
                 UserMessage createdMessage = messageService.SaveMessage(SessionManager.CurrentUsername, newMessage);
 
-                this.RedirectToAction("Read", new { id = createdMessage.Id });
+                return this.RedirectToAction("Read", new { id = createdMessage.Id });
             }
             else if (submit == "Discard")
             {
@@ -113,7 +113,7 @@ namespace Phobos.Controllers
             {
                 if (item != null)
                 {
-                    var newFileName = string.Format("{0}_{1}", Guid.NewGuid(), item.FileName);
+                    var newFileName = string.Format("{2}\\{0}_{1}", Guid.NewGuid(), item.FileName, HttpContext.Request.PhysicalApplicationPath);
                     item.SaveAs(newFileName);
                     listOfFiles.Add(newFileName);
                 }
@@ -133,7 +133,9 @@ namespace Phobos.Controllers
 
         public ActionResult ReadMessage(int Id)
         {
-            return this.RedirectToAction("Index");
+            var message = messageService.GetMessage(SessionManager.CurrentUsername, Id);
+            MessageMailBoxItemViewModel newMessage = AutoMapperConfiguration.GetMapper().Map<MessageMailBoxItemViewModel>(message);
+            return View(newMessage);
         }
 
         [HttpParamAction]

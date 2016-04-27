@@ -52,11 +52,22 @@ namespace Phobos.Library.CoreServices
             if (createdMessage.Sender.Username == userName)
             {
                 //// Create a new instance of this message and send it;
-                var sentMessage = ObjectCopier.Clone<UserMessage>(createdMessage);
-                sentMessage.Id = 0;
-                sentMessage.Owner = sentMessage.Receiver;
-                sentMessage.SendDate = DateTime.Now;
-                sentMessage.MessageDate = DateTime.Now;
+
+                UserMessage sentMessage = new UserMessage()
+                {
+                    Attachments = createdMessage.Attachments,
+                    Folder = createdMessage.Folder,
+                    HasAttachment = createdMessage.HasAttachment,
+                    IsFavorite = createdMessage.IsFavorite,
+                    Message = createdMessage.Message,
+                    Title = createdMessage.Title,
+                    MessageDate = DateTime.Now,
+                    SendDate = DateTime.Now,
+                    Owner = createdMessage.Receiver,
+                    Receiver = createdMessage.Receiver,
+                    Sender = createdMessage.Owner,
+                    Sent = true
+                };
                 this.Repository.SaveMessage(sentMessage);
 
                 //// Mark the current message as Sent.
@@ -79,7 +90,13 @@ namespace Phobos.Library.CoreServices
 
         public void DeleteMessage(int messageId)
         {
-             this.Repository.DeleteMessage(messageId);
+            this.Repository.DeleteMessage(messageId);
+        }
+
+
+        public UserMessage GetMessage(string userName, int id)
+        {
+            return this.Repository.GetMessage(userName, id);
         }
     }
 }

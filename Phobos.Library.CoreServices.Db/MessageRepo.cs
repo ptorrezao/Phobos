@@ -56,7 +56,8 @@ namespace Phobos.Library.CoreServices.Db
                     .Include(x => x.Sender)
                     .Include(x => x.Folder)
                     .Include(x => x.Owner)
-                    .Where(x => x.Owner.Username == userName && x.Receiver.Username == userName && x.Folder.Id == x.Folder.Id)
+                    .Where(x => x.Receiver.Username == userName &&
+                                x.Folder.Id == x.Folder.Id)
                     .OrderByDescending(x => x.SendDate)
                     .ToList();
             }
@@ -105,6 +106,24 @@ namespace Phobos.Library.CoreServices.Db
                 context.UserMessages.Remove(msg);
 
                 context.SaveChanges();
+            }
+        }
+
+
+        public UserMessage GetMessage(string userName, int id)
+        {
+            using (var context = new PhobosCoreContext())
+            {
+                return context.UserMessages
+                    .Include(x => x.Receiver)
+                    .Include(x => x.Sender)
+                    .Include(x => x.Folder)
+                    .Include(x => x.Owner)
+                    .Where(x => x.Receiver.Username == userName &&
+                                x.Folder.Id == x.Folder.Id &&
+                                x.Id == id)
+                    .OrderByDescending(x => x.SendDate)
+                    .FirstOrDefault();
             }
         }
     }
