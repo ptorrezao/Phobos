@@ -14,4 +14,6 @@ textarea {
     max-width: 280px;
 }
 
-
+.mailbox-controls  {
+    min-height:30px;
+}

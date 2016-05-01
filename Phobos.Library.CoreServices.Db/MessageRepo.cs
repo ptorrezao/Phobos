@@ -80,8 +80,6 @@ namespace Phobos.Library.CoreServices.Db
                 return folder;
             }
         }
-
-
         public UserMessage SaveMessage(UserMessage sentMessage)
         {
             using (var context = new PhobosCoreContext())
@@ -89,14 +87,13 @@ namespace Phobos.Library.CoreServices.Db
                 sentMessage.Owner = context.Users.First(x => x.Username == sentMessage.Owner.Username);
                 sentMessage.Sender = context.Users.First(x => x.Username == sentMessage.Sender.Username);
                 sentMessage.Receiver = context.Users.First(x => x.Username == sentMessage.Receiver.Username);
+                sentMessage.Folder = sentMessage.Folder == null ? context.UserMessageFolders.FirstOrDefault(x => x.User.Username == sentMessage.Receiver.Username && x.Name == "Inbox") : sentMessage.Folder;
                 context.UserMessages.Add(sentMessage);
                 context.SaveChanges();
 
                 return sentMessage;
             }
         }
-
-
         public void DeleteMessage(int messageId)
         {
             using (var context = new PhobosCoreContext())
@@ -108,8 +105,6 @@ namespace Phobos.Library.CoreServices.Db
                 context.SaveChanges();
             }
         }
-
-
         public UserMessage GetMessage(string userName, int id)
         {
             using (var context = new PhobosCoreContext())

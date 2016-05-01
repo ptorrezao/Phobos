@@ -125,7 +125,9 @@ namespace Phobos.Controllers
         {
             if (!Url.IsLocalUrl(returnUrl))
             {
-
+                var message = messageService.GetMessage(SessionManager.CurrentUsername, Id);
+                message.IsFavorite = !message.IsFavorite;
+                messageService.SaveMessage(SessionManager.CurrentUsername, message);
             }
 
             return this.Redirect(returnUrl);
@@ -136,6 +138,26 @@ namespace Phobos.Controllers
             var message = messageService.GetMessage(SessionManager.CurrentUsername, Id);
             MessageMailBoxItemViewModel newMessage = AutoMapperConfiguration.GetMapper().Map<MessageMailBoxItemViewModel>(message);
             return View(newMessage);
+        }
+
+        public ActionResult FindNextMessage(int Id, bool IsPrevious = false)
+        {
+            UserMessage message = messageService.GetMessage(SessionManager.CurrentUsername, Id);
+            var folder = messageService.GetFolder(SessionManager.CurrentUsername, message.Folder.Id);
+            int currentElementIndex = folder.Messages.Select(x=>x.Id).ToList().IndexOf(message.Id);
+            int nextElementIndex = IsPrevious ? currentElementIndex - 1 : currentElementIndex + 1;
+
+
+            if (IsPrevious && nextElementIndex < 0)
+            {
+                nextElementIndex = folder.Messages.Count - 1;
+            }
+            else if (!IsPrevious && nextElementIndex > folder.Messages.Count - 1)
+            {
+                nextElementIndex = 0;
+            }
+
+            return this.RedirectToAction("ReadMessage", new { Id = folder.Messages[nextElementIndex].Id });
         }
 
         [HttpParamAction]
