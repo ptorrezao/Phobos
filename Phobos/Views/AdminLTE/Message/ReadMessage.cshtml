@@ -18,9 +18,32 @@
 
 @section scripts{
     <script>
+        var modelId = '@Model.MessageId';
+        var url = "@Url.Action("Remove", "Message")";
+        var finalurl = "@Url.Action("Index", "Message")";
 
+        $(function () {
+            $("#btnRemove").click(removeCurrent);
+        });
+
+        function removeCurrent() {
+            var modelIds = [];
+            modelIds.push(modelId);
+
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: {
+                    selectedIds: modelIds
+                },
+                success: function (data) {
+                    window.location.replace(finalurl);
+                }
+            });
+        }
     </script>
 }
+
 <div class="row">
     <div class="col-md-3">
         <a href="@Url.Action("Compose")" class="btn btn-primary btn-block margin-bottom">Compose</a>
@@ -78,8 +101,25 @@
                     <button class="btn btn-default"><i class="fa fa-reply"></i> Reply</button>
                     <button class="btn btn-default"><i class="fa fa-share"></i> Forward</button>
                 </div>
-                <button class="btn btn-default"><i class="fa fa-trash-o"></i> Delete</button>
+                <button data-toggle="modal" data-target="#modalDelete" class="btn btn-default"><i class="fa fa-trash-o"></i> Delete</button>
                 <button class="btn btn-default" onclick="window.print();"><i class="fa fa-print"></i> Print</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal modal-primary fade" id="modalDelete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Delete Message</h4>
+            </div>
+            <div class="modal-body">
+                Do you realy want to delete the this message?
+            </div>
+            <div class="modal-footer">
+                <button type="button" onclick="return false;" class="btn btn-outline pull-left" data-dismiss="modal">Close</button>
+                <button name="remove" type="submit" formaction="" class="btn btn-outline" id="btnRemove">Delete</button>
             </div>
         </div>
     </div>

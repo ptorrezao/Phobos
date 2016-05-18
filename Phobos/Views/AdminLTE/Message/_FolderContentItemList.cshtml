@@ -75,7 +75,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" onclick="return false;" class="btn btn-outline pull-left" data-dismiss="modal">Close</button>
-                <button name="remove" type="submit" formaction="" class="btn btn-outline">Delete</button>
+                <button name="remove" id="btnRemove" type="submit" formaction="" class="btn btn-outline">Delete</button>
             </div>
         </div>
     </div>
@@ -115,6 +115,9 @@
 
 <script>
     $(document).ready(function () {
+        var url = "@Url.Action("Remove", "Message")";
+        var finalurl = "@Url.Action("Index", "Message")";
+
         $(".masterCheckbox").click(function () {
             $(".masterCheckbox").children("i").toggleClass("fa-square-o");
             $(".masterCheckbox").children("i").toggleClass("fa-check-square-o");
@@ -129,15 +132,32 @@
         $(".grid-search").blur(function () {
             $("#searchButton").click();
         });
+        $("#btnRemove").click(function () {
+            var modelIds = [];
+            $.each($('.mailbox').find('input[type=checkbox]:checked'), function (index, value) {
+                modelIds.push($(value).val());
+            });
+
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: {
+                    selectedIds: modelIds
+                },
+                success: function (data) {
+                    window.location.replace(finalurl);
+                }
+            });
+        });
     });
 </script>
 
 <style>
     .smallColumn {
-        width:20px;
+        width: 20px;
     }
 
     .fiftyColumn {
-        width:50%;
+        width: 50%;
     }
 </style>

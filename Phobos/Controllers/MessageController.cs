@@ -144,7 +144,7 @@ namespace Phobos.Controllers
         {
             UserMessage message = messageService.GetMessage(SessionManager.CurrentUsername, Id);
             var folder = messageService.GetFolder(SessionManager.CurrentUsername, message.Folder.Id);
-            int currentElementIndex = folder.Messages.Select(x=>x.Id).ToList().IndexOf(message.Id);
+            int currentElementIndex = folder.Messages.Select(x => x.Id).ToList().IndexOf(message.Id);
             int nextElementIndex = IsPrevious ? currentElementIndex - 1 : currentElementIndex + 1;
 
 
@@ -164,6 +164,15 @@ namespace Phobos.Controllers
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult Remove(string[] selectedIds)
         {
+            foreach (var selectedId in selectedIds)
+            {
+                int selectedInt = 0;
+                if (int.TryParse(selectedId, out selectedInt))
+                {
+                    this.messageService.DeleteMessage(selectedInt);
+                }
+            }
+
             return this.RedirectToAction("Index");
         }
 
