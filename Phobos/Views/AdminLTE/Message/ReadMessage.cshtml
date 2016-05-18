@@ -98,6 +98,10 @@
             </div>
             <div class="box-footer">
                 <div class="pull-right">
+                    @if (Model.AllowEdit)
+                    {
+                        <a href="@Url.Action("Compose","Message",new { id= Model.MessageId})" class="btn btn-default"><i class="fa fa-reply"></i> Edit</a>
+                    }
                     <button class="btn btn-default"><i class="fa fa-reply"></i> Reply</button>
                     <button class="btn btn-default"><i class="fa fa-share"></i> Forward</button>
                 </div>

@@ -28,8 +28,11 @@ namespace Phobos.App_Utils
                     .ForMember(dest => dest.Sender, opts => opts.MapFrom(src => AutoMapperConfiguration.GetMapper().Map<UserAccountViewModel>(src.Sender)))
                     .ForMember(dest => dest.Receiver, opts => opts.MapFrom(src => AutoMapperConfiguration.GetMapper().Map<UserAccountViewModel>(src.Receiver)))
                     .ForMember(dest => dest.Intro, opts => opts.MapFrom(src => src.Message.TruncateLongString(30, "...")));
-                cfg.CreateMap<UserMessageFolder, MessageMailBoxFolderViewModel>();
-                cfg.CreateMap<UserMessageFolder, MessageMailBoxFolderItemViewModel>();
+                cfg.CreateMap<UserMessageFolder, MessageMailBoxFolderViewModel>()
+                    .ForMember(dest => dest.QtdNewMessages, opts => opts.MapFrom(src => src.Messages.Count))
+                    .ForMember(dest => dest.FolderId, opts => opts.MapFrom(src => src.Id));
+                cfg.CreateMap<UserMessageFolder, MessageMailBoxFolderItemViewModel>()
+                    .ForMember(dest => dest.FolderId, opts => opts.MapFrom(src => src.Id));
                 cfg.CreateMap<UserMessage, UserMessageViewModel>()
                     .ForMember(dest => dest.Message, opts => opts.MapFrom(src => src.Message.TruncateLongString(30, "...")))
                     .ForMember(dest => dest.SentDate, opts => opts.MapFrom(src => src.SendDate))

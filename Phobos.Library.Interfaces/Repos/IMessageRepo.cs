@@ -12,6 +12,8 @@ namespace Phobos.Library.Interfaces.Repos
         List<UserMessage> GetLastMessages(string userName, int qtd, bool orderDesc);
         List<UserMessageFolder> GetAllFolders(string userName);
         UserMessageFolder GetFolder(string userName, int folderId);
+        UserMessageFolder GetInboxFolder(string userName);
+        UserMessageFolder GetSentFolder(string userName);
         List<UserMessage> GetMessages(string userName, int folderId);
         UserMessageFolder CreateDefaultFolder(string userName);
         UserMessage SaveMessage(UserMessage sentMessage);

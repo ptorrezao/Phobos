@@ -40,19 +40,20 @@ namespace Phobos.Library.CoreServices
 
             if (folder == null && id == null)
             {
-                folder = this.Repository.CreateDefaultFolder(userName);
+                folder = this.Repository.GetInboxFolder(userName);
             }
 
             folder.Messages = this.Repository.GetMessages(userName, folder.Id);
             return folder;
         }
 
-        public void SendMessage(string userName, UserMessage createdMessage)
+        public UserMessage SendMessage(string userName, UserMessage createdMessage)
         {
+            UserMessageFolder sentFolder = this.Repository.GetSentFolder(userName);
+            
             if (createdMessage.Sender.Username == userName)
             {
                 //// Create a new instance of this message and send it;
-
                 UserMessage sentMessage = new UserMessage()
                 {
                     Attachments = createdMessage.Attachments,
@@ -63,9 +64,9 @@ namespace Phobos.Library.CoreServices
                     Title = createdMessage.Title,
                     MessageDate = DateTime.Now,
                     SendDate = DateTime.Now,
-                    Owner = createdMessage.Receiver,
-                    Receiver = createdMessage.Receiver,
-                    Sender = createdMessage.Owner,
+                    Owner = new UserAccount() { Username = createdMessage.Receiver.Username },
+                    Receiver = new UserAccount() { Username = createdMessage.Receiver.Username },
+                    Sender = new UserAccount() { Username = createdMessage.Owner.Username },
                     Sent = true
                 };
                 this.Repository.SaveMessage(sentMessage);
@@ -73,9 +74,11 @@ namespace Phobos.Library.CoreServices
                 //// Mark the current message as Sent.
                 createdMessage.Sent = true;
                 createdMessage.SendDate = DateTime.Now;
-
+                createdMessage.Folder = sentFolder;
                 this.Repository.SaveMessage(createdMessage);
             }
+
+            return createdMessage;
         }
 
         public UserMessage SaveMessage(string userName, UserMessage newMessage)

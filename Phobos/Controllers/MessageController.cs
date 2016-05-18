@@ -37,8 +37,8 @@ namespace Phobos.Controllers
 
         public ActionResult Index(int? id)
         {
-            var currentFolder = messageService.GetFolder(SessionManager.CurrentUsername, id);
             var foldersForUser = messageService.GetAllFoldersForUser(SessionManager.CurrentUsername);
+            var currentFolder = messageService.GetFolder(SessionManager.CurrentUsername, id);
             var mapper = AutoMapperConfiguration.GetMapper();
 
             var model = new MessageMailBoxViewModel()
@@ -80,10 +80,9 @@ namespace Phobos.Controllers
 
                 newMessage.Attachments = this.SaveAttachements(files);
 
-                UserMessage createdMessage = messageService.SaveMessage(SessionManager.CurrentUsername, newMessage);
-                messageService.SendMessage(SessionManager.CurrentUsername, createdMessage);
+                newMessage = messageService.SendMessage(SessionManager.CurrentUsername, newMessage);
 
-                return this.RedirectToAction("Read", new { id = createdMessage.Id });
+                return this.RedirectToAction("ReadMessage", new { id = newMessage.Id });
             }
             else if (submit == "Draft")
             {
@@ -93,7 +92,7 @@ namespace Phobos.Controllers
 
                 UserMessage createdMessage = messageService.SaveMessage(SessionManager.CurrentUsername, newMessage);
 
-                return this.RedirectToAction("Read", new { id = createdMessage.Id });
+                return this.RedirectToAction("ReadMessage", new { id = createdMessage.Id, allowEdit = true });
             }
             else if (submit == "Discard")
             {

@@ -17,5 +17,6 @@ namespace Phobos.Library.Models.ViewModels
         public bool HasAttachment { get; set; }
         public DateTime Date { get; set; }
         public int MessageId { get; set; }
+        public bool AllowEdit { get; set; }
     }
 }
