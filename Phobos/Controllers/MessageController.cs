@@ -57,8 +57,8 @@ namespace Phobos.Controllers
             var mapper = AutoMapperConfiguration.GetMapper();
 
             var foldersForUser = messageService.GetAllFoldersForUser(SessionManager.CurrentUsername);
-
-            return this.PartialView("_FolderBox", mapper.Map<List<UserMessageFolder>, List<MessageMailBoxFolderViewModel>>(foldersForUser));
+            var viewModel = mapper.Map<List<UserMessageFolder>, List<MessageMailBoxFolderViewModel>>(foldersForUser);
+            return this.PartialView("_FolderBox", viewModel);
         }
 
         public ActionResult Compose()
@@ -136,6 +136,12 @@ namespace Phobos.Controllers
         {
             var message = messageService.GetMessage(SessionManager.CurrentUsername, Id);
             MessageMailBoxItemViewModel newMessage = AutoMapperConfiguration.GetMapper().Map<MessageMailBoxItemViewModel>(message);
+
+            if (newMessage== null)
+            {
+                return this.RedirectToAction("Index");
+            }
+
             return View(newMessage);
         }
 

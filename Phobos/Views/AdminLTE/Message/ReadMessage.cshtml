@@ -47,7 +47,7 @@
 <div class="row">
     <div class="col-md-3">
         <a href="@Url.Action("Compose")" class="btn btn-primary btn-block margin-bottom">Compose</a>
-        @Html.Action("GetFolderBox")
+        @{Html.RenderAction("GetFolderBox");}
         @*
             Tags is not in place for the moment
             @Html.Partial("_TagsBox", Model.Tags)

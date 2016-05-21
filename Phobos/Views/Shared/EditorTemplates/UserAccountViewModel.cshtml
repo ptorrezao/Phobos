@@ -6,7 +6,7 @@
     var list = new JavaScriptSerializer().Serialize(SessionManager.AllUsers);
 }
 
-<input class="typeahead form-control" id="@identifier" type="text" placeholder="To:" name="" >
+<input class="typeahead form-control" id="@identifier" type="text" placeholder="To:" name="">
 @Html.HiddenFor(m => m.Username)
 @Html.HiddenFor(m => m.BirthDate)
 @Html.HiddenFor(m => m.CurrentStatus)
@@ -51,7 +51,7 @@
         });
 
         $('#@identifier').bind('typeahead:select', function(ev, suggestion) {
-            $("#@Html.IdFor(m=>m.Username)").val(suggestion.Username);
+            $("#@Html.IdFor(m => m.Username)").val(suggestion.Username);
             $("#@Html.IdFor(m => m.BirthDate)").val(suggestion.BirthDate);
             $("#@Html.IdFor(m => m.CurrentStatus)").val(suggestion.CurrentStatus);
             $("#@Html.IdFor(m => m.FavoriteLinks)").val(suggestion.FavoriteLinks);
@@ -67,14 +67,15 @@
 </script>
 
 <style>
-    .tt-suggestion{
+    .tt-suggestion {
         display: block;
     }
-    .tt-suggestion img.user-image  {
-        width: 35px;
-        height: 35px;
-        border-radius: 50%;
-        margin-right: 10px;
-        margin-top: -2px;
-    }
+
+        .tt-suggestion img.user-image {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            margin-right: 10px;
+            margin-top: -2px;
+        }
 </style>
