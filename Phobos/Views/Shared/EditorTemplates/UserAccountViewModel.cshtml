@@ -63,6 +63,8 @@
             $("#@Html.IdFor(m => m.UseGravatar)").val(suggestion.UseGravatar);
             $("#@Html.IdFor(m => m.MemberSince)").val(suggestion.MemberSince);
         });
+
+        $('#@identifier').focus().typeahead('val','@Html.Raw(Model.FullName)').focus();
     });
 </script>
 

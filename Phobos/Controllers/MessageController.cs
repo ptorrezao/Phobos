@@ -92,7 +92,7 @@ namespace Phobos.Controllers
 
                 UserMessage createdMessage = messageService.SaveMessage(SessionManager.CurrentUsername, newMessage);
 
-                return this.RedirectToAction("ReadMessage", new { id = createdMessage.Id, allowEdit = true });
+                return this.RedirectToAction("Index", new { id = createdMessage.Folder.Id });
             }
             else if (submit == "Discard")
             {
@@ -100,6 +100,8 @@ namespace Phobos.Controllers
                 {
                     messageService.DeleteMessage(model.MessageId);
                 }
+
+                return this.RedirectToAction("Index");
             }
 
             return this.View(model);
@@ -135,14 +137,23 @@ namespace Phobos.Controllers
         public ActionResult ReadMessage(int Id)
         {
             var message = messageService.GetMessage(SessionManager.CurrentUsername, Id);
-            MessageMailBoxItemViewModel newMessage = AutoMapperConfiguration.GetMapper().Map<MessageMailBoxItemViewModel>(message);
 
-            if (newMessage== null)
+            if (message == null)
             {
                 return this.RedirectToAction("Index");
             }
 
-            return View(newMessage);
+            if (message.Owner.Username == SessionManager.CurrentUsername && message.IsDraft)
+            {
+                MessageMailBoxItemViewModel newMessage = AutoMapperConfiguration.GetMapper().Map<MessageMailBoxItemViewModel>(message);
+                return View("Compose", newMessage);
+            }
+            else
+            {
+                MessageMailBoxItemViewModel newMessage = AutoMapperConfiguration.GetMapper().Map<MessageMailBoxItemViewModel>(message);
+
+                return View(newMessage);
+            }
         }
 
         public ActionResult FindNextMessage(int Id, bool IsPrevious = false)
@@ -169,15 +180,17 @@ namespace Phobos.Controllers
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult Remove(string[] selectedIds)
         {
-            foreach (var selectedId in selectedIds)
+            if (selectedIds != null && selectedIds.Count() > 0)
             {
-                int selectedInt = 0;
-                if (int.TryParse(selectedId, out selectedInt))
+                foreach (var selectedId in selectedIds)
                 {
-                    this.messageService.DeleteMessage(selectedInt);
+                    int selectedInt = 0;
+                    if (int.TryParse(selectedId, out selectedInt))
+                    {
+                        this.messageService.DeleteMessage(selectedInt);
+                    }
                 }
             }
-
             return this.RedirectToAction("Index");
         }
 

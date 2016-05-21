@@ -14,6 +14,7 @@ namespace Phobos.Library.CoreServices.Db
     {
         const string inboxFolderName = "Inbox";
         const string sentFolderName = "Sent";
+        const string draftFolderName = "Draft";
 
         public List<UserMessage> GetLastMessages(string userName, int qtd, bool orderDesc)
         {
@@ -23,7 +24,10 @@ namespace Phobos.Library.CoreServices.Db
                     .Include(x => x.Receiver)
                     .Include(x => x.Sender)
                     .Include(x => x.Folder)
-                    .Where(x => x.Receiver.Username == userName).OrderByDescending(x => x.SendDate).Take(qtd).ToList();
+                    .Where(x => x.Receiver.Username == userName)
+                    .OrderByDescending(x => x.SendDate)
+                    .Take(qtd)
+                    .ToList();
             }
         }
 
@@ -36,6 +40,9 @@ namespace Phobos.Library.CoreServices.Db
 
                 ////Create Sent if necessary
                 var sentFolder = this.GetSentFolder(userName);
+
+                ////Create Draft if necessary
+                var draftFolder = this.GetDraftFolder(userName);
 
                 return context.UserMessageFolders
                     .Include(x => x.User)
@@ -111,19 +118,49 @@ namespace Phobos.Library.CoreServices.Db
             }
         }
 
+        public UserMessageFolder GetDraftFolder(string userName)
+        {
+            using (var context = new PhobosCoreContext())
+            {
+                var folder = context.UserMessageFolders
+                    .Include(x => x.User)
+                    .Where(x => x.User.Username == userName && x.Name == draftFolderName)
+                    .FirstOrDefault();
+
+
+                if (folder == default(UserMessageFolder))
+                {
+                    folder = new UserMessageFolder()
+                    {
+                        User = context.Users.First(x => x.Username == userName),
+                        Name = draftFolderName,
+                    };
+
+                    context.UserMessageFolders.Add(folder);
+                    context.SaveChanges();
+                }
+
+                return folder;
+            }
+        }
+
         public List<UserMessage> GetMessages(string userName, int folderId)
         {
             using (var context = new PhobosCoreContext())
             {
-                return context.UserMessages
-                    .Include(x => x.Receiver)
-                    .Include(x => x.Sender)
-                    .Include(x => x.Folder)
-                    .Include(x => x.Owner)
-                    .Where(x => (x.Receiver.Username == userName && x.Folder.Id == folderId) || 
-                                (x.Sender.Username ==userName && x.Folder.Id == folderId && x.Folder.Name== sentFolderName))
-                    .OrderByDescending(x => x.SendDate)
-                    .ToList();
+                var messages = context.UserMessages
+                                    .Include(x => x.Receiver)
+                                    .Include(x => x.Sender)
+                                    .Include(x => x.Folder)
+                                    .Include(x => x.Owner)
+                                    .Where(x => (x.Receiver.Username == userName && x.Folder.Id == folderId) ||
+                                                (x.Sender.Username == userName && x.Folder.Id == folderId && (x.Folder.Name == sentFolderName || x.Folder.Name == draftFolderName)))
+                                    .OrderByDescending(x => x.SendDate)
+                                    .ToList();
+
+                messages.ForEach(msg => msg.IsDraft = msg.Folder.Name == draftFolderName);
+
+                return messages;
             }
         }
 
@@ -152,8 +189,22 @@ namespace Phobos.Library.CoreServices.Db
                 sentMessage.Owner = context.Users.First(x => x.Username == sentMessage.Owner.Username);
                 sentMessage.Sender = context.Users.First(x => x.Username == sentMessage.Sender.Username);
                 sentMessage.Receiver = context.Users.First(x => x.Username == sentMessage.Receiver.Username);
-                sentMessage.Folder = sentMessage.Folder == null ? context.UserMessageFolders.FirstOrDefault(x => x.User.Username == sentMessage.Receiver.Username && x.Name == inboxFolderName) : context.UserMessageFolders.First(x => x.Id == sentMessage.Folder.Id);
-                context.UserMessages.Add(sentMessage);
+                sentMessage.Folder = sentMessage.Folder == null ? context.UserMessageFolders.FirstOrDefault(x => x.User.Username == sentMessage.Owner.Username && x.Name == draftFolderName) : context.UserMessageFolders.First(x => x.Id == sentMessage.Folder.Id);
+
+                sentMessage.IsDraft = sentMessage.Folder.Name == draftFolderName;
+
+                if (sentMessage.Id == 0)
+                {
+                    context.UserMessages.Add(sentMessage);
+                }
+                else
+                {
+                    context.UserMessages.First(x => x.Id == sentMessage.Id).Message = sentMessage.Message;
+                    context.UserMessages.First(x => x.Id == sentMessage.Id).Title = sentMessage.Title;
+                    context.UserMessages.First(x => x.Id == sentMessage.Id).Receiver = sentMessage.Receiver;
+                    context.UserMessages.First(x => x.Id == sentMessage.Id).Sent = sentMessage.Sent;
+                }
+
                 context.SaveChanges();
 
                 return sentMessage;
@@ -176,7 +227,7 @@ namespace Phobos.Library.CoreServices.Db
         {
             using (var context = new PhobosCoreContext())
             {
-                return context.UserMessages
+                var message = context.UserMessages
                     .Include(x => x.Receiver)
                     .Include(x => x.Sender)
                     .Include(x => x.Folder)
@@ -186,9 +237,11 @@ namespace Phobos.Library.CoreServices.Db
                                 x.Id == id)
                     .OrderByDescending(x => x.SendDate)
                     .FirstOrDefault();
+
+                message.IsDraft = message.Folder.Name == draftFolderName;
+
+                return message;
             }
         }
-
-
     }
 }

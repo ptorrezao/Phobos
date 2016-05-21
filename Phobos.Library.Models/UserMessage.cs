@@ -31,5 +31,6 @@ namespace Phobos.Library.Models
         public virtual UserMessageFolder Folder { get; set; }
         public List<string> Attachments { get; set; }
         public bool Sent { get; set; }
+        public bool IsDraft { get; set; }
     }
 }

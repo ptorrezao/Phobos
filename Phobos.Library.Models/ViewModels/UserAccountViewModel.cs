@@ -24,7 +24,24 @@ namespace Phobos.Library.Models.ViewModels
         {
             get
             {
-                return this.FirstName + " " + this.LastName;
+                string fullName = "";
+
+                if (!string.IsNullOrEmpty(this.FirstName))
+                {
+                    fullName += this.FirstName;
+                }
+
+                if (!string.IsNullOrEmpty(this.FirstName) && !string.IsNullOrEmpty(this.LastName))
+                {
+                    fullName += " ";
+                }
+
+                if (!string.IsNullOrEmpty(this.LastName))
+                {
+                    fullName += this.LastName;
+                }
+
+                return fullName;
             }
         }
 
