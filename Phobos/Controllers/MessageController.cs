@@ -78,7 +78,7 @@ namespace Phobos.Controllers
             {
                 UserMessage newMessage = AutoMapperConfiguration.GetMapper().Map<UserMessage>(model);
 
-                newMessage.Attachments = this.SaveAttachements(files);
+                //// newMessage.Attachments = this.SaveAttachements(files);
 
                 newMessage = messageService.SendMessage(SessionManager.CurrentUsername, newMessage);
 
@@ -88,7 +88,7 @@ namespace Phobos.Controllers
             {
                 UserMessage newMessage = AutoMapperConfiguration.GetMapper().Map<UserMessage>(model);
 
-                newMessage.Attachments = this.SaveAttachements(files);
+                ////  newMessage.Attachments = this.SaveAttachements(files);
 
                 UserMessage createdMessage = messageService.SaveMessage(SessionManager.CurrentUsername, newMessage);
 
