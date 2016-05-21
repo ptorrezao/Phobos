@@ -64,7 +64,12 @@
             $("#@Html.IdFor(m => m.MemberSince)").val(suggestion.MemberSince);
         });
 
-        $('#@identifier').focus().typeahead('val','@Html.Raw(Model.FullName)').focus();
+        @if (Model!=null)
+	    {
+            <text>
+                $('#@identifier').focus().typeahead('val','@Html.Raw(Model.FullName)').focus();
+            </text>
+	    }
     });
 </script>
 
