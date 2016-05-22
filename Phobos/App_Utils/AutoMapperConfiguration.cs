@@ -34,6 +34,7 @@ namespace Phobos.App_Utils
 
                 cfg.CreateMap<UserMessageFolder, MessageMailBoxFolderViewModel>()
                     .ForMember(dest => dest.QtdNewMessages, opts => opts.MapFrom(src => src.Messages.Count))
+                    .ForMember(dest => dest.IsEditable, opts => opts.MapFrom(src => !src.IsDraftFolder && !src.IsInboxFolder && !src.IsSentFolder))
                     .ForMember(dest => dest.FolderId, opts => opts.MapFrom(src => src.Id));
 
                 cfg.CreateMap<UserMessageFolder, MessageMailBoxFolderItemViewModel>()

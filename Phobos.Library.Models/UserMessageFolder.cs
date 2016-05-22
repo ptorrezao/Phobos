@@ -25,5 +25,11 @@ namespace Phobos.Library.Models
 
         public UserAccount User { get; set; }
 
+
+        public bool IsDraftFolder { get; set; }
+
+        public bool IsInboxFolder { get; set; }
+
+        public bool IsSentFolder { get; set; }
     }
 }

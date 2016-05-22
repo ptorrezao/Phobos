@@ -5,7 +5,13 @@
 }
 <div class="box box-solid">
     <div class="box-header with-border">
-        <h3 class="box-title">Folders</h3>
+        <h3 class="box-title">
+            Folders
+        </h3>
+        <span class="label label-default createIcon" data-url="@Url.Action("CreateFolder")">
+            @Html.FontAwesome("plus")
+        </span>
+
         <div class="box-tools">
             <button class="btn btn-box-tool" data-widget="collapse">
                 @if (string.IsNullOrEmpty(classClosed))
@@ -21,12 +27,19 @@
             {
                 var selectedCssClass = item.Selected ? "active" : "";
                 <text>
-                    <li class="@selectedCssClass">
+                    <li class="@selectedCssClass editFolder">
                         <a href="@Url.Action("Index", new { Id = item.FolderId })">
                             @Html.FontAwesome(item.Icon, item.IconColor) &nbsp; @item.Name
                             @if (item.QtdNewMessages > 0)
                             {
                                 <span class="label label-primary pull-right">@item.QtdNewMessages</span>
+                            }
+                            @if (item.IsEditable)
+                            {
+                                <text>
+                                    &nbsp;
+                                    <span class="label label-default editIcon" data-url="@Url.Action("EditFolder", new { Id = item.FolderId})"><i class="fa fa-pencil" aria-hidden="true"></i></span>
+                                </text>
                             }
                         </a>
                     </li>
@@ -35,3 +48,30 @@
         </ul>
     </div>
 </div>
+
+
+<script>
+    $(document).ready(function () {
+        $(".editFolder .editIcon").hide();
+        $(" .createIcon").hide();
+
+        $(".editFolder").hover(function () {
+            $(this).find(".editIcon").fadeIn(500);
+        }, function () {
+            $(this).find(".editIcon").fadeOut(500);
+        });
+        $(".box-header").hover(function () {
+            $(".createIcon").fadeIn(500);
+        }, function () {
+            $(".createIcon").fadeOut(500);
+        });
+        $(".createIcon").click(function () {
+            window.location.href = $(this).attr("data-url");
+            return false;
+        });
+        $(".editFolder .editIcon").click(function () {
+            window.location.href = $(this).attr("data-url");
+            return false;
+        });
+    });
+</script>

@@ -502,6 +502,7 @@
     <Content Include="Views\Shared\EditorTemplates\UserAccountViewModel.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\UserAccountViewModel_Hidden.cshtml" />
     <Content Include="Views\AdminLTE\Message\ReadMessage.cshtml" />
+    <Content Include="Views\AdminLTE\Message\EditFolder.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -12,9 +12,9 @@ namespace Phobos.Library.CoreServices.Db
 {
     public class MessageRepo : IMessageRepo
     {
-        const string inboxFolderName = "Inbox";
-        const string sentFolderName = "Sent";
-        const string draftFolderName = "Draft";
+        public const string InboxFolderName = "Inbox";
+        public const string SentFolderName = "Sent";
+        public const string DraftFolderName = "Draft";
 
         public List<UserMessage> GetLastMessages(string userName, int qtd, bool orderDesc)
         {
@@ -73,7 +73,7 @@ namespace Phobos.Library.CoreServices.Db
             {
                 var folder = context.UserMessageFolders
                     .Include(x => x.User)
-                    .Where(x => x.User.Username == userName && x.Name == inboxFolderName)
+                    .Where(x => x.User.Username == userName && x.Name == InboxFolderName)
                     .FirstOrDefault();
 
                 if (folder == default(UserMessageFolder))
@@ -81,7 +81,8 @@ namespace Phobos.Library.CoreServices.Db
                     folder = new UserMessageFolder()
                     {
                         User = context.Users.First(x => x.Username == userName),
-                        Name = inboxFolderName,
+                        Name = InboxFolderName,
+                        IsInboxFolder = true
                     };
 
                     context.UserMessageFolders.Add(folder);
@@ -98,7 +99,7 @@ namespace Phobos.Library.CoreServices.Db
             {
                 var folder = context.UserMessageFolders
                     .Include(x => x.User)
-                    .Where(x => x.User.Username == userName && x.Name == sentFolderName)
+                    .Where(x => x.User.Username == userName && x.Name == SentFolderName)
                     .FirstOrDefault();
 
 
@@ -107,7 +108,8 @@ namespace Phobos.Library.CoreServices.Db
                     folder = new UserMessageFolder()
                     {
                         User = context.Users.First(x => x.Username == userName),
-                        Name = sentFolderName,
+                        Name = SentFolderName,
+                        IsSentFolder = true
                     };
 
                     context.UserMessageFolders.Add(folder);
@@ -124,7 +126,7 @@ namespace Phobos.Library.CoreServices.Db
             {
                 var folder = context.UserMessageFolders
                     .Include(x => x.User)
-                    .Where(x => x.User.Username == userName && x.Name == draftFolderName)
+                    .Where(x => x.User.Username == userName && x.Name == DraftFolderName)
                     .FirstOrDefault();
 
 
@@ -133,7 +135,8 @@ namespace Phobos.Library.CoreServices.Db
                     folder = new UserMessageFolder()
                     {
                         User = context.Users.First(x => x.Username == userName),
-                        Name = draftFolderName,
+                        Name = DraftFolderName,
+                        IsDraftFolder = true
                     };
 
                     context.UserMessageFolders.Add(folder);
@@ -154,11 +157,11 @@ namespace Phobos.Library.CoreServices.Db
                                     .Include(x => x.Folder)
                                     .Include(x => x.Owner)
                                     .Where(x => (x.Receiver.Username == userName && x.Folder.Id == folderId) ||
-                                                (x.Sender.Username == userName && x.Folder.Id == folderId && (x.Folder.Name == sentFolderName || x.Folder.Name == draftFolderName)))
+                                                (x.Sender.Username == userName && x.Folder.Id == folderId && (x.Folder.Name == SentFolderName || x.Folder.Name == DraftFolderName)))
                                     .OrderByDescending(x => x.SendDate)
                                     .ToList();
 
-                messages.ForEach(msg => msg.IsDraft = msg.Folder.Name == draftFolderName);
+                messages.ForEach(msg => msg.IsDraft = msg.Folder.Name == DraftFolderName);
 
                 return messages;
             }
@@ -171,7 +174,8 @@ namespace Phobos.Library.CoreServices.Db
                 var folder = new UserMessageFolder()
                 {
                     User = context.Users.First(x => x.Username == userName),
-                    Name = inboxFolderName,
+                    Name = InboxFolderName,
+                    IsInboxFolder = true
                 };
 
                 context.UserMessageFolders.Add(folder);
@@ -189,9 +193,9 @@ namespace Phobos.Library.CoreServices.Db
                 sentMessage.Owner = context.Users.First(x => x.Username == sentMessage.Owner.Username);
                 sentMessage.Sender = context.Users.First(x => x.Username == sentMessage.Sender.Username);
                 sentMessage.Receiver = context.Users.First(x => x.Username == sentMessage.Receiver.Username);
-                sentMessage.Folder = sentMessage.Folder == null ? context.UserMessageFolders.FirstOrDefault(x => x.User.Username == sentMessage.Owner.Username && x.Name == draftFolderName) : context.UserMessageFolders.First(x => x.Id == sentMessage.Folder.Id);
+                sentMessage.Folder = sentMessage.Folder == null ? context.UserMessageFolders.FirstOrDefault(x => x.User.Username == sentMessage.Owner.Username && x.Name == DraftFolderName) : context.UserMessageFolders.First(x => x.Id == sentMessage.Folder.Id);
 
-                sentMessage.IsDraft = sentMessage.Folder.Name == draftFolderName;
+                sentMessage.IsDraft = sentMessage.Folder.Name == DraftFolderName;
 
                 if (sentMessage.Id == 0)
                 {
@@ -238,7 +242,7 @@ namespace Phobos.Library.CoreServices.Db
                     .OrderByDescending(x => x.SendDate)
                     .FirstOrDefault();
 
-                message.IsDraft = message.Folder.Name == draftFolderName;
+                message.IsDraft = message.Folder.Name == DraftFolderName;
 
                 return message;
             }

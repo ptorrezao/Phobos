@@ -207,5 +207,24 @@ namespace Phobos.Controllers
         {
             return this.RedirectToAction("Index");
         }
+
+        public ActionResult EditFolder(int Id)
+        {
+            var mapper = AutoMapperConfiguration.GetMapper();
+
+            var folder = messageService.GetFolder(SessionManager.CurrentUsername, Id);
+            var viewModel = mapper.Map<UserMessageFolder, MessageMailBoxFolderViewModel>(folder);
+            return this.View(viewModel);
+        }
+
+        public ActionResult CreateFolder()
+        {
+            var mapper = AutoMapperConfiguration.GetMapper();
+
+            var folder = new UserMessageFolder();
+            var viewModel = mapper.Map<UserMessageFolder, MessageMailBoxFolderViewModel>(folder);
+            return this.View("EditFolder", viewModel);
+        }
+        
     }
 }

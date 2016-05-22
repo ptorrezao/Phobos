@@ -27,6 +27,21 @@ namespace Phobos.Library.CoreServices.Db.Migrations
             //      new Person { FullName = "Rowan Miller" }
             //    );
             //
+
+            foreach (var folder in context.UserMessageFolders)
+            {
+                folder.IsDraftFolder = folder.Name == MessageRepo.DraftFolderName;
+                folder.IsInboxFolder = folder.Name == MessageRepo.InboxFolderName;
+                folder.IsSentFolder = folder.Name == MessageRepo.SentFolderName;
+
+                if (folder.IsDraftFolder || folder.IsInboxFolder || folder.IsSentFolder)
+                {
+                    folder.Icon = folder.IsDraftFolder ? "edit" : folder.Icon;
+                    folder.Icon = folder.IsInboxFolder ? "inbox" : folder.Icon;
+                    folder.Icon = folder.IsSentFolder ? "send" : folder.Icon;
+                    folder.IconColor = Models.Enums.TextColor.Blue;
+                }
+            }
         }
     }
 }
