@@ -52,6 +52,9 @@ namespace Phobos
             bundles.Add(new StyleBundle("~/Content/iCheck").Include(
                     "~/Content/plugins/iCheck/square/blue.css"));
 
+            bundles.Add(new StyleBundle("~/Content/select2").Include(
+        "~/Content/plugins/select2/select2.css"));
+
             bundles.Add(new StyleBundle("~/Content/daterangepicker").Include(
                     "~/Content/plugins/daterangepicker/daterangepicker-bs3.css"));
 
@@ -87,6 +90,9 @@ namespace Phobos
 
             bundles.Add(new ScriptBundle("~/bundles/wysihtml5").Include(
                     "~/Content/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/select2").Include(
+               "~/Content/plugins/select2/select2.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/typeahead").Include(
                     "~/Content/plugins/typeahead/handlebars-v4.0.5.js",
