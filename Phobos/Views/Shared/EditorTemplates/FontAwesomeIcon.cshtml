@@ -504,10 +504,10 @@
     selectList.Where(x => Model == x.Value).ToList().ForEach(x => x.Selected = true);
 }
 
-@Html.DropDownListFor(x => x, selectList, new { @class = "form-control", @id = guid })
+@Html.DropDownListFor(x => x, selectList, new { @class = "form-control "+ guid })
 <script>
     $(document).ready(function (first) {
-        $("#@guid").select2({
+        $(".@guid").select2({
             // Specify format function for dropdown item
             formatResult: formatResult,
             // Specify format function for selected item

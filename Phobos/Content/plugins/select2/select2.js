@@ -2236,7 +2236,6 @@ the specific language governing permissions and limitations under the Apache Lic
 
         // single
         onSelect: function (data, options) {
-
             if (!this.triggerSelect(data)) { return; }
 
             var old = this.opts.element.val(),

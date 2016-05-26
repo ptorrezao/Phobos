@@ -39,6 +39,7 @@
                     @Html.HiddenFor(m => m.FolderId)
                     @Html.HiddenFor(m => m.QtdNewMessages)
                     @Html.HiddenFor(m => m.IsEditable)
+                    @Html.EditorFor(x => x.User, "UserAccountViewModel_Hidden")
                     <div class="form-group">
                         @Html.LabelFor(m => m.Name)
                         @Html.EditorFor(m => m.Name, new { htmlAttributes = new { @class = "form-control", @placeholder = "Folder Name" } })

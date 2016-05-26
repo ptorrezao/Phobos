@@ -28,5 +28,6 @@ namespace Phobos.Library.Models.ViewModels
         public int NewFolderIdForMessages { get; set; }
         public List<MessageMailBoxFolderItemViewModel> Folders { get; set; }
         public bool IsEditable { get; set; }
+        public UserAccountViewModel User { get; set; }
     }
 }

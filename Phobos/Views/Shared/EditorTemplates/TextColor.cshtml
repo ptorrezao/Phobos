@@ -2,13 +2,13 @@
 @{
     var guid = Guid.NewGuid();
 
-    var selectList = Enum.GetNames(typeof(TextColor)).Select(x => new SelectListItem() { Text = x, Value = "text-" + x.ToLower() });
+    var selectList = Enum.GetNames(typeof(TextColor)).Select(x => new SelectListItem() { Text = "text-" + x.ToLower(), Value = x, Selected = x == Model.ToString() });
 }
 
-@Html.DropDownListFor(x => x, selectList, new { @class = "form-control", @id = guid })
+@Html.DropDownListFor(x => x, selectList, new { @class = "form-control " + @guid })
 <script>
     $(document).ready(function (first) {
-        $("#@guid").select2({
+        $(".@guid").select2({
             // Specify format function for dropdown item
             formatResult: formatResult,
             // Specify format function for selected item
@@ -21,11 +21,11 @@
                 return item.text;
             }
             // return item template
-            return '<div class="' + item.id + '">' + item.text + '</div>';
+            return '<div class="' + item.text + '">' + item.id + '</div>';
         }
 
         function formatSelection(item) {
-            return '<div class="' + item.id + '">' + item.text + '</div>';
+            return '<div class="' + item.text + '">' + item.id + '</div>';
         }
     });
 </script>

@@ -217,14 +217,40 @@ namespace Phobos.Controllers
             return this.View(viewModel);
         }
 
+        [HttpParamAction]
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult EditFolder(MessageMailBoxFolderViewModel viewModel)
+        {
+            var mapper = AutoMapperConfiguration.GetMapper();
+
+            var model = mapper.Map<MessageMailBoxFolderViewModel, UserMessageFolder>(viewModel);
+
+            var updatedFolder = messageService.SaveFolder(model);
+
+            return this.RedirectToAction("Index", new { model.Id });
+        }
+
         public ActionResult CreateFolder()
         {
             var mapper = AutoMapperConfiguration.GetMapper();
 
-            var folder = new UserMessageFolder();
+            var folder = new UserMessageFolder()
+            {
+                User = new UserAccount()
+                {
+                    Username = SessionManager.CurrentUsername
+                }
+            };
+
             var viewModel = mapper.Map<UserMessageFolder, MessageMailBoxFolderViewModel>(folder);
             return this.View("EditFolder", viewModel);
         }
-        
+
+        [HttpParamAction]
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult CreateFolder(MessageMailBoxFolderViewModel viewModel)
+        {
+            return this.EditFolder(viewModel);
+        }
     }
 }

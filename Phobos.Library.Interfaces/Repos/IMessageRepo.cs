@@ -19,5 +19,6 @@ namespace Phobos.Library.Interfaces.Repos
         UserMessage SaveMessage(UserMessage sentMessage);
         void DeleteMessage(int messageId);
         UserMessage GetMessage(string userName, int id);
+        UserMessageFolder SaveFolder(UserMessageFolder model);
     }
 }

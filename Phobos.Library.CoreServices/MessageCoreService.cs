@@ -101,5 +101,11 @@ namespace Phobos.Library.CoreServices
         {
             return this.Repository.GetMessage(userName, id);
         }
+
+
+        public UserMessageFolder SaveFolder(UserMessageFolder model)
+        {
+            return this.Repository.SaveFolder(model);
+        }
     }
 }

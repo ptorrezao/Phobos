@@ -247,5 +247,28 @@ namespace Phobos.Library.CoreServices.Db
                 return message;
             }
         }
+
+        public UserMessageFolder SaveFolder(UserMessageFolder model)
+        {
+            using (var context = new PhobosCoreContext())
+            {
+                model.User = context.Users.First(x => x.Username == model.User.Username);
+
+                if (model.Id == 0)
+                {
+                    context.UserMessageFolders.Add(model);
+                }
+                else
+                {
+                    context.UserMessageFolders.First(x => x.Id == model.Id).Icon = model.Icon;
+                    context.UserMessageFolders.First(x => x.Id == model.Id).IconColor = model.IconColor;
+                    context.UserMessageFolders.First(x => x.Id == model.Id).Name = model.Name;
+                }
+
+                context.SaveChanges();
+
+                return model;
+            }
+        }
     }
 }
