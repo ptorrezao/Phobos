@@ -166,8 +166,8 @@ namespace Phobos.Controllers
 
             this.userManagementService.UpdateAccount(userAccount);
 
-            SessionManager.UserAccount = model;
-
+            SessionManager.UserAccount = AutoMapperConfiguration.GetMapper().Map<UserAccountViewModel>(this.userManagementService.GetUser(this.User.Identity.Name));
+           
             this.auditTrailService.LogMessage(string.Format("The user {0} had changed his profile.", SessionManager.UserAccount.Username), SessionManager.UserAccount.Username, userAccount);
             
             return PartialView("_ProfileDetails", model);

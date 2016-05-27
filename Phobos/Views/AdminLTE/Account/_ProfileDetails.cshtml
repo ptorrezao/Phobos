@@ -4,5 +4,26 @@
         <img class="profile-user-img img-responsive img-circle" src="@Model.ImageUrl" alt="@Model.ImageAlt">
         <h3 class="profile-username text-center">@Model.FullName</h3>
         <p class="text-muted text-center">@Model.Position</p>
+        <ul class="list-group list-group-unbordered">
+            <li class="list-group-item">
+                <b>Birthday</b> <a class="pull-right"><i class="fa fa-birthday-cake"></i> @Model.BirthDate.ToShortDateString()</a>
+            </li>
+        </ul>
+        <strong><i class="fa fa-users"></i> Roles</strong>
+        <p>
+            @foreach (var item in Model.Roles)
+            {
+                if (item.IsAdmin)
+                {
+                    <span class="label label-danger">@item.Name</span>
+
+                }
+                else
+                {
+                    <span class="label label-primary">@item.Name</span>
+                }
+            }
+        </p>
     </div>
+
 </div>

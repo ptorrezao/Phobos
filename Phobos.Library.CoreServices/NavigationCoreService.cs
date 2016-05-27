@@ -27,7 +27,6 @@ namespace Phobos.Library.CoreServices
             menus.Title = "Main Navigation";
 
             menus.Add(new MenuEntriesViewModel() { Controller = "Home", Action = "Index", Text = "Home" });
-
             return menus;
         }
 

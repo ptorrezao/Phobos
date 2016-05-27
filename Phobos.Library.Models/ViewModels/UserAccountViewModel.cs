@@ -74,6 +74,8 @@ namespace Phobos.Library.Models.ViewModels
 
         [DisplayName("Date of Birth")]
         public DateTime BirthDate { get; set; }
-    
+
+        [DisplayName("Roles")]
+        public List<UserRoleViewModel> Roles { get; set; }
     }
 }

@@ -55,11 +55,15 @@ namespace Phobos.App_Utils
                     .ForMember(dest => dest.Id, opts => opts.MapFrom(src => src.Id))
                     .ForMember(dest => dest.User, opts => opts.MapFrom(src => AutoMapperConfiguration.GetMapper().Map<UserAccountViewModel>(src.Receiver)));
 
+                cfg.CreateMap<UserRole, UserRoleViewModel>()
+                    .ForMember(dest => dest.IsAdmin, opts => opts.MapFrom(src => src.Name == "Administrator"));
+
                 #region UserAccount <-> UserAccountViewModel
                 cfg.CreateMap<UserAccount, UserAccountViewModel>()
                            .ForMember(dest => dest.CurrentStatus, opts => opts.MapFrom(src => src.CurrentStatus))
                            .ForMember(dest => dest.FirstName, opts => opts.MapFrom(src => src.FirstName))
                            .ForMember(dest => dest.LastName, opts => opts.MapFrom(src => src.LastName))
+                           .ForMember(dest => dest.Roles, opts => opts.MapFrom(src => AutoMapperConfiguration.GetMapper().Map<List<UserRoleViewModel>>(src.Roles)))
                            .ForMember(dest => dest.ImageAlt, opts => opts.MapFrom(src => string.Format("{0}{2}{1}", src.FirstName, src.LastName, (!string.IsNullOrEmpty(src.FirstName) && !string.IsNullOrEmpty(src.LastName) ? " " : ""))))
                            .ForMember(dest => dest.ImageUrl, opts =>
                            {

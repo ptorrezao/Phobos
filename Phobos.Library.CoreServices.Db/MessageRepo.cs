@@ -46,6 +46,7 @@ namespace Phobos.Library.CoreServices.Db
 
                 return context.UserMessageFolders
                     .Include(x => x.User)
+                    .Include(x => x.User.Roles)
                     .Include(x => x.Messages)
                     .Include(x => x.Messages.Select(c => c.Sender))
                     .Include(x => x.Messages.Select(c => c.Receiver))
@@ -60,6 +61,7 @@ namespace Phobos.Library.CoreServices.Db
             {
                 var folder = context.UserMessageFolders
                     .Include(x => x.User)
+                    .Include(x => x.User.Roles)
                     .Where(x => x.User.Username == userName && x.Id == folderId)
                     .FirstOrDefault();
 
@@ -73,6 +75,7 @@ namespace Phobos.Library.CoreServices.Db
             {
                 var folder = context.UserMessageFolders
                     .Include(x => x.User)
+                    .Include(x => x.User.Roles)
                     .Where(x => x.User.Username == userName && x.Name == InboxFolderName)
                     .FirstOrDefault();
 
@@ -99,6 +102,7 @@ namespace Phobos.Library.CoreServices.Db
             {
                 var folder = context.UserMessageFolders
                     .Include(x => x.User)
+                    .Include(x => x.User.Roles)
                     .Where(x => x.User.Username == userName && x.Name == SentFolderName)
                     .FirstOrDefault();
 
@@ -126,6 +130,7 @@ namespace Phobos.Library.CoreServices.Db
             {
                 var folder = context.UserMessageFolders
                     .Include(x => x.User)
+                    .Include(x => x.User.Roles)
                     .Where(x => x.User.Username == userName && x.Name == DraftFolderName)
                     .FirstOrDefault();
 

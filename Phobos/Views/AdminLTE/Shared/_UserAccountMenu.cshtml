@@ -29,6 +29,12 @@
             <div class="pull-left">
                 <a href="@Url.Action("EditProfile", "Account")" class="btn btn-default btn-flat">Profile</a>
             </div>
+            @if (userAccount.Roles.Any(x => x.IsAdmin))
+            {
+                <div class="pull-left">
+                    <a href="@Url.Action("ListUsers", "Account")" class="btn btn-default btn-flat">Users</a>
+                </div>
+            }
             <div class="pull-right">
                 <a href="@Url.Action("Logout", "Account")" class="btn btn-default btn-flat">Sign out</a>
             </div>

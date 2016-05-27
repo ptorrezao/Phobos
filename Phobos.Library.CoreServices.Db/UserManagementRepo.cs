@@ -147,7 +147,8 @@ namespace Phobos.Library.CoreServices.Db
         {
             using (var context = new PhobosCoreContext())
             {
-                var selectedUser = context.Users.FirstOrDefault(x => x.Username == userName);
+                var selectedUser = context.Users.Include(x => x.Roles)
+                    .FirstOrDefault(x => x.Username == userName);
 
                 return selectedUser;
             }
