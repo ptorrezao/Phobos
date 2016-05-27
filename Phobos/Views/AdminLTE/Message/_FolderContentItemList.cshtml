@@ -35,7 +35,7 @@
             columns.Add(model => model.Sender)
                     .Encoded(false)
                     .Filterable(false)
-                    .RenderedAs(model => "<a href=" + Url.Action("ReadMessage", new { id = model.MessageId }) + ">" + model.Sender.FullName + "</a>");
+                    .RenderedAs(model => "<a href=" + Url.Action("ReadMessage", new { id = model.MessageId }) + "><img src=\"" + model.Sender.ImageUrl + "\" class=\"user-image folderList img-circle\" alt=\"User Image\"><span class=\"hidden-xs\"> &nbsp" + model.Sender.FullName + "</span></a>");
             columns.Add(model => model.Title)
                     .Css("fiftyColumn")
                     .Encoded(false)
@@ -92,13 +92,13 @@
                     Which folder do you put the selected emails.
                 </label>
                 @Html.DropDownListFor(model => model.FolderId, Model.Folders.AsSelectListItem(Model.FolderId), new { @class = "form-control" })
-            </div>
-            <div class="modal-footer">
-                <button type="button" onclick="return false;" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
-                <button name="move" id="btnMove" type="submit" formaction="" class="btn btn-primary">Move</button>
-            </div>
-        </div>
-    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" onclick="return false;" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+    <button name="move" id="btnMove" type="submit" formaction="" class="btn btn-primary">Move</button>
+</div>
+</div>
+</div>
 </div>
 
 @{
@@ -182,5 +182,10 @@
 
     .fiftyColumn {
         width: 50%;
+    }
+
+    .folderList {
+        height:24px;
+        width:24px;
     }
 </style>

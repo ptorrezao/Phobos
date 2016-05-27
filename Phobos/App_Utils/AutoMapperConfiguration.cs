@@ -32,15 +32,17 @@ namespace Phobos.App_Utils
                     .ForMember(dest => dest.Intro, opts => opts.MapFrom(src => src.Message.TruncateLongString(30, "...", true)));
                 #endregion
 
+                #region MessageMailBoxFolderViewModel <-> UserMessageFolder
                 cfg.CreateMap<UserMessageFolder, MessageMailBoxFolderViewModel>()
-                    .ForMember(dest => dest.QtdNewMessages, opts => opts.MapFrom(src => src.Messages.Count))
-                    .ForMember(dest => dest.IsEditable, opts => opts.MapFrom(src => !src.IsDraftFolder && !src.IsInboxFolder && !src.IsSentFolder))
-                    .ForMember(dest => dest.User, opts => opts.MapFrom(src => AutoMapperConfiguration.GetMapper().Map<UserAccount>(src.User)))
-                    .ForMember(dest => dest.FolderId, opts => opts.MapFrom(src => src.Id));
+                           .ForMember(dest => dest.QtdNewMessages, opts => opts.MapFrom(src => src.Messages.Count))
+                           .ForMember(dest => dest.IsEditable, opts => opts.MapFrom(src => !src.IsDraftFolder && !src.IsInboxFolder && !src.IsSentFolder))
+                           .ForMember(dest => dest.User, opts => opts.MapFrom(src => AutoMapperConfiguration.GetMapper().Map<UserAccount>(src.User)))
+                           .ForMember(dest => dest.FolderId, opts => opts.MapFrom(src => src.Id));
 
                 cfg.CreateMap<MessageMailBoxFolderViewModel, UserMessageFolder>()
                    .ForMember(dest => dest.User, opts => opts.MapFrom(src => AutoMapperConfiguration.GetMapper().Map<UserAccount>(src.User)))
-                   .ForMember(dest => dest.Id, opts => opts.MapFrom(src => src.FolderId));
+                   .ForMember(dest => dest.Id, opts => opts.MapFrom(src => src.FolderId)); 
+                #endregion
 
                 cfg.CreateMap<UserMessageFolder, MessageMailBoxFolderItemViewModel>()
                     .ForMember(dest => dest.FolderId, opts => opts.MapFrom(src => src.Id))
