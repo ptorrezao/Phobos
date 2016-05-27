@@ -17,7 +17,7 @@ using Phobos.App_Utils;
 
 namespace Phobos.Controllers
 {
-    [ActionAutorize(true)]
+    [ActionAutorize]
     [PhobosInitialization]
     public class MessageController : Controller
     {
@@ -108,21 +108,6 @@ namespace Phobos.Controllers
             }
 
             return this.View(model);
-        }
-
-        private List<string> SaveAttachements(IEnumerable<HttpPostedFileBase> files)
-        {
-            var listOfFiles = new List<string>();
-            foreach (var item in files)
-            {
-                if (item != null)
-                {
-                    var newFileName = string.Format("{2}\\{0}_{1}", Guid.NewGuid(), item.FileName, HttpContext.Request.PhysicalApplicationPath);
-                    item.SaveAs(newFileName);
-                    listOfFiles.Add(newFileName);
-                }
-            }
-            return listOfFiles;
         }
 
         public ActionResult MarkAsFavorite(int Id, string returnUrl)
@@ -273,6 +258,21 @@ namespace Phobos.Controllers
         public ActionResult CreateFolder(MessageMailBoxFolderViewModel viewModel)
         {
             return this.EditFolder(viewModel);
+        }
+
+        private List<string> SaveAttachements(IEnumerable<HttpPostedFileBase> files)
+        {
+            var listOfFiles = new List<string>();
+            foreach (var item in files)
+            {
+                if (item != null)
+                {
+                    var newFileName = string.Format("{2}\\{0}_{1}", Guid.NewGuid(), item.FileName, HttpContext.Request.PhysicalApplicationPath);
+                    item.SaveAs(newFileName);
+                    listOfFiles.Add(newFileName);
+                }
+            }
+            return listOfFiles;
         }
     }
 }

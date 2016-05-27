@@ -9,6 +9,9 @@ namespace Phobos.Library.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-        public List<UserAccount> UserAccounts { get; set; }
+        public string Name { get; set; }
+        public virtual List<UserAccount> UserAccounts { get; set; }
+
+        public virtual List<ActionAuthorization> ActionAuthorizations { get; set; }
     }
 }

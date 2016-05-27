@@ -28,5 +28,6 @@ namespace Phobos.Library.Models
         public virtual List<UserMessage> Messages { get; set; }
         public virtual List<UserNotification> Notifications { get; set; }
         public virtual List<UserTask> Tasks { get; set; }
+        public virtual List<ActionAuthorization> ActionAuthorizations { get; set; }
     }
 }

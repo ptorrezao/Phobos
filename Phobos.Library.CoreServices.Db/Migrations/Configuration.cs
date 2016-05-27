@@ -1,5 +1,6 @@
 namespace Phobos.Library.CoreServices.Db.Migrations
 {
+    using Phobos.Library.Models;
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Migrations;
@@ -12,22 +13,73 @@ namespace Phobos.Library.CoreServices.Db.Migrations
             AutomaticMigrationsEnabled = false;
             ContextKey = "Phobos.Library.CoreServices.Db.PhobosCoreContext";
         }
+        const string userRoleName = "User";
+        const string adminRoleName = "Administrator";
+        readonly string[] defaultUsers = { userRoleName };
+        readonly string[] defaultAdminUsers = { adminRoleName };
 
         protected override void Seed(Phobos.Library.CoreServices.Db.PhobosCoreContext context)
         {
-            //  This method will be called after migrating to the latest version.
+            this.PrepareDefaultFolders(context);
 
-            //  You can use the DbSet<T>.AddOrUpdate() helper extension method 
-            //  to avoid creating duplicate seed data. E.g.
-            //
-            //    context.People.AddOrUpdate(
-            //      p => p.FullName,
-            //      new Person { FullName = "Andrew Peters" },
-            //      new Person { FullName = "Brice Lambson" },
-            //      new Person { FullName = "Rowan Miller" }
-            //    );
-            //
+            this.AddRole(context, userRoleName);
+            this.AddRole(context, adminRoleName);
 
+            this.AddActionAuthorizations(context, "EditProfile", "Account");
+            this.AddActionAuthorizations(context, "Index", "Message");
+            this.AddActionAuthorizations(context, "GetFolderBox", "Message");
+            this.AddActionAuthorizations(context, "Compose", "Message");
+            this.AddActionAuthorizations(context, "CreateFolder", "Message");
+            this.AddActionAuthorizations(context, "EditFolder", "Message");
+            this.AddActionAuthorizations(context, "Move", "Message");
+            this.AddActionAuthorizations(context, "Remove", "Message");
+            this.AddActionAuthorizations(context, "FindNextMessage", "Message");
+            this.AddActionAuthorizations(context, "ReadMessage", "Message");
+            this.AddActionAuthorizations(context, "MarkAsFavorite", "Message");
+        }
+
+        private void AddRole(PhobosCoreContext context, string roleName)
+        {
+            var role = context.Roles.FirstOrDefault(x => x.Name == roleName);
+            if (role == default(UserRole))
+            {
+                context.Roles.Add(new UserRole()
+                {
+                    Name = roleName
+                });
+            }
+            context.SaveChanges();
+        }
+
+        private void AddActionAuthorizations(PhobosCoreContext context, string action, string controller, string[] roles = null)
+        {
+            roles = roles ?? defaultUsers;
+            
+            var actionAuthorization = context.ActionAuthorizations.FirstOrDefault(x => x.Action == controller && x.Controller == action);
+            var selectedRoles = roles.Select(x => context.Roles.Where(role => role.Name == x).First()).ToList();
+
+            if (actionAuthorization == default(ActionAuthorization))
+            {
+                actionAuthorization = new ActionAuthorization()
+                {
+                    Controller = controller,
+                    Action = action,
+                    Roles = selectedRoles
+                };
+
+                context.ActionAuthorizations.Add(actionAuthorization);
+            }
+            else
+            {
+                actionAuthorization.Roles = selectedRoles;
+                context.Entry(actionAuthorization).State = EntityState.Modified;
+            }
+
+            context.SaveChanges();
+        }
+
+        private void PrepareDefaultFolders(Phobos.Library.CoreServices.Db.PhobosCoreContext context)
+        {
             foreach (var folder in context.UserMessageFolders)
             {
                 folder.IsDraftFolder = folder.Name == MessageRepo.DraftFolderName;

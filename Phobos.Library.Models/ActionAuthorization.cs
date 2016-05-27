@@ -10,13 +10,18 @@ namespace Phobos.Library.Models
 {
     public class ActionAuthorization
     {
+        public ActionAuthorization()
+        {
+            Roles = new List<UserRole>();
+            UserAccounts = new List<UserAccount>();
+        }
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
         public string Action { get; set; }
         public string Controller { get; set; }
-        public List<UserRole> Roles { get; set; }
-        public List<UserAccount> UserAccounts { get; set; }
+        public virtual List<UserRole> Roles { get; set; }
+        public virtual List<UserAccount> UserAccounts { get; set; }
     }
 }

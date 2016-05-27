@@ -68,6 +68,14 @@
     <Compile Include="Migrations\201605221027572_FolderIsEditable.Designer.cs">
       <DependentUpon>201605221027572_FolderIsEditable.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201605271443390_UserRole_Functionality.cs" />
+    <Compile Include="Migrations\201605271443390_UserRole_Functionality.Designer.cs">
+      <DependentUpon>201605271443390_UserRole_Functionality.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201605271445356_UserAuthoriazation_Functionality.cs" />
+    <Compile Include="Migrations\201605271445356_UserAuthoriazation_Functionality.Designer.cs">
+      <DependentUpon>201605271445356_UserAuthoriazation_Functionality.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UserManagementRepo.cs" />
@@ -98,6 +106,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201605221027572_FolderIsEditable.resx">
       <DependentUpon>201605221027572_FolderIsEditable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201605271443390_UserRole_Functionality.resx">
+      <DependentUpon>201605271443390_UserRole_Functionality.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201605271445356_UserAuthoriazation_Functionality.resx">
+      <DependentUpon>201605271445356_UserAuthoriazation_Functionality.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
