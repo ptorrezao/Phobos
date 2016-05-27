@@ -93,20 +93,24 @@
 
 @section scripts {
     <script>
-        $(function () {
-            $("#@Html.IdFor(x => x.BirthDate)").inputmask("dd/mm/yyyy", { "placeholder": "dd/mm/yyyy" });
-            $("#@Html.IdFor(x => x.BirthDate)").datepicker();
-            $("#@Html.IdFor(x => x.MemberSince)").inputmask("dd/mm/yyyy", { "placeholder": "dd/mm/yyyy" });
-            $("#@Html.IdFor(x => x.MemberSince)").datepicker();
-            $('input').iCheck({
-                checkboxClass: 'icheckbox_square-blue',
-                radioClass: 'iradio_square-blue',
-                increaseArea: '20%'
-            });
+    $(function () {
+        $("#@Html.IdFor(x => x.BirthDate)").val("@Model.BirthDate.ToString("dd-MM-yyyy")");
+        $("#@Html.IdFor(x => x.BirthDate)").inputmask("dd/mm/yyyy", { "placeholder": "dd/mm/yyyy" });
+        $("#@Html.IdFor(x => x.BirthDate)").datepicker({format: 'dd/mm/yyyy'});
 
+        $("#@Html.IdFor(x => x.MemberSince)").val("@Model.MemberSince.ToString("dd-MM-yyyy")");
+        $("#@Html.IdFor(x => x.MemberSince)").inputmask("dd/mm/yyyy", { "placeholder": "dd/mm/yyyy" });
+        $("#@Html.IdFor(x => x.MemberSince)").datepicker({format: 'dd/mm/yyyy'});
 
+        $('input').iCheck({
+            checkboxClass: 'icheckbox_square-blue',
+            radioClass: 'iradio_square-blue',
+            increaseArea: '20%'
         });
-        function onSuccess() { ohSnap('The request was processed with sucess.', { color: 'green' }); }
-        function onFailure() { ohSnap('Something went wrong...', { color: 'red' }); }
+
+
+    });
+    function onSuccess() { ohSnap('The request was processed with sucess.', { color: 'green' }); }
+    function onFailure() { ohSnap('Something went wrong...', { color: 'red' }); }
     </script>
 }
