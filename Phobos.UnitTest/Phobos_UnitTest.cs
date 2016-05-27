@@ -15,11 +15,11 @@ namespace Phobos.UnitTest
         [TestMethod]
         public void ViewModelUtils_UnitTest()
         {
-            List<MessageMailBoxFolderItemViewModel> listOfViewModels = new List<MessageMailBoxFolderItemViewModel>();
+            List<MessageMailBoxFolderViewModel> listOfViewModels = new List<MessageMailBoxFolderViewModel>();
 
-            listOfViewModels.Add(new MessageMailBoxFolderItemViewModel() { FolderId = 1, Title = "Inbox" });
-            listOfViewModels.Add(new MessageMailBoxFolderItemViewModel() { FolderId = 2, Title = "Draft" });
-            listOfViewModels.Add(new MessageMailBoxFolderItemViewModel() { FolderId = 3, Title = "Trash" });
+            listOfViewModels.Add(new MessageMailBoxFolderViewModel() { FolderId = 1, Name = "Inbox" });
+            listOfViewModels.Add(new MessageMailBoxFolderViewModel() { FolderId = 2, Name = "Draft" });
+            listOfViewModels.Add(new MessageMailBoxFolderViewModel() { FolderId = 3, Name = "Trash" });
 
             //// This shoud return a List with the Folder 1 selected
             List<SelectListItem> selectList = listOfViewModels.AsSelectListItem(1).ToList();

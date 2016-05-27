@@ -268,7 +268,7 @@ namespace Phobos.Library.CoreServices.Db
             {
                 model.User = context.Users.First(x => x.Username == model.User.Username);
 
-                if (model.Id == 0)
+                if (model.Id == 0 || !context.UserMessageFolders.Any(x=>x.Id == model.Id))
                 {
                     context.UserMessageFolders.Add(model);
                 }
@@ -294,6 +294,22 @@ namespace Phobos.Library.CoreServices.Db
 
                 msg.Folder = newFolder;
                 context.SaveChanges();
+            }
+        }
+
+
+        public void DeleteFolder(string userName, int id)
+        {
+            using (var context = new PhobosCoreContext())
+            {
+                var folder = context.UserMessageFolders.FirstOrDefault(x => x.Id == id && x.User.Username == userName);
+
+                if (folder != null)
+                {
+                    context.UserMessageFolders.Remove(folder);
+
+                    context.SaveChanges();
+                }
             }
         }
     }

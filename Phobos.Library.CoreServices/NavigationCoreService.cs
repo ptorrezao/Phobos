@@ -40,7 +40,7 @@ namespace Phobos.Library.CoreServices
                 if (selectedAction.Roles.Any(x => x.UserAccounts.Any(z => z.Username == username)) ||
                     selectedAction.UserAccounts.Any(x => x.Username == username))
                 {
-                    var msg = string.Format("Was found action authorizations for the specified action/controller ({0}/{1}) for user {3}.", currentActionName, currentControllerName, username);
+                    var msg = string.Format("Was found action authorizations for the specified action/controller ({0}/{1}) for user {2}.", currentActionName, currentControllerName, username);
 
                     AuditTrail.LogInfoMessage(msg, username, DateTime.Now);
 
@@ -50,7 +50,7 @@ namespace Phobos.Library.CoreServices
                 {
                     //// Action is not authorized for this user
 
-                    var msg = string.Format("Was not found action authorizations for the specified action/controller ({0}/{1}) for user {3}.", currentActionName, currentControllerName, username);
+                    var msg = string.Format("Was not found action authorizations for the specified action/controller ({0}/{1}) for user {2}.", currentActionName, currentControllerName, username);
 
                     AuditTrail.LogInfoMessage(msg, username, DateTime.Now);
 

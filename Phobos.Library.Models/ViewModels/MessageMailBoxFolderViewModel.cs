@@ -12,7 +12,7 @@ namespace Phobos.Library.Models.ViewModels
     {
         public MessageMailBoxFolderViewModel()
         {
-            Folders = new List<MessageMailBoxFolderItemViewModel>();
+            Folders = new List<MessageMailBoxFolderViewModel>();
             Messages = new List<MessageMailBoxItemViewModel>();
         }
 
@@ -26,7 +26,7 @@ namespace Phobos.Library.Models.ViewModels
         public TextColor IconColor { get; set; }
         public List<MessageMailBoxItemViewModel> Messages { get; set; }
         public int NewFolderIdForMessages { get; set; }
-        public List<MessageMailBoxFolderItemViewModel> Folders { get; set; }
+        public List<MessageMailBoxFolderViewModel> Folders { get; set; }
         public bool IsEditable { get; set; }
         public UserAccountViewModel User { get; set; }
     }

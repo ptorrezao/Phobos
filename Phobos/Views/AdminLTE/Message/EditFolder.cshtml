@@ -21,8 +21,8 @@
 }
 
 <div class="row">
-    <div class="col-md-3">
-        @Html.Action("GetFolderBox")
+    <div class="col-md-3" id="folderBox">
+        @Html.Partial("_FolderBox", Model.Folders)
         @*
             Tags is not in place for the moment
             @Html.Partial("_TagsBox", Model.Tags)
@@ -30,7 +30,12 @@
     </div>
     <div class="col-md-9">
         <div class="box box-primary">
-            @using (Html.BeginForm())
+            @using (Ajax.BeginForm("EditFolder", "Message", new { }, new AjaxOptions()
+                        {
+                            UpdateTargetId = "folderBox",
+                            OnSuccess = "onSuccess",
+                            OnFailure = "onFailure"
+                        }))
             {
                 <div class="box-header with-border">
                     <h3 class="box-title">@pageName</h3>
@@ -59,9 +64,31 @@
                     <div class="pull-right">
                         <button type="submit" name="submit" value="Save" class="btn btn-primary"><i class="fa fa-floppy-o"></i> Save</button>
                     </div>
-                    <button name="submit" value="Discard" class="btn btn-default"><i class="fa fa-times"></i> Discard</button>
+                    <button name="submit" id="btnDiscard" value="Discard" onclick="return false;" class="btn btn-default"><i class="fa fa-times"></i> Discard</button>
                 </div>
             }
         </div>
     </div>
 </div>
+<script>
+    function onSuccess() { ohSnap('The request was processed with sucess.', { color: 'green' }); }
+    function onFailure() { ohSnap('Something went wrong...', { color: 'red' }); }
+
+    $(document).ready(function () {
+        var url = "@Url.Action("RemoveFolder", "Message")";
+        var finalurl = "@Url.Action("Index", "Message")";
+
+        $("#btnDiscard").click(function () {
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: {
+                    selectedId: @Model.FolderId,
+                },
+                success: function (data) {
+                    window.location.replace(finalurl);
+                }
+            });
+        });
+    });
+</script>

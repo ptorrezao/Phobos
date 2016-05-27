@@ -18,7 +18,6 @@ namespace Phobos.Library.CoreServices
         [Inject]
         public IMessageRepo Repository { get; set; }
 
-
         public bool SendMessage(string username, string v)
         {
             return false;
@@ -42,15 +41,17 @@ namespace Phobos.Library.CoreServices
             {
                 folder = this.Repository.GetInboxFolder(userName);
             }
-
-            folder.Messages = this.Repository.GetMessages(userName, folder.Id);
+            else if (folder != null)
+            {
+                folder.Messages = this.Repository.GetMessages(userName, folder.Id);
+            }
             return folder;
         }
 
         public UserMessage SendMessage(string userName, UserMessage createdMessage)
         {
             UserMessageFolder sentFolder = this.Repository.GetSentFolder(userName);
-            
+
             if (createdMessage.Sender.Username == userName)
             {
                 //// Create a new instance of this message and send it;
@@ -92,7 +93,7 @@ namespace Phobos.Library.CoreServices
             return null;
         }
 
-        public void DeleteMessage(int messageId)
+        public void DeleteMessage(string userName, int messageId)
         {
             this.Repository.DeleteMessage(messageId);
         }
@@ -102,7 +103,7 @@ namespace Phobos.Library.CoreServices
             return this.Repository.GetMessage(userName, id);
         }
 
-        public UserMessageFolder SaveFolder(UserMessageFolder model)
+        public UserMessageFolder SaveFolder(string userName, UserMessageFolder model)
         {
             return this.Repository.SaveFolder(model);
         }
@@ -110,6 +111,11 @@ namespace Phobos.Library.CoreServices
         public void MoveMessageToFolder(string userName, int msgId, int newFolderId)
         {
             this.Repository.MoveMessageToFolder(userName, msgId, newFolderId);
+        }
+
+        public void DeleteFolder(string userName, int id)
+        {
+            this.Repository.DeleteFolder(userName, id);
         }
     }
 }

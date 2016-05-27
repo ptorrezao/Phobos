@@ -162,14 +162,14 @@ namespace Phobos.Controllers
         [PhobosInitialization]
         public ActionResult EditProfile(UserAccountViewModel model)
         {
-            if (ModelState.IsValid)
-            {
-                var userAccount = AutoMapperConfiguration.GetMapper().Map<UserAccount>(model);
+            var userAccount = AutoMapperConfiguration.GetMapper().Map<UserAccount>(model);
 
-                this.userManagementService.UpdateAccount(userAccount);
+            this.userManagementService.UpdateAccount(userAccount);
 
-                this.auditTrailService.LogMessage(string.Format("The user {0} had changed his profile.", SessionManager.UserAccount.Username), SessionManager.UserAccount.Username, userAccount);
-            }
+            SessionManager.UserAccount = model;
+
+            this.auditTrailService.LogMessage(string.Format("The user {0} had changed his profile.", SessionManager.UserAccount.Username), SessionManager.UserAccount.Username, userAccount);
+            
             return PartialView("_ProfileDetails", model);
         }
     }

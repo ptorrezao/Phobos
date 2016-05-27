@@ -14,7 +14,6 @@ namespace Phobos.Library.Models
         public DateTime? BirthDate { get; set; }
         public DateTime? LastLoginDate { get; set; }
         public DateTime MemberSinceDate { get; set; }
-
         public UserStatusEnum CurrentStatus { get; set; }
         public string FirstName { get; set; }
         public bool IsLocked { get; set; }
@@ -24,10 +23,10 @@ namespace Phobos.Library.Models
         [Key]
         public string Username { get; set; }
         public int FailedAttempts { get; set; }
-
         public virtual List<UserMessage> Messages { get; set; }
         public virtual List<UserNotification> Notifications { get; set; }
         public virtual List<UserTask> Tasks { get; set; }
         public virtual List<ActionAuthorization> ActionAuthorizations { get; set; }
+        public virtual List<UserRole> Roles { get; set; }
     }
 }

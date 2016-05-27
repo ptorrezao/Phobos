@@ -68,13 +68,28 @@ namespace Phobos.UnitTest.Repos
         {
             if (!list.Any(x => x.Username == userName))
             {
-                list.Add(new UserAccount() { Username = userName, FirstName = name, Password = password });
+                list.Add(new UserAccount()
+                {
+                    Username = userName,
+                    FirstName = name,
+                    Password = password,
+                    Roles = this.GetRole("User")
+                });
                 return list.First(x => x.Username == userName);
             }
             else
             {
                 return list.First(x => x.Username == userName);
             }
+        }
+
+        private List<UserRole> GetRole(string role)
+        {
+            return new List<UserRole>() { 
+                new UserRole() { 
+                    Name = role
+                }
+            };
         }
 
         public bool UpdateAccount(UserAccount userAccount)

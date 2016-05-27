@@ -1,14 +1,16 @@
-﻿using Phobos.Library.Interfaces;
+﻿using Ninject;
+using Phobos.Library.Interfaces;
 using Phobos.Library.Interfaces.Repos;
+using Phobos.Library.Interfaces.Services;
+using Phobos.Library.Models;
 using System;
 using System.Collections.Generic;
+using System.Data.Common;
+using System.Data.Entity;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
-using Phobos.Library.Models;
-using System.Security.Cryptography;
-using Ninject;
-using Phobos.Library.Interfaces.Services;
 
 namespace Phobos.Library.CoreServices.Db
 {
@@ -65,10 +67,30 @@ namespace Phobos.Library.CoreServices.Db
                 newUser.Username = userName;
                 newUser.Password = password;
                 newUser.MemberSinceDate = DateTime.Now;
+
+                newUser.Roles.AddRange(this.GetRolesForUser(context));
+
                 context.Users.Add(newUser);
                 context.SaveChanges();
                 return newUser;
             }
+        }
+
+        private List<UserRole> GetRolesForUser(PhobosCoreContext context)
+        {
+            var listOfRoles = new List<UserRole>();
+
+            var role = context.Roles.FirstOrDefault(x => x.Name == "User");
+            if (role == default(UserRole))
+            {
+                role = new UserRole()
+                {
+                    Name = "User"
+                };
+            }
+            listOfRoles.Add(role);
+
+            return listOfRoles;
         }
 
         public ActionAuthorization GetAutorizationForAction(string currentControllerName, string currentActionName)
@@ -76,6 +98,9 @@ namespace Phobos.Library.CoreServices.Db
             using (var context = new PhobosCoreContext())
             {
                 var actionAuthorization = context.ActionAuthorizations
+                    .Include(x => x.Roles)
+                    .Include(x => x.UserAccounts)
+                    .Include(x => x.Roles.Select(r => r.UserAccounts))
                     .FirstOrDefault(x => x.Controller == currentControllerName && x.Action == currentActionName);
                 return actionAuthorization;
             }
@@ -237,6 +262,6 @@ namespace Phobos.Library.CoreServices.Db
 
 
 
-        
+
     }
 }

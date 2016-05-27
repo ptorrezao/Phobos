@@ -9,19 +9,19 @@ namespace Phobos.Utils
 {
     public static class ViewModelUtils
     {
-        public static IEnumerable<SelectListItem> AsSelectListItem(this List<MessageMailBoxFolderItemViewModel> folders, object selectedValue)
+        public static IEnumerable<SelectListItem> AsSelectListItem(this List<MessageMailBoxFolderViewModel> folders, object selectedValue)
         {
             int selectedValueId = -1;
             var isSelectedIdValid = int.TryParse(selectedValue.ToString(), out selectedValueId);
 
             var newList = new List<SelectListItem>();
- 
-            foreach (MessageMailBoxFolderItemViewModel item in folders)
+
+            foreach (MessageMailBoxFolderViewModel item in folders)
             {
                 newList.Add(new SelectListItem()
                 {
                     Selected = isSelectedIdValid && item.FolderId == selectedValueId,
-                    Text = item.Title,
+                    Text = item.Name,
                     Value = item.FolderId.ToString()
                 });
             }

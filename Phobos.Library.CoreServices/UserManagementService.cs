@@ -226,7 +226,6 @@ namespace Phobos.Library.CoreServices
                 {
                     if (this.CheckSecurityMesurements(userName, password, confirmPassword, out error))
                     {
-
                         selectedUser = this.Repository.CreateUser(name, userName, password.GetAsHash(salt.Value));
                     }
                 }
@@ -297,8 +296,5 @@ namespace Phobos.Library.CoreServices
             return haveMinimumLength && haveMinimunQtdOfDigits && haveMinimunQtdOfLower && haveMinimunQtdOfUpper;
         }
         #endregion
-
-
-       
     }
 }

@@ -9,15 +9,16 @@ namespace Phobos.Library.Interfaces.Services
 {
     public interface IMessageService
     {
-        bool SendMessage(string username, string v);
+        bool SendMessage(string username, string msg);
         List<UserMessage> GetLastMessages(string userName, int qtd, bool orderDesc);
         List<UserMessageFolder> GetAllFoldersForUser(string userName);
         UserMessageFolder GetFolder(string userName, int? id);
-        UserMessage SendMessage(string p, UserMessage createdMessage);
-        UserMessage SaveMessage(string p, UserMessage newMessage);
-        void DeleteMessage(int p);
+        UserMessage SendMessage(string userName, UserMessage createdMessage);
+        UserMessage SaveMessage(string userName, UserMessage newMessage);
+        void DeleteMessage(string userName, int id);
         UserMessage GetMessage(string userName, int id);
-        UserMessageFolder SaveFolder(UserMessageFolder model);
+        UserMessageFolder SaveFolder(string userName, UserMessageFolder model);
         void MoveMessageToFolder(string userName, int selectedInt, int newFolderIdInt);
+        void DeleteFolder(string userName, int id);
     }
 }

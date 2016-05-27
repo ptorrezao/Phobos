@@ -76,6 +76,10 @@
     <Compile Include="Migrations\201605271445356_UserAuthoriazation_Functionality.Designer.cs">
       <DependentUpon>201605271445356_UserAuthoriazation_Functionality.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201605271540066_GroupUsersUnderRole.cs" />
+    <Compile Include="Migrations\201605271540066_GroupUsersUnderRole.Designer.cs">
+      <DependentUpon>201605271540066_GroupUsersUnderRole.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UserManagementRepo.cs" />
@@ -112,6 +116,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201605271445356_UserAuthoriazation_Functionality.resx">
       <DependentUpon>201605271445356_UserAuthoriazation_Functionality.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201605271540066_GroupUsersUnderRole.resx">
+      <DependentUpon>201605271540066_GroupUsersUnderRole.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

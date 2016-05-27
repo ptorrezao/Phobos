@@ -42,7 +42,7 @@ namespace Phobos.Controllers
             var mapper = AutoMapperConfiguration.GetMapper();
 
             var currentFolderViewModel = mapper.Map<UserMessageFolder, MessageMailBoxFolderViewModel>(currentFolder);
-            currentFolderViewModel.Folders = mapper.Map<List<UserMessageFolder>, List<MessageMailBoxFolderItemViewModel>>(foldersForUser);
+            currentFolderViewModel.Folders = mapper.Map<List<UserMessageFolder>, List<MessageMailBoxFolderViewModel>>(foldersForUser);
 
             var model = new MessageMailBoxViewModel()
             {
@@ -101,7 +101,7 @@ namespace Phobos.Controllers
             {
                 if (model.MessageId > 0)
                 {
-                    messageService.DeleteMessage(model.MessageId);
+                    messageService.DeleteMessage(SessionManager.CurrentUsername, model.MessageId);
                 }
 
                 return this.RedirectToAction("Index");
@@ -175,7 +175,7 @@ namespace Phobos.Controllers
                     int selectedInt = 0;
                     if (int.TryParse(selectedId, out selectedInt))
                     {
-                        this.messageService.DeleteMessage(selectedInt);
+                        this.messageService.DeleteMessage(SessionManager.CurrentUsername, selectedInt);
                     }
                 }
             }
@@ -218,10 +218,16 @@ namespace Phobos.Controllers
         public ActionResult EditFolder(int Id)
         {
             var mapper = AutoMapperConfiguration.GetMapper();
-
+            var foldersForUser = messageService.GetAllFoldersForUser(SessionManager.CurrentUsername);
             var folder = messageService.GetFolder(SessionManager.CurrentUsername, Id);
-            var viewModel = mapper.Map<UserMessageFolder, MessageMailBoxFolderViewModel>(folder);
-            return this.View(viewModel);
+            if (folder != null)
+            {
+                var viewModel = mapper.Map<UserMessageFolder, MessageMailBoxFolderViewModel>(folder);
+                viewModel.Folders = mapper.Map<List<UserMessageFolder>, List<MessageMailBoxFolderViewModel>>(foldersForUser);
+                return this.View(viewModel);
+            }
+
+            return this.RedirectToAction("Index");
         }
 
         [HttpParamAction]
@@ -229,35 +235,46 @@ namespace Phobos.Controllers
         public ActionResult EditFolder(MessageMailBoxFolderViewModel viewModel)
         {
             var mapper = AutoMapperConfiguration.GetMapper();
-
             var model = mapper.Map<MessageMailBoxFolderViewModel, UserMessageFolder>(viewModel);
 
-            var updatedFolder = messageService.SaveFolder(model);
+            if (Request.Form["submit"] == "Save")
+            {
+                var updatedFolder = messageService.SaveFolder(SessionManager.CurrentUsername, model);
+                viewModel = mapper.Map<UserMessageFolder, MessageMailBoxFolderViewModel>(updatedFolder);
+            }
 
-            return this.RedirectToAction("Index", new { model.Id });
+            var foldersForUser = messageService.GetAllFoldersForUser(SessionManager.CurrentUsername);
+            var folders = mapper.Map<List<UserMessageFolder>, List<MessageMailBoxFolderViewModel>>(foldersForUser);
+
+            return this.PartialView("_FolderBox", folders);
+        }
+
+        [HttpParamAction]
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult RemoveFolder(string selectedId)
+        {
+            messageService.DeleteFolder(SessionManager.CurrentUsername, int.Parse(selectedId));
+
+            return this.RedirectToAction("Index");
         }
 
         public ActionResult CreateFolder()
         {
             var mapper = AutoMapperConfiguration.GetMapper();
+            var foldersForUser = messageService.GetAllFoldersForUser(SessionManager.CurrentUsername);
 
             var folder = new UserMessageFolder()
             {
                 User = new UserAccount()
                 {
                     Username = SessionManager.CurrentUsername
-                }
+                },
             };
 
             var viewModel = mapper.Map<UserMessageFolder, MessageMailBoxFolderViewModel>(folder);
-            return this.View("EditFolder", viewModel);
-        }
+            viewModel.Folders = mapper.Map<List<UserMessageFolder>, List<MessageMailBoxFolderViewModel>>(foldersForUser);
 
-        [HttpParamAction]
-        [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult CreateFolder(MessageMailBoxFolderViewModel viewModel)
-        {
-            return this.EditFolder(viewModel);
+            return this.View("EditFolder", viewModel);
         }
 
         private List<string> SaveAttachements(IEnumerable<HttpPostedFileBase> files)

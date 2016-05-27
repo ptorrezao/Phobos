@@ -13,6 +13,7 @@ namespace Phobos.Library.CoreServices.Db.Migrations
             AutomaticMigrationsEnabled = false;
             ContextKey = "Phobos.Library.CoreServices.Db.PhobosCoreContext";
         }
+
         const string userRoleName = "User";
         const string adminRoleName = "Administrator";
         readonly string[] defaultUsers = { userRoleName };
@@ -25,17 +26,37 @@ namespace Phobos.Library.CoreServices.Db.Migrations
             this.AddRole(context, userRoleName);
             this.AddRole(context, adminRoleName);
 
+            this.AddCurrentUsersToRoles(context, defaultUsers);
+
             this.AddActionAuthorizations(context, "EditProfile", "Account");
+            this.AddActionAuthorizations(context, "Index", "Home");
             this.AddActionAuthorizations(context, "Index", "Message");
             this.AddActionAuthorizations(context, "GetFolderBox", "Message");
             this.AddActionAuthorizations(context, "Compose", "Message");
             this.AddActionAuthorizations(context, "CreateFolder", "Message");
             this.AddActionAuthorizations(context, "EditFolder", "Message");
+            this.AddActionAuthorizations(context, "RemoveFolder", "Message");
             this.AddActionAuthorizations(context, "Move", "Message");
             this.AddActionAuthorizations(context, "Remove", "Message");
             this.AddActionAuthorizations(context, "FindNextMessage", "Message");
             this.AddActionAuthorizations(context, "ReadMessage", "Message");
             this.AddActionAuthorizations(context, "MarkAsFavorite", "Message");
+        }
+        
+        private void AddCurrentUsersToRoles(PhobosCoreContext context, string[] defaultUsers)
+        {
+            var selectedRoles = defaultUsers.Select(x => context.Roles.Where(role => role.Name == x).First()).ToList();
+           
+            foreach (UserAccount user in context.Users)
+            {
+                foreach (UserRole role in selectedRoles)
+                {
+                    if (!user.Roles.Any(x => x.Id == role.Id))
+                    {
+                        user.Roles.Add(role);
+                    }
+                }
+            }
         }
 
         private void AddRole(PhobosCoreContext context, string roleName)
@@ -54,8 +75,8 @@ namespace Phobos.Library.CoreServices.Db.Migrations
         private void AddActionAuthorizations(PhobosCoreContext context, string action, string controller, string[] roles = null)
         {
             roles = roles ?? defaultUsers;
-            
-            var actionAuthorization = context.ActionAuthorizations.FirstOrDefault(x => x.Action == controller && x.Controller == action);
+
+            var actionAuthorization = context.ActionAuthorizations.FirstOrDefault(x => x.Action == action && x.Controller == controller);
             var selectedRoles = roles.Select(x => context.Roles.Where(role => role.Name == x).First()).ToList();
 
             if (actionAuthorization == default(ActionAuthorization))
@@ -71,8 +92,13 @@ namespace Phobos.Library.CoreServices.Db.Migrations
             }
             else
             {
-                actionAuthorization.Roles = selectedRoles;
-                context.Entry(actionAuthorization).State = EntityState.Modified;
+                foreach (var role in selectedRoles)
+                {
+                    if (!actionAuthorization.Roles.Any(x => x.Id == role.Id))
+                    {
+                        actionAuthorization.Roles.Add(role);
+                    }
+                }
             }
 
             context.SaveChanges();
@@ -94,6 +120,8 @@ namespace Phobos.Library.CoreServices.Db.Migrations
                     folder.IconColor = Models.Enums.TextColor.Blue;
                 }
             }
+
+            context.SaveChanges();
         }
     }
 }
