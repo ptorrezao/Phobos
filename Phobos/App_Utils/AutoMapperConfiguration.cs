@@ -43,7 +43,8 @@ namespace Phobos.App_Utils
                    .ForMember(dest => dest.Id, opts => opts.MapFrom(src => src.FolderId));
 
                 cfg.CreateMap<UserMessageFolder, MessageMailBoxFolderItemViewModel>()
-                    .ForMember(dest => dest.FolderId, opts => opts.MapFrom(src => src.Id));
+                    .ForMember(dest => dest.FolderId, opts => opts.MapFrom(src => src.Id))
+                    .ForMember(dest => dest.Title, opts => opts.MapFrom(src => src.Name));
 
                 cfg.CreateMap<UserMessage, UserMessageViewModel>()
                     .ForMember(dest => dest.Message, opts => opts.MapFrom(src => src.Message.TruncateLongString(30, "...")))

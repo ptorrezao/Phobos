@@ -18,5 +18,6 @@ namespace Phobos.Library.Interfaces.Services
         void DeleteMessage(int p);
         UserMessage GetMessage(string userName, int id);
         UserMessageFolder SaveFolder(UserMessageFolder model);
+        void MoveMessageToFolder(string userName, int selectedInt, int newFolderIdInt);
     }
 }

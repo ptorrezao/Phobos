@@ -67,7 +67,8 @@ namespace Phobos.Library.CoreServices
                     Owner = new UserAccount() { Username = createdMessage.Receiver.Username },
                     Receiver = new UserAccount() { Username = createdMessage.Receiver.Username },
                     Sender = new UserAccount() { Username = createdMessage.Owner.Username },
-                    Sent = true
+                    Sent = true,
+                    IsDraft = false
                 };
                 this.Repository.SaveMessage(sentMessage);
 
@@ -96,16 +97,19 @@ namespace Phobos.Library.CoreServices
             this.Repository.DeleteMessage(messageId);
         }
 
-
         public UserMessage GetMessage(string userName, int id)
         {
             return this.Repository.GetMessage(userName, id);
         }
 
-
         public UserMessageFolder SaveFolder(UserMessageFolder model)
         {
             return this.Repository.SaveFolder(model);
+        }
+
+        public void MoveMessageToFolder(string userName, int msgId, int newFolderId)
+        {
+            this.Repository.MoveMessageToFolder(userName, msgId, newFolderId);
         }
     }
 }

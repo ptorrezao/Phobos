@@ -41,9 +41,12 @@ namespace Phobos.Controllers
             var currentFolder = messageService.GetFolder(SessionManager.CurrentUsername, id);
             var mapper = AutoMapperConfiguration.GetMapper();
 
+            var currentFolderViewModel = mapper.Map<UserMessageFolder, MessageMailBoxFolderViewModel>(currentFolder);
+            currentFolderViewModel.Folders = mapper.Map<List<UserMessageFolder>, List<MessageMailBoxFolderItemViewModel>>(foldersForUser);
+
             var model = new MessageMailBoxViewModel()
             {
-                CurrentFolder = mapper.Map<UserMessageFolder, MessageMailBoxFolderViewModel>(currentFolder),
+                CurrentFolder = currentFolderViewModel,
                 Folders = mapper.Map<List<UserMessageFolder>, List<MessageMailBoxFolderViewModel>>(foldersForUser)
             };
 
@@ -194,16 +197,35 @@ namespace Phobos.Controllers
             return this.RedirectToAction("Index");
         }
 
+
         [HttpParamAction]
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult Search(string search)
+        public ActionResult Move(string newFolderId, string[] selectedIds)
         {
+            if (selectedIds != null && selectedIds.Count() > 0)
+            {
+                foreach (var selectedId in selectedIds)
+                {
+                    int selectedInt = 0;
+                    int newFolderIdInt = 0;
+
+                    if (int.TryParse(selectedId, out selectedInt))
+                    {
+                        if (int.TryParse(newFolderId, out newFolderIdInt))
+                        {
+                            this.messageService.MoveMessageToFolder(SessionManager.CurrentUsername, selectedInt, newFolderIdInt);
+                        }
+                    }
+                }
+            }
+            return this.RedirectToAction("Index");
+
             return this.RedirectToAction("Index");
         }
 
         [HttpParamAction]
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult Move(MessageMailBoxFolderViewModel model, string[] selectedIds)
+        public ActionResult Search(string search)
         {
             return this.RedirectToAction("Index");
         }

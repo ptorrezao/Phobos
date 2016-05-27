@@ -4,8 +4,6 @@
 
 @model MessageMailBoxFolderViewModel
 
-@{Html.BeginForm("Action", "Message", FormMethod.Post);}
-
 @Html.SetPartialHelper("ButtonsForPager", (Func<HelperResult>)(ButtonsForPager))
 <div class="box box-primary">
     <div class="box-header with-border">
@@ -63,6 +61,7 @@
         )
     </div>
 </div>
+
 <div class="modal modal-primary fade" id="modalDelete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -80,6 +79,7 @@
         </div>
     </div>
 </div>
+
 <div class="modal fade" id="modalFolder" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -91,15 +91,16 @@
                 <label>
                     Which folder do you put the selected emails.
                 </label>
-                @Html.DropDownListFor(model => model.NewFolderIdForMessages, Model.Folders.AsSelectListItem(Model.FolderId), new { @class = "form-control" })
+                @Html.DropDownListFor(model => model.FolderId, Model.Folders.AsSelectListItem(Model.FolderId), new { @class = "form-control" })
             </div>
             <div class="modal-footer">
                 <button type="button" onclick="return false;" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
-                <button name="move" type="submit" class="btn btn-primary">Move</button>
+                <button name="move" id="btnMove" type="submit" formaction="" class="btn btn-primary">Move</button>
             </div>
         </div>
     </div>
 </div>
+
 @{
     Html.EndForm();
 }
@@ -116,7 +117,9 @@
 <script>
     $(document).ready(function () {
         var url = "@Url.Action("Remove", "Message")";
+        var urlMoveFolder = "@Url.Action("Move", "Message")";
         var finalurl = "@Url.Action("Index", "Message")";
+        var newFolderDOMId = '@Html.IdFor(m=>m.FolderId)';
 
         $(".masterCheckbox").click(function () {
             $(".masterCheckbox").children("i").toggleClass("fa-square-o");
@@ -132,6 +135,7 @@
         $(".grid-search").blur(function () {
             $("#searchButton").click();
         });
+
         $("#btnRemove").click(function () {
             var modelIds = [];
             $.each($('.mailbox').find('input[type=checkbox]:checked'), function (index, value) {
@@ -143,6 +147,25 @@
                 url: url,
                 data: {
                     selectedIds: modelIds
+                },
+                success: function (data) {
+                    window.location.replace(finalurl);
+                }
+            });
+        });
+
+        $("#btnMove").click(function () {
+            var modelIds = [];
+            $.each($('.mailbox').find('input[type=checkbox]:checked'), function (index, value) {
+                modelIds.push($(value).val());
+            });
+
+            $.ajax({
+                type: "POST",
+                url: urlMoveFolder,
+                data: {
+                    selectedIds: modelIds,
+                    newFolderId: $("#" + newFolderDOMId).val()
                 },
                 success: function (data) {
                     window.location.replace(finalurl);

@@ -193,9 +193,20 @@ namespace Phobos.Library.CoreServices.Db
                 sentMessage.Owner = context.Users.First(x => x.Username == sentMessage.Owner.Username);
                 sentMessage.Sender = context.Users.First(x => x.Username == sentMessage.Sender.Username);
                 sentMessage.Receiver = context.Users.First(x => x.Username == sentMessage.Receiver.Username);
-                sentMessage.Folder = sentMessage.Folder == null ? context.UserMessageFolders.FirstOrDefault(x => x.User.Username == sentMessage.Owner.Username && x.Name == DraftFolderName) : context.UserMessageFolders.First(x => x.Id == sentMessage.Folder.Id);
 
-                sentMessage.IsDraft = sentMessage.Folder.Name == DraftFolderName;
+                if (sentMessage.Folder == null && sentMessage.IsDraft)
+                {
+                    sentMessage.Folder = context.UserMessageFolders.FirstOrDefault(x => x.User.Username == sentMessage.Owner.Username && x.Name == DraftFolderName);
+                    sentMessage.IsDraft = sentMessage.Folder.Name == DraftFolderName;
+                }
+                else if (sentMessage.Folder == null && !sentMessage.IsDraft)
+                {
+                    sentMessage.Folder = context.UserMessageFolders.FirstOrDefault(x => x.User.Username == sentMessage.Receiver.Username && x.Name == InboxFolderName);
+                }
+                else if (sentMessage.Folder != null)
+                {
+                    sentMessage.Folder = context.UserMessageFolders.FirstOrDefault(x => x.Id == sentMessage.Folder.Id);
+                }
 
                 if (sentMessage.Id == 0)
                 {
@@ -242,7 +253,10 @@ namespace Phobos.Library.CoreServices.Db
                     .OrderByDescending(x => x.SendDate)
                     .FirstOrDefault();
 
-                message.IsDraft = message.Folder.Name == DraftFolderName;
+                if (message != null)
+                {
+                    message.IsDraft = message.Folder.Name == DraftFolderName;
+                }
 
                 return message;
             }
@@ -268,6 +282,18 @@ namespace Phobos.Library.CoreServices.Db
                 context.SaveChanges();
 
                 return model;
+            }
+        }
+
+        public void MoveMessageToFolder(string userName, int msgId, int newFolderId)
+        {
+            using (var context = new PhobosCoreContext())
+            {
+                var msg = context.UserMessages.First(x => x.Id == msgId && x.Owner.Username == userName);
+                var newFolder = context.UserMessageFolders.Where(x => x.Id == newFolderId && x.User.Username == userName).First();
+
+                msg.Folder = newFolder;
+                context.SaveChanges();
             }
         }
     }
