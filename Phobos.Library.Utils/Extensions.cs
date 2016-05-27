@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace Phobos.Library.Utils
@@ -25,10 +26,20 @@ namespace Phobos.Library.Utils
 
             return sb.ToString();
         }
-
         public static string TruncateLongString(this string str, int maxLength, string suffix)
         {
+            return str.TruncateLongString(maxLength, suffix, false);
+        }
+
+        public static string TruncateLongString(this string str, int maxLength, string suffix, bool removeHtmlImg)
+        {
+            if (removeHtmlImg)
+            {
+                str = Regex.Replace(str, @"<img\s[^>]*>(?:\s*?</img>)?", "", RegexOptions.IgnoreCase);
+            }
+           
             var strLength = str != null ? str.Length : 0;
+
             return string.Format("{0}{1}", (str ?? "").Substring(0, Math.Min(strLength, maxLength)), (maxLength <= strLength) ? suffix : "");
         }
 

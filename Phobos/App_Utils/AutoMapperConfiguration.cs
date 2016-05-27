@@ -29,7 +29,7 @@ namespace Phobos.App_Utils
                     .ForMember(dest => dest.Date, opts => opts.MapFrom(src => src.MessageDate))
                     .ForMember(dest => dest.Sender, opts => opts.MapFrom(src => AutoMapperConfiguration.GetMapper().Map<UserAccountViewModel>(src.Sender)))
                     .ForMember(dest => dest.Receiver, opts => opts.MapFrom(src => AutoMapperConfiguration.GetMapper().Map<UserAccountViewModel>(src.Receiver)))
-                    .ForMember(dest => dest.Intro, opts => opts.MapFrom(src => src.Message.TruncateLongString(30, "..."))); 
+                    .ForMember(dest => dest.Intro, opts => opts.MapFrom(src => src.Message.TruncateLongString(30, "...", true)));
                 #endregion
 
                 cfg.CreateMap<UserMessageFolder, MessageMailBoxFolderViewModel>()
@@ -47,12 +47,12 @@ namespace Phobos.App_Utils
                     .ForMember(dest => dest.Title, opts => opts.MapFrom(src => src.Name));
 
                 cfg.CreateMap<UserMessage, UserMessageViewModel>()
-                    .ForMember(dest => dest.Message, opts => opts.MapFrom(src => src.Message.TruncateLongString(30, "...")))
+                    .ForMember(dest => dest.Message, opts => opts.MapFrom(src => src.Message.TruncateLongString(30, "...", true)))
                     .ForMember(dest => dest.SentDate, opts => opts.MapFrom(src => src.SendDate))
                     .ForMember(dest => dest.Title, opts => opts.MapFrom(src => src.Title))
                     .ForMember(dest => dest.Id, opts => opts.MapFrom(src => src.Id))
                     .ForMember(dest => dest.User, opts => opts.MapFrom(src => AutoMapperConfiguration.GetMapper().Map<UserAccountViewModel>(src.Receiver)));
-               
+
                 #region UserAccount <-> UserAccountViewModel
                 cfg.CreateMap<UserAccount, UserAccountViewModel>()
                            .ForMember(dest => dest.CurrentStatus, opts => opts.MapFrom(src => src.CurrentStatus))
@@ -69,7 +69,7 @@ namespace Phobos.App_Utils
                            .ForMember(dest => dest.Position, opts => opts.MapFrom(src => src.Position))
                            .ForMember(dest => dest.UseGravatar, opts => opts.MapFrom(src => true));
                 cfg.CreateMap<UserAccountViewModel, UserAccount>()
-                    .ForMember(dest => dest.MemberSinceDate, opts => opts.MapFrom(src => src.MemberSince)); 
+                    .ForMember(dest => dest.MemberSinceDate, opts => opts.MapFrom(src => src.MemberSince));
                 #endregion
             });
             return config.CreateMapper();
