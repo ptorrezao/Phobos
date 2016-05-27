@@ -21,10 +21,16 @@ namespace Phobos.Library.CoreServices.Db.Migrations
 
         protected override void Seed(Phobos.Library.CoreServices.Db.PhobosCoreContext context)
         {
+            if (System.Diagnostics.Debugger.IsAttached == false)
+                System.Diagnostics.Debugger.Launch();
+
             this.PrepareDefaultFolders(context);
 
             this.AddRole(context, userRoleName);
             this.AddRole(context, adminRoleName);
+
+            this.AddUsers(context);
+            this.AddAdministratorUsers(context);
 
             this.AddCurrentUsersToRoles(context, defaultUsers);
 
@@ -42,11 +48,68 @@ namespace Phobos.Library.CoreServices.Db.Migrations
             this.AddActionAuthorizations(context, "ReadMessage", "Message");
             this.AddActionAuthorizations(context, "MarkAsFavorite", "Message");
         }
-        
+
+        private void AddAdministratorUsers(PhobosCoreContext context)
+        {
+            var role = context.Roles.FirstOrDefault(x => x.Name == adminRoleName);
+
+            if (role == default(UserRole)) { context.Roles.Add(new UserRole() { Name = adminRoleName }); }
+
+            var user = context.Users.FirstOrDefault(x => x.Username == "admin@admin.pt");
+
+            if (user == null)
+            {
+                user = new UserAccount()
+                {
+                    Username = "admin@admin.pt",
+                    BirthDate = DateTime.Now,
+                    Password = "da574a7b983b052fef321bd761d49f70", //Admin#123
+                    Position = "Administrator",
+                    FirstName = "Administrator",
+                    MemberSinceDate = DateTime.Now,
+                    CurrentStatus = Models.Enums.UserStatusEnum.Online,
+                    LockedDate = null,
+                    LastLoginDate = null,
+                    IsLocked = false,
+                    LastName = null,
+                };
+
+                user.Roles.Add(role);
+                context.Users.Add(user);
+                context.SaveChanges();
+            }
+        }
+
+        private void AddUsers(PhobosCoreContext context)
+        {
+            string[] firstNames = { "", "Mark", "Paul", "Peter", "John", "Rob" };
+
+            for (int i = 1; i <= 5; i++)
+            {
+                var user = context.Users.FirstOrDefault(x => x.Username == "user" + i + "@phobos.pt");
+
+                if (user == null)
+                {
+                    user = new UserAccount()
+                    {
+                        Username = "user" + i + "@phobos.pt",
+                        BirthDate = DateTime.Now,
+                        Password = "01ab2cfd811481348e8148b44a77ac4e", //User#123
+                        Position = "User",
+                        FirstName = firstNames[i],
+                        MemberSinceDate = DateTime.Now
+                    };
+                    context.Users.Add(user);
+                    context.SaveChanges();
+                }
+
+            }
+        }
+
         private void AddCurrentUsersToRoles(PhobosCoreContext context, string[] defaultUsers)
         {
             var selectedRoles = defaultUsers.Select(x => context.Roles.Where(role => role.Name == x).First()).ToList();
-           
+
             foreach (UserAccount user in context.Users)
             {
                 foreach (UserRole role in selectedRoles)
