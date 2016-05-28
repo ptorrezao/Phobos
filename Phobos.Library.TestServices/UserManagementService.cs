@@ -152,6 +152,14 @@ namespace Phobos.Library.TestServices
             return true;
         }
 
+        public void UpdateAccountForLogin(string username)
+        {
+            throw new NotImplementedException();
+        }
 
+        public void UpdateAccountForLogout(string username)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
