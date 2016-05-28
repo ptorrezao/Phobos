@@ -21,6 +21,7 @@ namespace Phobos.App_Utils
                 cfg.CreateMap<MessageMailBoxItemViewModel, UserMessage>()
                          .ForMember(dest => dest.Id, opts => opts.MapFrom(src => src.MessageId))
                          .ForMember(dest => dest.MessageDate, opts => opts.MapFrom(src => src.Date))
+                         .ForMember(dest => dest.IsFavorite, opts => opts.MapFrom(src => src.IsFavorite))
                          .ForMember(dest => dest.Sender, opts => opts.MapFrom(src => AutoMapperConfiguration.GetMapper().Map<UserAccount>(src.Sender)))
                          .ForMember(dest => dest.Owner, opts => opts.MapFrom(src => AutoMapperConfiguration.GetMapper().Map<UserAccount>(src.Owner)))
                          .ForMember(dest => dest.Receiver, opts => opts.MapFrom(src => AutoMapperConfiguration.GetMapper().Map<UserAccount>(src.Receiver)));

@@ -85,7 +85,7 @@ namespace Phobos.Library.CoreServices
 
         public UserMessage SaveMessage(string userName, UserMessage newMessage)
         {
-            if (newMessage.Sender.Username == userName)
+            if (newMessage.Owner.Username == userName)
             {
                 return this.Repository.SaveMessage(newMessage);
             }

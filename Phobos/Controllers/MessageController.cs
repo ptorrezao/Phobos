@@ -112,12 +112,9 @@ namespace Phobos.Controllers
 
         public ActionResult MarkAsFavorite(int Id, string returnUrl)
         {
-            if (!Url.IsLocalUrl(returnUrl))
-            {
                 var message = messageService.GetMessage(SessionManager.CurrentUsername, Id);
                 message.IsFavorite = !message.IsFavorite;
                 messageService.SaveMessage(SessionManager.CurrentUsername, message);
-            }
 
             return this.Redirect(returnUrl);
         }

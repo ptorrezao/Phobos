@@ -26,7 +26,7 @@ namespace Phobos.Library.CoreServices.Db
                     .Include(x => x.Sender)
                     .Include(x => x.Sender.Roles)
                     .Include(x => x.Folder)
-                    .Where(x => x.Receiver.Username == userName)
+                    .Where(x => x.Receiver.Username == userName && x.IsDraft == false && x.Folder.IsInboxFolder)
                     .OrderByDescending(x => x.SendDate)
                     .Take(qtd)
                     .ToList();
@@ -67,7 +67,7 @@ namespace Phobos.Library.CoreServices.Db
                 var folder = context.UserMessageFolders
                     .Include(x => x.User)
                     .Include(x => x.User.Roles)
-                    .Where(x => x.User.Username == userName && x.Id == folderId)
+                    .Where(x => x.User.Username == userName && (x.Id == folderId || (folderId == 0 && x.IsInboxFolder)))
                     .FirstOrDefault();
 
                 return folder;
@@ -204,7 +204,7 @@ namespace Phobos.Library.CoreServices.Db
             {
                 sentMessage.Owner = context.Users.Include(x => x.Roles).First(x => x.Username == sentMessage.Owner.Username);
                 sentMessage.Sender = context.Users.Include(x => x.Roles).First(x => x.Username == sentMessage.Sender.Username);
-                sentMessage.Receiver = context.Users.Include(x=>x.Roles).First(x => x.Username == sentMessage.Receiver.Username);
+                sentMessage.Receiver = context.Users.Include(x => x.Roles).First(x => x.Username == sentMessage.Receiver.Username);
 
                 if (sentMessage.Folder == null && sentMessage.IsDraft)
                 {
@@ -230,6 +230,7 @@ namespace Phobos.Library.CoreServices.Db
                     context.UserMessages.First(x => x.Id == sentMessage.Id).Title = sentMessage.Title;
                     context.UserMessages.First(x => x.Id == sentMessage.Id).Receiver = sentMessage.Receiver;
                     context.UserMessages.First(x => x.Id == sentMessage.Id).Sent = sentMessage.Sent;
+                    context.UserMessages.First(x => x.Id == sentMessage.Id).IsFavorite = sentMessage.IsFavorite;
                 }
 
                 context.SaveChanges();
@@ -280,9 +281,9 @@ namespace Phobos.Library.CoreServices.Db
         {
             using (var context = new PhobosCoreContext())
             {
-                model.User = context.Users.Include(x=>x.Roles).First(x => x.Username == model.User.Username);
+                model.User = context.Users.Include(x => x.Roles).First(x => x.Username == model.User.Username);
 
-                if (model.Id == 0 || !context.UserMessageFolders.Any(x=>x.Id == model.Id))
+                if (model.Id == 0 || !context.UserMessageFolders.Any(x => x.Id == model.Id))
                 {
                     context.UserMessageFolders.Add(model);
                 }
