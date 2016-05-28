@@ -41,7 +41,7 @@ namespace Phobos.App_Utils
 
                 cfg.CreateMap<MessageMailBoxFolderViewModel, UserMessageFolder>()
                    .ForMember(dest => dest.User, opts => opts.MapFrom(src => AutoMapperConfiguration.GetMapper().Map<UserAccount>(src.User)))
-                   .ForMember(dest => dest.Id, opts => opts.MapFrom(src => src.FolderId)); 
+                   .ForMember(dest => dest.Id, opts => opts.MapFrom(src => src.FolderId));
                 #endregion
 
                 cfg.CreateMap<UserMessageFolder, MessageMailBoxFolderItemViewModel>()
@@ -63,7 +63,11 @@ namespace Phobos.App_Utils
                            .ForMember(dest => dest.CurrentStatus, opts => opts.MapFrom(src => src.CurrentStatus))
                            .ForMember(dest => dest.FirstName, opts => opts.MapFrom(src => src.FirstName))
                            .ForMember(dest => dest.LastName, opts => opts.MapFrom(src => src.LastName))
-                           .ForMember(dest => dest.Roles, opts => opts.MapFrom(src => AutoMapperConfiguration.GetMapper().Map<List<UserRoleViewModel>>(src.Roles)))
+                           .ForMember(dest => dest.Roles, opts =>
+                           {
+                               opts.NullSubstitute(new List<UserRoleViewModel>());
+                               opts.MapFrom(src => AutoMapperConfiguration.GetMapper().Map<List<UserRoleViewModel>>(src.Roles));
+                           })
                            .ForMember(dest => dest.ImageAlt, opts => opts.MapFrom(src => string.Format("{0}{2}{1}", src.FirstName, src.LastName, (!string.IsNullOrEmpty(src.FirstName) && !string.IsNullOrEmpty(src.LastName) ? " " : ""))))
                            .ForMember(dest => dest.ImageUrl, opts =>
                            {
@@ -74,6 +78,7 @@ namespace Phobos.App_Utils
                            .ForMember(dest => dest.Username, opts => opts.MapFrom(src => src.Username))
                            .ForMember(dest => dest.Position, opts => opts.MapFrom(src => src.Position))
                            .ForMember(dest => dest.UseGravatar, opts => opts.MapFrom(src => true));
+
                 cfg.CreateMap<UserAccountViewModel, UserAccount>()
                     .ForMember(dest => dest.MemberSinceDate, opts => opts.MapFrom(src => src.MemberSince));
                 #endregion

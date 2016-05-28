@@ -113,5 +113,50 @@ namespace Phobos.Helpers
 
             return null;
         }
+        public static MvcHtmlString GetRolesAsLabels(this List<UserRoleViewModel> roles)
+        {
+            var result = "";
+            foreach (var role in roles)
+            {
+                var builder = new TagBuilder("span");
+                builder.AddCssClass("label");
+                if (role.IsAdmin)
+                {
+                    builder.AddCssClass("label-danger");
+                }
+                else
+                {
+                    builder.AddCssClass("label-primary");
+                }
+
+                builder.SetInnerText(role.Name);
+
+                if (!string.IsNullOrEmpty(result))
+                {
+                    result += " ";
+                }
+
+                result += builder.ToString();
+            }
+
+            return MvcHtmlString.Create(result);
+        }
+
+        public static MvcHtmlString AsTextCssClass(this UserStatusEnum status)
+        {
+            var result = "";
+            switch (status)
+            {
+                case UserStatusEnum.Online:
+                    result= "text-success";
+                    break;
+                case UserStatusEnum.Offline:
+                default:
+                    result = "text-danger";
+                    break;
+            }
+
+            return MvcHtmlString.Create(result);
+        }
     }
 }

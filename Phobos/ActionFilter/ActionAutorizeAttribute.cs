@@ -15,8 +15,15 @@ namespace Phobos.ActionFilter
         private INavigationService navigationService;
         private bool AllowEvenIfNotCreated;
 
-        public ActionAutorizeAttribute() : this(false, MvcApplication.GetKernel().Get<INavigationService>()) { }
-        public ActionAutorizeAttribute(bool allowEvenIfNotCreated) : this(allowEvenIfNotCreated, MvcApplication.GetKernel().Get<INavigationService>()) { }
+        public ActionAutorizeAttribute()
+            : this(false, MvcApplication.GetKernel().Get<INavigationService>())
+        {
+        }
+
+        public ActionAutorizeAttribute(bool allowEvenIfNotCreated)
+            : this(allowEvenIfNotCreated, MvcApplication.GetKernel().Get<INavigationService>())
+        {
+        }
 
         public ActionAutorizeAttribute(bool allowEvenIfNotCreated, INavigationService userMngSvc)
         {

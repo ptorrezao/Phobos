@@ -22,7 +22,9 @@ namespace Phobos.Library.CoreServices.Db
             {
                 return context.UserMessages
                     .Include(x => x.Receiver)
+                    .Include(x => x.Receiver.Roles)
                     .Include(x => x.Sender)
+                    .Include(x => x.Sender.Roles)
                     .Include(x => x.Folder)
                     .Where(x => x.Receiver.Username == userName)
                     .OrderByDescending(x => x.SendDate)
@@ -49,8 +51,11 @@ namespace Phobos.Library.CoreServices.Db
                     .Include(x => x.User.Roles)
                     .Include(x => x.Messages)
                     .Include(x => x.Messages.Select(c => c.Sender))
+                    .Include(x => x.Messages.Select(c => c.Sender.Roles))
                     .Include(x => x.Messages.Select(c => c.Receiver))
+                    .Include(x => x.Messages.Select(c => c.Receiver.Roles))
                     .Include(x => x.Messages.Select(c => c.Owner))
+                    .Include(x => x.Messages.Select(c => c.Owner.Roles))
                     .Where(x => x.User.Username == userName).ToList();
             }
         }
@@ -158,7 +163,9 @@ namespace Phobos.Library.CoreServices.Db
             {
                 var messages = context.UserMessages
                                     .Include(x => x.Receiver)
+                                    .Include(x => x.Receiver.Roles)
                                     .Include(x => x.Sender)
+                                    .Include(x => x.Sender.Roles)
                                     .Include(x => x.Folder)
                                     .Include(x => x.Owner)
                                     .Where(x => (x.Receiver.Username == userName && x.Folder.Id == folderId) ||
@@ -178,7 +185,7 @@ namespace Phobos.Library.CoreServices.Db
             {
                 var folder = new UserMessageFolder()
                 {
-                    User = context.Users.First(x => x.Username == userName),
+                    User = context.Users.Include(x => x.Roles).First(x => x.Username == userName),
                     Name = InboxFolderName,
                     IsInboxFolder = true
                 };
@@ -195,9 +202,9 @@ namespace Phobos.Library.CoreServices.Db
         {
             using (var context = new PhobosCoreContext())
             {
-                sentMessage.Owner = context.Users.First(x => x.Username == sentMessage.Owner.Username);
-                sentMessage.Sender = context.Users.First(x => x.Username == sentMessage.Sender.Username);
-                sentMessage.Receiver = context.Users.First(x => x.Username == sentMessage.Receiver.Username);
+                sentMessage.Owner = context.Users.Include(x => x.Roles).First(x => x.Username == sentMessage.Owner.Username);
+                sentMessage.Sender = context.Users.Include(x => x.Roles).First(x => x.Username == sentMessage.Sender.Username);
+                sentMessage.Receiver = context.Users.Include(x=>x.Roles).First(x => x.Username == sentMessage.Receiver.Username);
 
                 if (sentMessage.Folder == null && sentMessage.IsDraft)
                 {
@@ -249,7 +256,9 @@ namespace Phobos.Library.CoreServices.Db
             {
                 var message = context.UserMessages
                     .Include(x => x.Receiver)
+                    .Include(x => x.Receiver.Roles)
                     .Include(x => x.Sender)
+                    .Include(x => x.Sender.Roles)
                     .Include(x => x.Folder)
                     .Include(x => x.Owner)
                     .Where(x => x.Receiver.Username == userName &&
@@ -271,7 +280,7 @@ namespace Phobos.Library.CoreServices.Db
         {
             using (var context = new PhobosCoreContext())
             {
-                model.User = context.Users.First(x => x.Username == model.User.Username);
+                model.User = context.Users.Include(x=>x.Roles).First(x => x.Username == model.User.Username);
 
                 if (model.Id == 0 || !context.UserMessageFolders.Any(x=>x.Id == model.Id))
                 {

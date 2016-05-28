@@ -80,7 +80,7 @@ namespace Phobos.Controllers
 
         public ActionResult Logout()
         {
-            AuthenticationService.Logout();
+            AuthenticationService.Logout(this.User.Identity.Name);
 
             SessionManager.UserAccount = null;
 
@@ -167,10 +167,23 @@ namespace Phobos.Controllers
             this.userManagementService.UpdateAccount(userAccount);
 
             SessionManager.UserAccount = AutoMapperConfiguration.GetMapper().Map<UserAccountViewModel>(this.userManagementService.GetUser(this.User.Identity.Name));
-           
+
             this.auditTrailService.LogMessage(string.Format("The user {0} had changed his profile.", SessionManager.UserAccount.Username), SessionManager.UserAccount.Username, userAccount);
-            
+
             return PartialView("_ProfileDetails", model);
+        }
+
+        [ActionAutorize]
+        [PhobosInitialization]
+        public ActionResult ListUsers()
+        {
+            var users = this.userManagementService.GetAllUsers();
+
+            var usersViewModels = AutoMapperConfiguration.GetMapper().Map<List<UserAccountViewModel>>(users);
+
+            this.auditTrailService.LogMessage(string.Format("The user {0} request the list of users.", SessionManager.UserAccount.Username), SessionManager.UserAccount.Username, this.userManagementService.GetUser(SessionManager.UserAccount.Username));
+
+            return View(usersViewModels);
         }
     }
 }

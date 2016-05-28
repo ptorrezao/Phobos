@@ -7,6 +7,7 @@ namespace Phobos.Library.Models.Enums
 {
     public enum UserStatusEnum
     {
-        Online
+        Offline,
+        Online,
     }
 }

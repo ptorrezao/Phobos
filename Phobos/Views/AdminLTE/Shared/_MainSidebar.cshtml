@@ -1,4 +1,5 @@
-﻿@{
+﻿@using Phobos.Helpers
+@{
     UserAccountViewModel userAccount = ViewBag.UserAccount;
 }
 <aside class="main-sidebar">
@@ -9,7 +10,7 @@
             </div>
             <div class="pull-left info">
                 <p>@userAccount.FullName</p>
-                <a href="#"><i class="fa fa-circle text-success"></i> @userAccount.CurrentStatus</a>
+                <a href="#"><i class="fa fa-circle @userAccount.CurrentStatus.AsTextCssClass()"></i> @userAccount.CurrentStatus</a>
             </div>
         </div>
         @Html.Partial("_Search")

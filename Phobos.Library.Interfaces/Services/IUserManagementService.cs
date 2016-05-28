@@ -21,5 +21,9 @@ namespace Phobos.Library.Interfaces
         bool RecoverProfile(string userName, out string error);
 
         bool UpdateAccount(UserAccount userAccount);
+
+        void UpdateAccountForLogin(string username);
+
+        void UpdateAccountForLogout(string username);
     }
 }

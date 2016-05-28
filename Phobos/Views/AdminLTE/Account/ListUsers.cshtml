@@ -1,0 +1,87 @@
+﻿@using Phobos.Helpers
+@model IEnumerable<UserAccountViewModel>
+
+<div class="box box-primary">
+    <div class="box-header with-border">
+        <h3 class="box-title">Users</h3>
+        <div class="box-tools pull-right">
+            <div class="has-feedback">
+                <input type="text" class="form-control input-sm grid-search" placeholder="Search Mail" name="search">
+                <span class="glyphicon glyphicon-search form-control-feedback"></span>
+                <button id="searchButton" name="search" type="submit" style="display:none;"></button>
+            </div>
+        </div>
+    </div>
+
+    <div class="box-body no-padding">
+        @(Html
+        .Grid(Model)
+        .Named("users")
+        .Build(columns =>
+        {
+            columns.Add(model => model.ImageAlt)
+               .Encoded(false)
+               .Filterable(false)
+               .Css("img")
+               .RenderedAs(model => "<img src=\"" + model.ImageUrl + "\" class=\"user-image folderList img-circle\" alt=\"User Image\">");
+
+
+            columns.Add(model => model.Username)
+                   .Encoded(true)
+                   .Filterable(true)
+                   .Titled("Username")
+                   .RenderedAs(model => model.Username);
+
+            columns.Add(model => model.FullName)
+                    .Encoded(true)
+                    .Filterable(true)
+                    .Titled("Name")
+                    .RenderedAs(model => model.FullName);
+
+            columns.Add(model => model.CurrentStatus)
+                      .Encoded(false)
+                      .Filterable(true)
+                      .Titled("Status")
+                      .RenderedAs(model => "<a href=\"#\"><i class=\"fa fa-circle " + model.CurrentStatus.AsTextCssClass() +"\"></i> " + model.CurrentStatus + "</a>");
+            
+            columns.Add(model => model.BirthDate)
+                    .Encoded(true)
+                    .Filterable(true)
+                    .Titled("Birth Date")
+                    .RenderedAs(model => model.BirthDate.ToShortDateString());
+
+            columns.Add(model => model.MemberSince)
+                  .Titled("Member Since")
+                  .Encoded(true)
+                  .Filterable(false)
+                    .RenderedAs(model => model.MemberSince.ToShortDateString());
+
+            columns.Add(model => model.Roles)
+               .Titled("Roles")
+               .Encoded(false)
+               .RenderedAs(model => model.Roles.GetRolesAsLabels())
+               .Filterable(false);
+        })
+        .Filterable(false)
+        .Sortable(false)
+        .Css("table-hover table-striped box-footer no-padding mailbox")
+        .Pageable(pager =>
+        {
+            pager.PagesToDisplay = 0;
+            pager.InitialPage = 1;
+            pager.RowsPerPage = 16;
+        })
+        )
+    </div>
+</div>
+
+<style>
+    .folderList {
+        height: 24px;
+        width: 24px;
+    }
+
+    .img {
+        width: 30px;
+    }
+</style>

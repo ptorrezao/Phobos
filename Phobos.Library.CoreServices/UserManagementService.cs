@@ -296,5 +296,25 @@ namespace Phobos.Library.CoreServices
             return haveMinimumLength && haveMinimunQtdOfDigits && haveMinimunQtdOfLower && haveMinimunQtdOfUpper;
         }
         #endregion
+
+        public void UpdateAccountForLogin(string username)
+        {
+            var user = this.GetUser(username);
+
+            user.CurrentStatus = Models.Enums.UserStatusEnum.Online;
+
+            user.LastLoginDate = DateTime.Now;
+
+            this.UpdateAccount(user);
+        }
+
+        public void UpdateAccountForLogout(string username)
+        {
+            var user = this.GetUser(username);
+
+            user.CurrentStatus = Models.Enums.UserStatusEnum.Offline;
+
+            this.UpdateAccount(user);
+        }
     }
 }

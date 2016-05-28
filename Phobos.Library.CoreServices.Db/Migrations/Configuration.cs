@@ -21,11 +21,8 @@ namespace Phobos.Library.CoreServices.Db.Migrations
 
         protected override void Seed(Phobos.Library.CoreServices.Db.PhobosCoreContext context)
         {
-            if (System.Diagnostics.Debugger.IsAttached == false)
-                System.Diagnostics.Debugger.Launch();
-
-            this.PrepareDefaultFolders(context);
-
+            //if (System.Diagnostics.Debugger.IsAttached == false)
+            //    System.Diagnostics.Debugger.Launch();
             this.AddRole(context, userRoleName);
             this.AddRole(context, adminRoleName);
 
@@ -34,9 +31,13 @@ namespace Phobos.Library.CoreServices.Db.Migrations
 
             this.AddCurrentUsersToRoles(context, defaultUsers);
 
-            this.AddActionAuthorizations(context, "EditProfile", "Account");
-            this.AddActionAuthorizations(context, "Index", "Home");
             this.AddActionAuthorizations(context, "Index", "Message");
+
+            this.AddActionAuthorizations(context, "EditProfile", "Account");
+            this.AddActionAuthorizations(context, "ListUsers", "Account");
+
+            this.AddActionAuthorizations(context, "Index", "Home");
+
             this.AddActionAuthorizations(context, "GetFolderBox", "Message");
             this.AddActionAuthorizations(context, "Compose", "Message");
             this.AddActionAuthorizations(context, "CreateFolder", "Message");
@@ -47,6 +48,10 @@ namespace Phobos.Library.CoreServices.Db.Migrations
             this.AddActionAuthorizations(context, "FindNextMessage", "Message");
             this.AddActionAuthorizations(context, "ReadMessage", "Message");
             this.AddActionAuthorizations(context, "MarkAsFavorite", "Message");
+
+            
+            this.PrepareDefaultFolders(context);
+
         }
 
         private void AddAdministratorUsers(PhobosCoreContext context)
@@ -67,7 +72,7 @@ namespace Phobos.Library.CoreServices.Db.Migrations
                     Position = "Administrator",
                     FirstName = "Administrator",
                     MemberSinceDate = DateTime.Now,
-                    CurrentStatus = Models.Enums.UserStatusEnum.Online,
+                    CurrentStatus = Models.Enums.UserStatusEnum.Offline,
                     LockedDate = null,
                     LastLoginDate = null,
                     IsLocked = false,

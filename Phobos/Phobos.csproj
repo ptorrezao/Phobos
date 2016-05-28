@@ -548,6 +548,7 @@
     <Content Include="Views\AdminLTE\Message\EditFolder.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\TextColor.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\FontAwesomeIcon.cshtml" />
+    <Content Include="Views\AdminLTE\Account\ListUsers.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

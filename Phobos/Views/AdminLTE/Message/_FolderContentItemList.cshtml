@@ -26,6 +26,7 @@
             columns.Add(model => model.MessageId)
                     .RenderedAs(model => "<input name='selectedIds' type='checkbox' value='" + model.MessageId.ToString() + "'>")
                     .Css("smallColumn")
+                    .Titled("Options")
                     .Encoded(false);
             columns.Add(model => model.IsFavorite)
                     .Encoded(false)
@@ -35,23 +36,27 @@
             columns.Add(model => model.Sender)
                     .Encoded(false)
                     .Filterable(false)
+                    .Titled("Sender")
                     .RenderedAs(model => "<a href=" + Url.Action("ReadMessage", new { id = model.MessageId }) + "><img src=\"" + model.Sender.ImageUrl + "\" class=\"user-image folderList img-circle\" alt=\"User Image\"><span class=\"hidden-xs\"> &nbsp" + model.Sender.FullName + "</span></a>");
             columns.Add(model => model.Title)
                     .Css("fiftyColumn")
                     .Encoded(false)
+                    .Titled("Title")
                     .RenderedAs(model => string.Format("<strong>{0}</strong> - {1}", model.Title, @System.Text.RegularExpressions.Regex.Replace(model.Intro, @"<[^>]*>", String.Empty)));
             columns.Add(model => model.HasAttachment)
                     .Encoded(false)
                     .Filterable(false)
+                    .Titled("Attachments")
                     .RenderedAs(model => model.HasAttachment ? Html.FontAwesome("paperclip") : MvcHtmlString.Create(""));
             columns.Add(model => model.Date)
+                    .Titled("Date")
                   .Encoded(false)
                   .Filterable(false)
                   .RenderedAs(model => Html.TimeAgo(model.Date));
         })
         .Filterable(false)
         .Sortable(false)
-        .Css("hideTh  table-hover table-striped box-footer no-padding mailbox")
+        .Css("table-hover table-striped box-footer no-padding mailbox")
         .Pageable(pager =>
         {
             pager.PagesToDisplay = 0;

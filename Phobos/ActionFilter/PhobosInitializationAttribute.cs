@@ -41,7 +41,7 @@ namespace Phobos
             {
                 if (SessionManager.UserAccount == null)
                 {
-                    new AuthenticationService().Logout();
+                    new AuthenticationService().Logout(filterContext.HttpContext.User.Identity.Name);
 
                     SessionManager.UserAccount = null;
 

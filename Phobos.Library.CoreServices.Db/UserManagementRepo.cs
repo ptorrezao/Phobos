@@ -158,7 +158,9 @@ namespace Phobos.Library.CoreServices.Db
         {
             using (var context = new PhobosCoreContext())
             {
-                var listOfUsers = context.Users.ToList();
+                var listOfUsers = context.Users
+                                .Include(x => x.Roles)
+                                .ToList();
 
                 return listOfUsers;
             }
@@ -217,6 +219,7 @@ namespace Phobos.Library.CoreServices.Db
                     selectedUser.LastName = userAccount.LastName;
                     selectedUser.MemberSinceDate = userAccount.MemberSinceDate;
                     selectedUser.Position = userAccount.Position;
+                    selectedUser.LastLoginDate = userAccount.LastLoginDate;
                     context.SaveChanges();
                     return true;
                 }
@@ -236,7 +239,7 @@ namespace Phobos.Library.CoreServices.Db
                     selectedUser.LastLoginDate = lastDate;
                     selectedUser.FailedAttempts = 0;
                     selectedUser.IsLocked = false;
-
+                    selectedUser.CurrentStatus = Models.Enums.UserStatusEnum.Online;
                     context.SaveChanges();
                     return true;
                 }
