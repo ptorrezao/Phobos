@@ -146,12 +146,31 @@ namespace Phobos.Controllers
 
         [ActionAutorize]
         [PhobosInitialization]
-        public ActionResult EditProfile()
+        public ActionResult CreateProfile(string newUsername, string passWord)
+        {
+            var error = "";
+            if (this.userManagementService.RegisterUser(newUsername, newUsername, passWord, passWord, out error))
+            {
+                return RedirectToAction("EditProfile", "Account", new { username = newUsername });
+            }
+            else
+            {
+                return RedirectToAction("Index", "Account");
+            }
+        }
+
+        [ActionAutorize]
+        [PhobosInitialization]
+        public ActionResult EditProfile(string username = null)
         {
             var model = SessionManager.UserAccount;
-            if (model == null)
+
+            if (model == null ||
+                (username != model.Username))
             {
-                model = SessionManager.UserAccount = AutoMapperConfiguration.GetMapper().Map<UserAccountViewModel>(this.userManagementService.GetUser(this.User.Identity.Name));
+                username = username != null ? username : this.User.Identity.Name;
+
+                model = SessionManager.UserAccount = AutoMapperConfiguration.GetMapper().Map<UserAccountViewModel>(this.userManagementService.GetUser(username));
             }
 
             return View(model);
@@ -166,9 +185,9 @@ namespace Phobos.Controllers
 
             this.userManagementService.UpdateAccount(userAccount);
 
-            SessionManager.UserAccount = AutoMapperConfiguration.GetMapper().Map<UserAccountViewModel>(this.userManagementService.GetUser(this.User.Identity.Name));
+            SessionManager.UserAccount = AutoMapperConfiguration.GetMapper().Map<UserAccountViewModel>(this.userManagementService.GetUser(model.Username));
 
-            this.auditTrailService.LogMessage(string.Format("The user {0} had changed his profile.", SessionManager.UserAccount.Username), SessionManager.UserAccount.Username, userAccount);
+            this.auditTrailService.LogMessage(string.Format("The user {0} had changed his profile.", model.Username), model.Username, userAccount);
 
             return PartialView("_ProfileDetails", model);
         }

@@ -14,6 +14,7 @@ namespace Phobos.ActionFilter
     {
         private INavigationService navigationService;
         private bool AllowEvenIfNotCreated;
+        private List<string> GroupsAllowed;
 
         public ActionAutorizeAttribute()
             : this(false, MvcApplication.GetKernel().Get<INavigationService>())
@@ -31,10 +32,17 @@ namespace Phobos.ActionFilter
             this.navigationService = userMngSvc;
         }
 
+        public ActionAutorizeAttribute(bool allowEvenIfNotCreated, INavigationService userMngSvc, List<string> groupsAllowed)
+        {
+            this.GroupsAllowed = groupsAllowed;
+            this.AllowEvenIfNotCreated = allowEvenIfNotCreated;
+            this.navigationService = userMngSvc;
+        }
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             string currentControllerName = (string)filterContext.RouteData.Values["controller"];
             string currentActionName = (string)filterContext.RouteData.Values["action"];
+
             if (SessionManager.UserAccount == null)
             {
                 filterContext.Result = new RedirectToRouteResult(new RouteValueDictionary(new { controller = "Account", action = "Login" }));
@@ -46,6 +54,21 @@ namespace Phobos.ActionFilter
                 {
                     filterContext.Result = new RedirectToRouteResult(new RouteValueDictionary(new { controller = "Account", action = "Login" }));
                     base.OnActionExecuting(filterContext);
+                }
+
+
+                if (filterContext.ActionParameters.Keys.Any(x => x == "username"))
+                {
+                    if (filterContext.ActionParameters["username"] == SessionManager.UserAccount.Username ||
+                        SessionManager.UserAccount.Roles.Any(x => x.IsAdmin))
+                    {
+                        return;
+                    }
+                    else
+                    {
+                        filterContext.Result = new RedirectToRouteResult(new RouteValueDictionary(new { controller = "Account", action = "Login" }));
+                        base.OnActionExecuting(filterContext);
+                    }
                 }
             }
         }
