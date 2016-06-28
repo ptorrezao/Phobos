@@ -1,0 +1,70 @@
+﻿@model RegisterViewModel
+@{
+    Layout = null;
+    string containerId = "createProfileContainer";
+}
+
+<div class="modal-content">
+    @using (Ajax.BeginForm("CreateProfile", "Account", new { }, new AjaxOptions()
+                        {
+                            UpdateTargetId = containerId,
+                            OnSuccess = "onSuccess",
+                            OnFailure = "onFailure",
+
+                        }))
+    {
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">Create User</h4>
+        </div>
+        <div class="modal-body form-horizontal">
+            @Html.ValidationSummary()
+            <div class="form-group has-feedback">
+                @Html.LabelFor(x => x.Name, new { @class = "col-sm-3 control-label" })
+                <div class="col-sm-9">
+                    @Html.TextBoxFor(x => x.Name, new { @class = "form-control", @type = "name", @placeholder = "Name" })
+                    @Html.ValidationMessageFor(u => u.Name)
+                </div>
+            </div>
+            <div class="form-group has-feedback">
+                @Html.LabelFor(x => x.UserName, new { @class = "col-sm-3 control-label" })
+                <div class="col-sm-9">
+                    @Html.TextBoxFor(x => x.UserName, new { @class = "form-control", @type = "email", @placeholder = "Email" })
+                    @Html.ValidationMessageFor(u => u.UserName)
+                </div>
+            </div>
+
+            <div class="form-group has-feedback">
+                @Html.LabelFor(x => x.Password, new { @class = "col-sm-3 control-label" })
+                <div class="col-sm-9">
+                    @Html.TextBoxFor(x => x.Password, new { @class = "form-control", @type = "password", @placeholder = "Password" })
+                    @Html.ValidationMessageFor(u => u.Password)
+                </div>
+            </div>
+            <div class="form-group has-feedback">
+                @Html.LabelFor(x => x.ConfirmPassword, new { @class = "col-sm-3 control-label" })
+                <div class="col-sm-9">
+                    @Html.TextBoxFor(x => x.ConfirmPassword, new { @class = "form-control", @type = "password", @placeholder = "Confirm Password" })
+                    @Html.ValidationMessageFor(u => u.Password)
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" onclick="return false;" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+            <button name="move" id="btnCreate" type="submit" class="btn btn-primary pull-right">Create</button>
+        </div>
+    }
+
+
+</div>
+
+<script>
+    var onSuccess = function (result) {
+        ohSnap('The request was processed with sucess.', { color: 'green' });
+        debugger;
+        if (result.url) {
+            window.location.href = result.url;
+        }
+    }
+    function onFailure() { ohSnap('Something went wrong...', { color: 'red' }); }
+</script>

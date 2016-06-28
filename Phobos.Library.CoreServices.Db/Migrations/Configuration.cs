@@ -35,6 +35,7 @@ namespace Phobos.Library.CoreServices.Db.Migrations
 
             this.AddActionAuthorizations(context, "EditProfile", "Account");
             this.AddActionAuthorizations(context, "ListUsers", "Account");
+            this.AddActionAuthorizations(context, "CreateProfile", "Account", new string[1] { "Administrator" });
 
             this.AddActionAuthorizations(context, "Index", "Home");
 
@@ -49,7 +50,7 @@ namespace Phobos.Library.CoreServices.Db.Migrations
             this.AddActionAuthorizations(context, "ReadMessage", "Message");
             this.AddActionAuthorizations(context, "MarkAsFavorite", "Message");
 
-            
+
             this.PrepareDefaultFolders(context);
 
         }

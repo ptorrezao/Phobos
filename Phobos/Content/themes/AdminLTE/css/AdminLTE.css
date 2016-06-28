@@ -50,10 +50,12 @@ body {
 .layout-boxed {
   background: url('../img/boxed-bg.jpg') repeat fixed;
 }
+.validation-summary-errors,
 .field-validation-error {
     color: #E21515;
     font-size: 9pt;
 }
+
 
 /*
  * Content Wrapper - contains the main content

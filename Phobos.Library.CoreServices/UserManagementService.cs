@@ -220,6 +220,11 @@ namespace Phobos.Library.CoreServices
 
             UserAccount selectedUser = null;
             error = "";
+
+            userName = userName ?? "";
+            password = password ?? "";
+            confirmPassword = confirmPassword ?? "";
+
             if (password == confirmPassword)
             {
                 if (this.CheckIfRegisterIsAllowed(name, userName, password, confirmPassword, out error))

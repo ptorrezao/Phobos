@@ -51,7 +51,7 @@ namespace Phobos.Controllers
         }
 
         [HttpPost, AllowAnonymous]
-        public ActionResult Login(AccountViewModel user)
+        public ActionResult Login(AccountViewModel user, int[] teste)
         {
             var error = "";
             if (ModelState.IsValid)
@@ -146,16 +146,27 @@ namespace Phobos.Controllers
 
         [ActionAutorize]
         [PhobosInitialization]
-        public ActionResult CreateProfile(string newUsername, string passWord)
+        public ActionResult CreateProfile()
+        {
+            return View("_CreateProfile", new RegisterViewModel());
+        }
+
+
+        [HttpPost]
+        [ActionAutorize]
+        [PhobosInitialization]
+        public ActionResult CreateProfile(RegisterViewModel user)
         {
             var error = "";
-            if (this.userManagementService.RegisterUser(newUsername, newUsername, passWord, passWord, out error))
+            if (this.userManagementService.RegisterUser(user.Name, user.UserName, user.Password, user.ConfirmPassword, out error))
             {
-                return RedirectToAction("EditProfile", "Account", new { username = newUsername });
+                return Json(new { url = Url.Action("EditProfile", new { username = user.UserName }) });
             }
             else
             {
-                return RedirectToAction("Index", "Account");
+                ModelState.AddModelError(string.Empty, error);
+
+                return View("_CreateProfile", user);
             }
         }
 
@@ -170,7 +181,7 @@ namespace Phobos.Controllers
             {
                 username = username != null ? username : this.User.Identity.Name;
 
-                model = SessionManager.UserAccount = AutoMapperConfiguration.GetMapper().Map<UserAccountViewModel>(this.userManagementService.GetUser(username));
+                model = AutoMapperConfiguration.GetMapper().Map<UserAccountViewModel>(this.userManagementService.GetUser(username));
             }
 
             return View(model);
@@ -185,7 +196,7 @@ namespace Phobos.Controllers
 
             this.userManagementService.UpdateAccount(userAccount);
 
-            SessionManager.UserAccount = AutoMapperConfiguration.GetMapper().Map<UserAccountViewModel>(this.userManagementService.GetUser(model.Username));
+            var userAccountModel = AutoMapperConfiguration.GetMapper().Map<UserAccountViewModel>(this.userManagementService.GetUser(model.Username));
 
             this.auditTrailService.LogMessage(string.Format("The user {0} had changed his profile.", model.Username), model.Username, userAccount);
 
