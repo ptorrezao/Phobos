@@ -24,7 +24,9 @@
                    .Encoded(false)
                    .Filterable(false)
                    .Titled("")
-                   .RenderedAs(model => @"<a data-toggle='modal' data-target='#modalEditRole_" + model.Name + "'  title='Create User'><span class='label-danger label'>Edit</span></a>");
+                   .RenderedAs(model =>
+                    @"<a data-toggle='modal' data-target='#modalEditRole_" + model.Name + "'  title='Edit Role'><span class='label-primary label'>Edit</span></a>" +
+                    @"<a data-toggle='modal' data-target='#modalDeleteRole_" + model.Name + "'  title='Delete Role'><span class='label-danger label'>Delete</span></a>");
 
         })
         .Filterable(false)
@@ -53,6 +55,9 @@
 
 @helper ButtonsForPager()
 {
+    <div class="btn-group">
+        <button onclick="return false;" data-toggle="modal" data-target="#modalAddRole" class="btn btn-default btn-sm" title="Create Role"><i class="fa fa-users"></i></button>
+    </div>
 }
 
 @foreach (UserRoleViewModel item in Model)
@@ -62,4 +67,15 @@
             @Html.Action("EditRole", new { name = item.Name })
         </div>
     </div>
+
+    <div class="modal fade" id="modalDeleteRole_@item.Name" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            @Html.Action("DeleteRole", new { name = item.Name })
+        </div>
+    </div>
 }
+<div class="modal fade" id="modalAddRole" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document" id="createRoleContainer">
+        @Html.Action("CreateRole")
+    </div>
+</div>

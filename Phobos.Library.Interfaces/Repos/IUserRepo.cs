@@ -26,5 +26,6 @@ namespace Phobos.Library.Interfaces.Repos
         List<UserRole> GetAllRoles();
         UserRole GetRole(string name);
         bool UpdateRole(UserRole role, string name);
+        bool DeleteRole(string name);
     }
 }

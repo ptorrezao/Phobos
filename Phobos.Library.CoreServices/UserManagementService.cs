@@ -352,5 +352,12 @@ namespace Phobos.Library.CoreServices
 
             return this.Repository.UpdateRole(role, oldName);
         }
+
+
+        public bool DeleteRole(string name, out string error)
+        {
+            error = "";
+            return this.Repository.DeleteRole(name);
+        }
     }
 }

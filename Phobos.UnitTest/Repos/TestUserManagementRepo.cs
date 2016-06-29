@@ -144,5 +144,11 @@ namespace Phobos.UnitTest.Repos
         {
             throw new NotImplementedException();
         }
+
+
+        public bool DeleteRole(string name)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

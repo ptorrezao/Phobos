@@ -241,7 +241,7 @@ namespace Phobos.Controllers
             var error = "";
             if (this.userManagementService.CreateRole(role.Name, out error))
             {
-                return Json(new { url = Url.Action("ListUsers") });
+                return Json(new { url = Url.Action("ListGroups") });
             }
             else
             {
@@ -277,6 +277,35 @@ namespace Phobos.Controllers
                 ModelState.AddModelError(string.Empty, error);
 
                 return View("_EditRole", role);
+            }
+        }
+
+        [ActionAutorize]
+        [PhobosInitialization]
+        public ActionResult DeleteRole(string name = null)
+        {
+            var role = this.userManagementService.GetRole(name);
+
+            var usersViewModel = AutoMapperConfiguration.GetMapper().Map<UserRoleViewModel>(role);
+
+            return View("_DeleteRole", usersViewModel);
+        }
+
+        [HttpPost]
+        [ActionAutorize]
+        [PhobosInitialization]
+        public ActionResult DeleteRole(UserRoleViewModel role)
+        {
+            var error = "";
+            if (this.userManagementService.DeleteRole(role.Name, out error))
+            {
+                return Json(new { url = Url.Action("ListGroups") });
+            }
+            else
+            {
+                ModelState.AddModelError(string.Empty, error);
+
+                return View("_DeleteRole", role);
             }
         }
     }

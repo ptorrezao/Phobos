@@ -182,5 +182,11 @@ namespace Phobos.Library.TestServices
         {
             throw new NotImplementedException();
         }
+
+
+        public bool DeleteRole(string name, out string error)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

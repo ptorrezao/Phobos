@@ -1,0 +1,57 @@
+﻿@model UserRoleViewModel
+@{
+    Layout = null;
+    string containerId = "createRoleContainer";
+}
+
+<div class="modal-content">
+    @using (Ajax.BeginForm("DeleteRole", "Account", new { }, new AjaxOptions()
+                        {
+                            UpdateTargetId = containerId,
+                            OnSuccess = "onSuccess",
+                            OnFailure = "onFailure",
+                        }))
+    {
+
+
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">Delete Group</h4>
+        </div>
+        <div class="modal-body ">
+            @Html.ValidationSummary()
+            <div class="callout callout-warning">
+
+                <h4>Do you really want to delete this group?</h4>
+                <p>
+                    <div class="form-horizontal">
+                        <div class="form-group has-feedback">
+                            @Html.LabelFor(x => x.Name, new { @class = "col-sm-3 control-label" })
+                            <div class="col-sm-9 ">
+                                @Html.Label(Model.Name, new { @class = "control-label" })
+                            </div>
+                        </div>
+                        @Html.HiddenFor(x => x.Name)
+                        @Html.HiddenFor(x => x.IsAdmin)
+                    </div>
+                </p>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" onclick="return false;" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+            <button name="move" id="btnCreate" type="submit" class="btn btn-primary pull-right">Delete</button>
+        </div>
+    }
+
+
+</div>
+
+<script>
+    var onSuccess = function (result) {
+        ohSnap('The request was processed with sucess.', { color: 'green' });
+        if (result.url) {
+            window.location.href = result.url;
+        }
+    }
+    function onFailure() { ohSnap('Something went wrong...', { color: 'red' }); }
+</script>
