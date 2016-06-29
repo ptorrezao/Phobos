@@ -1,0 +1,28 @@
+﻿@model RegisterViewModel
+@{
+    Layout = null;
+}
+
+<div class="modal-content">
+ 
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">Not Authorized - @ViewBag.Controller/@ViewBag.Action</h4>
+        </div>
+        <div class="modal-body form-horizontal">
+            
+            <div class="callout callout-danger">
+                <h4>Not Authorized - @ViewBag.Controller/@ViewBag.Action</h4>
+
+                <p>
+                    You requested a non authorized area, please login with proper credentials.
+                </p>
+            </div>
+
+        </div>
+        <div class="modal-footer">
+
+        </div>
+
+
+</div>

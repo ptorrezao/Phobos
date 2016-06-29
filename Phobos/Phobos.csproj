@@ -152,6 +152,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ActionFilter\ActionAutorizeOnlyAdminAttribute.cs" />
     <Compile Include="ActionFilter\ActionAutorizeAttribute.cs" />
     <Compile Include="ActionFilter\HttpActionParamAttribute.cs" />
     <Compile Include="ActionFilter\SideTabFilterAttribute.cs" />
@@ -550,6 +551,7 @@
     <Content Include="Views\Shared\EditorTemplates\FontAwesomeIcon.cshtml" />
     <Content Include="Views\AdminLTE\Account\ListUsers.cshtml" />
     <Content Include="Views\AdminLTE\Account\_CreateProfile.cshtml" />
+    <Content Include="Views\AdminLTE\Shared\_NotAuthorized.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -203,7 +203,7 @@ namespace Phobos.Controllers
             return PartialView("_ProfileDetails", model);
         }
 
-        [ActionAutorize]
+        [ActionAutorizeOnlyAdmin]
         [PhobosInitialization]
         public ActionResult ListUsers()
         {

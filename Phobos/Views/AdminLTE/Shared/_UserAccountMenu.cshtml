@@ -15,19 +15,19 @@
             </p>
         </li>
         @if (userAccount.FavoriteLinks.Count > 0)
-    {
-    <li class="user-body">
-        @foreach (var item in userAccount.FavoriteLinks)
-            {
-            <div class="col-xs-4 text-center">
-                <a href="@item.Url">@item.Text</a>
-                </div>
-            }
-    </li>
-    }
+        {
+            <li class="user-body">
+                @foreach (var item in userAccount.FavoriteLinks)
+                {
+                    <div class="col-xs-4 text-center">
+                        <a href="@item.Url">@item.Text</a>
+                    </div>
+                }
+            </li>
+        }
         <li class="user-footer">
             <div class="pull-left">
-                <a href="@Url.Action("EditProfile", "Account")" class="btn btn-default btn-flat">Profile</a>
+                <a href="@Url.Action("EditProfile", "Account", new { username = userAccount.Username })" class="btn btn-default btn-flat">Profile</a>
             </div>
             @if (userAccount.Roles.Any(x => x.IsAdmin))
             {
