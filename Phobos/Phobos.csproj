@@ -552,6 +552,9 @@
     <Content Include="Views\AdminLTE\Account\ListUsers.cshtml" />
     <Content Include="Views\AdminLTE\Account\_CreateProfile.cshtml" />
     <Content Include="Views\AdminLTE\Shared\_NotAuthorized.cshtml" />
+    <Content Include="Views\AdminLTE\Account\_CreateRole.cshtml" />
+    <Content Include="Views\AdminLTE\Account\ListGroups.cshtml" />
+    <Content Include="Views\AdminLTE\Account\_EditRole.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

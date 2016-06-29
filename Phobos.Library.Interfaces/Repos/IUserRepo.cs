@@ -22,5 +22,9 @@ namespace Phobos.Library.Interfaces.Repos
         List<UserMessage> GetLastMessagesForUser(string userName, int qtd);
         List<UserNotification> GetLastNotificationsForUser(string userName, int qtd);
         List<UserTask> GetLastTasksForUser(string userName, int qtd);
+        UserRole CreateRole(string username);
+        List<UserRole> GetAllRoles();
+        UserRole GetRole(string name);
+        bool UpdateRole(UserRole role, string name);
     }
 }

@@ -6,12 +6,9 @@ using System.Text;
 
 namespace Phobos.Library.Models.ViewModels
 {
-    public class UserRoleViewModel
+    public class UserRoleUpdateViewModel : UserRoleViewModel
     {
-        [Display(Name = "Group Name")]
-        public string Name { get; set; }
-
-        public bool IsAdmin { get; set; }
+        [Display(Name = "Current Name")]
+        public string OldName { get; set; }
     }
-
 }

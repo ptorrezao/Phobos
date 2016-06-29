@@ -81,7 +81,11 @@
         @Html.Action("CreateProfile")
     </div>
 </div>
-
+<div class="modal fade" id="modalAddRole" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document" id="createRoleContainer">
+        @Html.Action("CreateRole")
+    </div>
+</div>
 <style>
     .folderList {
         height: 24px;
@@ -96,6 +100,11 @@
 @helper ButtonsForPager()
 {
     <div class="btn-group">
-        <button onclick="return false;" data-toggle="modal" data-target="#modalAddUser" class="btn btn-default btn-sm"><i class="fa fa-user"></i></button>
+        <button onclick="return false;" data-toggle="modal" data-target="#modalAddUser" class="btn btn-default btn-sm" title="Create User"><i class="fa fa-user-plus"></i></button>
+        <button onclick="return false;" data-toggle="modal" data-target="#modalAddRole" class="btn btn-default btn-sm" title="Create Role"><i class="fa fa-users"></i></button>
     </div>
+
+    <div class="btn-group">
+        <a href="@Url.Action("ListGroups")" class="btn btn-default btn-sm" title="Create Groups">Groups</a>
+</div>
 }

@@ -1,0 +1,65 @@
+﻿@using Phobos.Helpers
+@model IEnumerable<UserRoleViewModel>
+@Html.SetPartialHelper("ButtonsForPager", (Func<HelperResult>)(ButtonsForPager))
+
+<div class="box box-primary">
+    <div class="box-header with-border">
+        <h3 class="box-title">Groups</h3>
+    </div>
+
+    <div class="box-body no-padding">
+        @(Html
+        .Grid(Model)
+        .Named("roles")
+        .Build(columns =>
+        {
+
+            columns.Add(model => model.Name)
+                    .Encoded(true)
+                    .Filterable(false)
+                    .Titled("Name")
+                    .RenderedAs(model => model.Name);
+
+            columns.Add(model => model.Name)
+                   .Encoded(false)
+                   .Filterable(false)
+                   .Titled("")
+                   .RenderedAs(model => @"<a data-toggle='modal' data-target='#modalEditRole_" + model.Name + "'  title='Create User'><span class='label-danger label'>Edit</span></a>");
+
+        })
+        .Filterable(false)
+        .Sortable(false)
+        .Css("table-hover table-striped box-footer no-padding mailbox")
+        .Pageable(pager =>
+        {
+            pager.PagesToDisplay = 0;
+            pager.InitialPage = 1;
+            pager.RowsPerPage = 16;
+        })
+        )
+    </div>
+</div>
+
+<style>
+    .folderList {
+        height: 24px;
+        width: 24px;
+    }
+
+    .img {
+        width: 30px;
+    }
+</style>
+
+@helper ButtonsForPager()
+{
+}
+
+@foreach (UserRoleViewModel item in Model)
+{
+    <div class="modal fade" id="modalEditRole_@item.Name" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            @Html.Action("EditRole", new { name = item.Name })
+        </div>
+    </div>
+}

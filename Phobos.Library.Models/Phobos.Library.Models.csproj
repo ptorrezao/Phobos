@@ -65,6 +65,7 @@
     <Compile Include="ViewModels\UserAccountViewModel.cs" />
     <Compile Include="UserNotification.cs" />
     <Compile Include="ViewModels\RecoverProfileViewModel.cs" />
+    <Compile Include="ViewModels\UserRoleUpdateViewModel.cs" />
     <Compile Include="ViewModels\UserRoleViewModel.cs" />
     <Compile Include="ViewModels\UserTaskViewModel.cs" />
     <Compile Include="ViewModels\UserNotificationViewModel.cs" />

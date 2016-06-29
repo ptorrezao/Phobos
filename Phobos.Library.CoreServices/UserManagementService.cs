@@ -35,7 +35,7 @@ namespace Phobos.Library.CoreServices
         #endregion
 
         #region IUserManagementService
-        
+
         bool CheckIfRegisterIsAllowed(string name, string userName, string password, string confirmPassword, out string msg)
         {
             msg = "";
@@ -320,6 +320,37 @@ namespace Phobos.Library.CoreServices
             user.CurrentStatus = Models.Enums.UserStatusEnum.Offline;
 
             this.UpdateAccount(user);
+        }
+
+        public bool CreateRole(string username, out string error)
+        {
+            error = "";
+
+            return this.Repository.CreateRole(username) != null;
+        }
+
+        public List<UserRole> GetAllRoles()
+        {
+            var listOfroles = this.Repository.GetAllRoles();
+            return listOfroles;
+        }
+
+        public UserRole GetRole(string name)
+        {
+            var role = this.Repository.GetRole(name);
+            return role;
+        }
+
+
+        public bool UpdateRole(string oldName, string newName, out string error)
+        {
+            var role = this.GetRole(oldName);
+
+            error = "";
+
+            role.Name = newName;
+
+            return this.Repository.UpdateRole(role, oldName);
         }
     }
 }

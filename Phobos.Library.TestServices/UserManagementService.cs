@@ -161,5 +161,26 @@ namespace Phobos.Library.TestServices
         {
             throw new NotImplementedException();
         }
+
+        public bool CreateRole(string username, out string error)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<UserRole> GetAllRoles()
+        {
+            throw new NotImplementedException();
+        }
+
+        public UserRole GetRole(string name)
+        {
+            throw new NotImplementedException();
+        }
+
+
+        public bool UpdateRole(string oldName, string newName, out string error)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

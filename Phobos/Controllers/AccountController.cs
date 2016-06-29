@@ -151,7 +151,6 @@ namespace Phobos.Controllers
             return View("_CreateProfile", new RegisterViewModel());
         }
 
-
         [HttpPost]
         [ActionAutorize]
         [PhobosInitialization]
@@ -214,6 +213,71 @@ namespace Phobos.Controllers
             this.auditTrailService.LogMessage(string.Format("The user {0} request the list of users.", SessionManager.UserAccount.Username), SessionManager.UserAccount.Username, this.userManagementService.GetUser(SessionManager.UserAccount.Username));
 
             return View(usersViewModels);
+        }
+
+        [ActionAutorizeOnlyAdmin]
+        [PhobosInitialization]
+        public ActionResult ListGroups()
+        {
+            var roles = this.userManagementService.GetAllRoles();
+
+            var usersViewModels = AutoMapperConfiguration.GetMapper().Map<List<UserRoleViewModel>>(roles);
+
+            return View(usersViewModels);
+        }
+        
+        [ActionAutorizeOnlyAdmin]
+        [PhobosInitialization]
+        public ActionResult CreateRole()
+        {
+            return View("_CreateRole", new UserRoleViewModel());
+        }
+
+        [HttpPost]
+        [ActionAutorize]
+        [PhobosInitialization]
+        public ActionResult CreateRole(UserRoleViewModel role)
+        {
+            var error = "";
+            if (this.userManagementService.CreateRole(role.Name, out error))
+            {
+                return Json(new { url = Url.Action("ListUsers") });
+            }
+            else
+            {
+                ModelState.AddModelError(string.Empty, error);
+
+                return View("_CreateRole", role);
+            }
+        }
+
+        [ActionAutorize]
+        [PhobosInitialization]
+        public ActionResult EditRole(string name = null)
+        {
+            var role = this.userManagementService.GetRole(name);
+
+            var usersViewModel = AutoMapperConfiguration.GetMapper().Map<UserRoleUpdateViewModel>(role);
+
+            return View("_EditRole", usersViewModel);
+        }
+
+        [HttpPost]
+        [ActionAutorize]
+        [PhobosInitialization]
+        public ActionResult EditRole(UserRoleUpdateViewModel role)
+        {
+            var error = "";
+            if (this.userManagementService.UpdateRole(role.OldName, role.Name, out error))
+            {
+                return Json(new { url = Url.Action("ListRoles") });
+            }
+            else
+            {
+                ModelState.AddModelError(string.Empty, error);
+
+                return View("_EditRole", role);
+            }
         }
     }
 }

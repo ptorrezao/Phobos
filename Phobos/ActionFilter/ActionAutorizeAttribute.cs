@@ -60,6 +60,7 @@ namespace Phobos.ActionFilter
 
             #region User Is CurrentUser
             if (filterContext.ActionParameters.Keys.Any(x => x == "username") &&
+                filterContext.ActionParameters["username"]!=null &&
                 filterContext.ActionParameters["username"].ToString() != SessionManager.UserAccount.Username)
             {
                 userIsAllowed = false;
@@ -82,6 +83,11 @@ namespace Phobos.ActionFilter
                 }
 
                 userIsCurrentUserOrAdmin = userIsAllowed;
+            }
+
+            if (userIsSet && SessionManager.UserAccount.Roles.Any(x => x.IsAdmin))
+            {
+                userIsAllowed = true;
             }
             #endregion
 

@@ -263,9 +263,58 @@ namespace Phobos.Library.CoreServices.Db
             return sb.ToString();
         }
 
+        public UserRole CreateRole(string username)
+        {
+            using (var context = new PhobosCoreContext())
+            {
+                var newUserRole = new UserRole();
+                newUserRole.Name = username;
+
+                context.Roles.Add(newUserRole);
+                context.SaveChanges();
+                return newUserRole;
+            }
+        }
+
+        public List<UserRole> GetAllRoles()
+        {
+            using (var context = new PhobosCoreContext())
+            {
+                var listOfUsers = context.Roles
+                                .ToList();
+
+                return listOfUsers;
+            }
+        }
+
+        public UserRole GetRole(string name)
+        {
+            using (var context = new PhobosCoreContext())
+            {
+                var listOfUsers = context.Roles
+                                .Where(r=>r.Name== name)
+                                .ToList();
+
+                return listOfUsers.FirstOrDefault();
+            }
+        }
 
 
+        public bool UpdateRole(UserRole role,string name)
+        {
+            using (var context = new PhobosCoreContext())
+            {
+                var selectedRole = context.Roles.FirstOrDefault(x => x.Name == name);
 
+                if (selectedRole != default(UserRole))
+                {
+                    selectedRole.Name = role.Name;
+                    context.SaveChanges();
+                    return true;
+                }
 
+                return false;
+            }
+        }
     }
 }

@@ -122,5 +122,27 @@ namespace Phobos.UnitTest.Repos
         {
             throw new NotImplementedException();
         }
+        
+        public UserRole CreateRole(string username)
+        {
+            throw new NotImplementedException();
+        }
+
+
+        public List<UserRole> GetAllRoles()
+        {
+            throw new NotImplementedException();
+        }
+
+        UserRole IUserManagementRepo.GetRole(string name)
+        {
+            throw new NotImplementedException();
+        }
+
+
+        public bool UpdateRole(UserRole role, string name)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
