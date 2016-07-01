@@ -342,7 +342,7 @@ namespace Phobos.Library.CoreServices
         }
 
 
-        public bool UpdateRole(string oldName, string newName, out string error)
+        public bool UpdateRole(string oldName, string newName, List<string> usersInRole, out string error)
         {
             var role = this.GetRole(oldName);
 
@@ -350,7 +350,12 @@ namespace Phobos.Library.CoreServices
 
             role.Name = newName;
 
-            return this.Repository.UpdateRole(role, oldName);
+            if (this.Repository.UpdateRole(role, oldName))
+            {
+                return this.Repository.UpdateRoleUsers(role.Name, usersInRole);
+            }
+
+            return false;
         }
 
 

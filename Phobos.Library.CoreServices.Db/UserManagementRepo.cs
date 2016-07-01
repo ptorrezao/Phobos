@@ -292,6 +292,7 @@ namespace Phobos.Library.CoreServices.Db
             using (var context = new PhobosCoreContext())
             {
                 var listOfUsers = context.Roles
+                                .Include(x => x.UserAccounts)
                                 .Where(r => r.Name == name)
                                 .ToList();
 
@@ -325,6 +326,29 @@ namespace Phobos.Library.CoreServices.Db
 
                 context.Roles.Remove(selectedRole);
                 return context.SaveChanges() > 0;
+            }
+        }
+
+
+        public bool UpdateRoleUsers(string name, List<string> usersInRole)
+        {
+            using (var context = new PhobosCoreContext())
+            {
+                var selectedRole = context.Roles.FirstOrDefault(x => x.Name == name);
+
+                if (selectedRole != default(UserRole))
+                {
+                    selectedRole.UserAccounts.RemoveAll(x => !usersInRole.Any(z => z == x.Username));
+
+                    foreach (var userName in usersInRole.Where(x => !selectedRole.UserAccounts.Any(z => z.Username == x)))
+                    {
+                        selectedRole.UserAccounts.Add(context.Users.FirstOrDefault(x => x.Username == userName));
+                    }
+
+                    return context.SaveChanges() > 0;
+                }
+
+                return false;
             }
         }
     }

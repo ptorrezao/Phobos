@@ -2,6 +2,9 @@
 @{
     Layout = null;
     string containerId = "createRoleContainer";
+
+    var users = Model.AllUsers.Select(x => new { username = x.Username }).ToList();
+    var selectedUsers = Model.Users.Select(x => x.Username).ToArray();
 }
 
 <div class="modal-content">
@@ -31,8 +34,15 @@
                     @Html.ValidationMessageFor(u => u.Name)
                 </div>
             </div>
-
+            <div class="form-group has-feedback">
+                @Html.LabelFor(x => x.SelectedUsersInRole, new { @class = "col-sm-3 control-label" })
+                <div class="col-sm-9">
+                    @Html.DropDownListFor(x=>x.SelectedUsersInRole, new MultiSelectList(users, "username", "username", selectedUsers), new { multiple = "multiple", @class = "select2 select2-hidden-accessible", @style = "width: 100%;" })
+                </div>
+            </div>
             @Html.HiddenFor(x => x.OldName)
+            @Html.HiddenFor(x => x.Users)
+            @Html.HiddenFor(x => x.AllUsers)
             @Html.HiddenFor(x => x.IsAdmin)
         </div>
         <div class="modal-footer">
@@ -52,4 +62,5 @@
         }
     }
     function onFailure() { ohSnap('Something went wrong...', { color: 'red' }); }
+
 </script>

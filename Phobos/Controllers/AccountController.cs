@@ -225,7 +225,7 @@ namespace Phobos.Controllers
 
             return View(usersViewModels);
         }
-        
+
         [ActionAutorizeOnlyAdmin]
         [PhobosInitialization]
         public ActionResult CreateRole()
@@ -268,9 +268,10 @@ namespace Phobos.Controllers
         public ActionResult EditRole(UserRoleUpdateViewModel role)
         {
             var error = "";
-            if (this.userManagementService.UpdateRole(role.OldName, role.Name, out error))
+            var users = role.SelectedUsersInRole != null ? role.SelectedUsersInRole.ToList() : new List<string>();
+            if (this.userManagementService.UpdateRole(role.OldName, role.Name, users, out error))
             {
-                return Json(new { url = Url.Action("ListRoles") });
+                return Json(new { url = Url.Action("ListGroups") });
             }
             else
             {

@@ -136,7 +136,7 @@ namespace Phobos.Helpers
                     result += " ";
                 }
 
-                result += builder.ToString();
+                result += builder.ToString() + "&nbsp;";
             }
 
             return MvcHtmlString.Create(result);
@@ -148,7 +148,7 @@ namespace Phobos.Helpers
             switch (status)
             {
                 case UserStatusEnum.Online:
-                    result= "text-success";
+                    result = "text-success";
                     break;
                 case UserStatusEnum.Offline:
                 default:

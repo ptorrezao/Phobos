@@ -25,7 +25,7 @@ namespace Phobos.Library.Interfaces
         bool CreateRole(string username, out string error);
         List<UserRole> GetAllRoles();
         UserRole GetRole(string name);
-        bool UpdateRole(string oldName, string newName, out string error);
+        bool UpdateRole(string oldName, string newName,List<string> usersInRole, out string error);
         bool DeleteRole(string name, out string error);
     }
 }

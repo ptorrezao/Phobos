@@ -58,11 +58,19 @@ namespace Phobos.App_Utils
 
                 cfg.CreateMap<UserRole, UserRoleUpdateViewModel>()
                     .ForMember(dest => dest.OldName, opts => opts.MapFrom(src => src.Name))
+                    .ForMember(dest => dest.AllUsers, opts => opts.MapFrom(src => AutoMapperConfiguration.GetMapper().Map<List<UserAccountRoleItemViewModel>>(SessionManager.AllUsers)))
+                    .ForMember(dest => dest.Users, opts => opts.MapFrom(src => AutoMapperConfiguration.GetMapper().Map<List<UserAccountRoleItemViewModel>>(src.UserAccounts)))
                     .ForMember(dest => dest.IsAdmin, opts => opts.MapFrom(src => src.Name == "Administrator"));
 
+                cfg.CreateMap<UserAccount, UserAccountRoleItemViewModel>()
+                    .ForMember(dest => dest.Username, opts => opts.MapFrom(src => src.Username));
+
+                cfg.CreateMap<UserAccountViewModel, UserAccountRoleItemViewModel>()
+                    .ForMember(dest => dest.Username, opts => opts.MapFrom(src => src.Username));
+                
                 cfg.CreateMap<UserRole, UserRoleViewModel>()
                     .ForMember(dest => dest.IsAdmin, opts => opts.MapFrom(src => src.Name == "Administrator"));
-                
+
                 #region UserAccount <-> UserAccountViewModel
                 cfg.CreateMap<UserAccount, UserAccountViewModel>()
                            .ForMember(dest => dest.CurrentStatus, opts => opts.MapFrom(src => src.CurrentStatus))

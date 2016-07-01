@@ -178,7 +178,7 @@ namespace Phobos.Library.TestServices
         }
 
 
-        public bool UpdateRole(string oldName, string newName, out string error)
+        public bool UpdateRole(string oldName, string newName, List<string> usersInRole, out string error)
         {
             throw new NotImplementedException();
         }
