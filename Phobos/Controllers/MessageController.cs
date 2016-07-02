@@ -201,8 +201,6 @@ namespace Phobos.Controllers
                 }
             }
             return this.RedirectToAction("Index");
-
-            return this.RedirectToAction("Index");
         }
 
         [HttpParamAction]

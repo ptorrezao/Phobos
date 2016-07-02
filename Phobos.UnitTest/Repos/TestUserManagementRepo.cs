@@ -150,5 +150,11 @@ namespace Phobos.UnitTest.Repos
         {
             throw new NotImplementedException();
         }
+
+
+        public bool UpdateRoleUsers(string p, List<string> usersInRole)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
