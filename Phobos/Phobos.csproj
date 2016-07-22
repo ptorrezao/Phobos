@@ -162,6 +162,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Utils\AutoMapperConfiguration.cs" />
     <Compile Include="Controllers\MessageController.cs" />
+    <Compile Include="Controllers\NotificationController.cs" />
     <Compile Include="Services\AuthenticationService.cs" />
     <Compile Include="ActionFilter\PhobosInitializationAttribute.cs" />
     <Compile Include="App_Utils\CustomViewEngine.cs" />

@@ -30,25 +30,32 @@ namespace Phobos.Library.Utils
         {
             return str.TruncateLongString(maxLength, suffix, false);
         }
-
         public static string TruncateLongString(this string str, int maxLength, string suffix, bool removeHtmlImg)
         {
             if (removeHtmlImg)
             {
                 str = Regex.Replace(str, @"<img\s[^>]*>(?:\s*?</img>)?", "", RegexOptions.IgnoreCase);
             }
-           
+
             var strLength = str != null ? str.Length : 0;
 
             return string.Format("{0}{1}", (str ?? "").Substring(0, Math.Min(strLength, maxLength)), (maxLength <= strLength) ? suffix : "");
         }
-
         public static string GetFullName(this UserAccount userAccount)
         {
             if (userAccount == null)
                 return "";
 
             return string.Format("{0}{1}{2}", userAccount.FirstName, (!string.IsNullOrEmpty(userAccount.FirstName) && !string.IsNullOrEmpty(userAccount.LastName)) ? " " : "", userAccount.LastLoginDate);
+        }
+        public static UserNotification SetUser(this UserNotification userNotification, UserAccount user)
+        {
+            if (userNotification == null)
+                return null;
+
+            userNotification.User = user;
+
+            return userNotification;
         }
     }
 }

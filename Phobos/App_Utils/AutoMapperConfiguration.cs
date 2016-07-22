@@ -67,9 +67,25 @@ namespace Phobos.App_Utils
 
                 cfg.CreateMap<UserAccountViewModel, UserAccountRoleItemViewModel>()
                     .ForMember(dest => dest.Username, opts => opts.MapFrom(src => src.Username));
-                
+
                 cfg.CreateMap<UserRole, UserRoleViewModel>()
                     .ForMember(dest => dest.IsAdmin, opts => opts.MapFrom(src => src.Name == "Administrator"));
+
+                #region UserNotificationViewModel <-> UserNotification
+                cfg.CreateMap<UserNotification, UserNotificationViewModel>()
+                    .ForMember(dest => dest.Title, opts => opts.MapFrom(src => src.Title))
+                    .ForMember(dest => dest.Color, opts => opts.MapFrom(src => src.IconColor))
+                    .ForMember(dest => dest.Read, opts => opts.MapFrom(src => src.Read))
+                    .ForMember(dest => dest.FontAwesome, opts => opts.MapFrom(src => " fa-" + src.Icon))
+                    .ForMember(dest => dest.Link, opts => opts.MapFrom(src => src.Link));
+
+                cfg.CreateMap<UserNotificationViewModel, UserNotification>()
+                    .ForMember(dest => dest.Title, opts => opts.MapFrom(src => src.Title))
+                    .ForMember(dest => dest.IconColor, opts => opts.MapFrom(src => src.Color))
+                    .ForMember(dest => dest.Read, opts => opts.MapFrom(src => src.Read))
+                    .ForMember(dest => dest.Icon, opts => opts.MapFrom(src => src.FontAwesome.Replace(" fa-", "")))
+                    .ForMember(dest => dest.Link, opts => opts.MapFrom(src => src.Link));
+                #endregion
 
                 #region UserAccount <-> UserAccountViewModel
                 cfg.CreateMap<UserAccount, UserAccountViewModel>()

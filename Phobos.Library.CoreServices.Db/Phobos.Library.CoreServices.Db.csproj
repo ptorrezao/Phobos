@@ -80,7 +80,24 @@
     <Compile Include="Migrations\201605271540066_GroupUsersUnderRole.Designer.cs">
       <DependentUpon>201605271540066_GroupUsersUnderRole.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201607221601441_AddColor and Icon to Notification.cs" />
+    <Compile Include="Migrations\201607221601441_AddColor and Icon to Notification.Designer.cs">
+      <DependentUpon>201607221601441_AddColor and Icon to Notification.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201607221608193_Add_LinkToNotification.cs" />
+    <Compile Include="Migrations\201607221608193_Add_LinkToNotification.Designer.cs">
+      <DependentUpon>201607221608193_Add_LinkToNotification.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201607221735343_Add_IsRead.cs" />
+    <Compile Include="Migrations\201607221735343_Add_IsRead.Designer.cs">
+      <DependentUpon>201607221735343_Add_IsRead.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201607221745076_Add_Notifications.cs" />
+    <Compile Include="Migrations\201607221745076_Add_Notifications.Designer.cs">
+      <DependentUpon>201607221745076_Add_Notifications.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="NotificationRepo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UserManagementRepo.cs" />
   </ItemGroup>
@@ -119,6 +136,18 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201605271540066_GroupUsersUnderRole.resx">
       <DependentUpon>201605271540066_GroupUsersUnderRole.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201607221601441_AddColor and Icon to Notification.resx">
+      <DependentUpon>201607221601441_AddColor and Icon to Notification.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201607221608193_Add_LinkToNotification.resx">
+      <DependentUpon>201607221608193_Add_LinkToNotification.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201607221735343_Add_IsRead.resx">
+      <DependentUpon>201607221735343_Add_IsRead.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201607221745076_Add_Notifications.resx">
+      <DependentUpon>201607221745076_Add_Notifications.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

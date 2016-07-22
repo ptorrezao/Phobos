@@ -10,6 +10,7 @@ using Phobos.Library.Interfaces.Services;
 using System.Text.RegularExpressions;
 using System.Security.Cryptography;
 using Phobos.Library.Utils;
+using Phobos.Library.Models.Enums;
 
 namespace Phobos.Library.CoreServices
 {
@@ -28,7 +29,10 @@ namespace Phobos.Library.CoreServices
         public IAuditTrailService AuditTrail { get; set; }
 
         [Inject]
-        public IMessageService NotificationService { get; set; }
+        public IMessageService MessageService { get; set; }
+
+        [Inject]
+        public INotificationService NotificationService { get; set; }
 
         [Inject]
         public ICoreRepo CoreRepository { get; set; }
@@ -151,12 +155,12 @@ namespace Phobos.Library.CoreServices
 
         public List<UserMessage> GetLastMessages(string userName, int qtd)
         {
-            return this.Repository.GetLastMessagesForUser(userName, qtd);
+            return this.MessageService.GetLastMessages(userName, qtd, true);
         }
 
         public List<UserNotification> GetLastNotifications(string userName, int qtd)
         {
-            return this.Repository.GetLastNotificationsForUser(userName, qtd);
+            return this.NotificationService.GetLastNotifications(userName, qtd);
         }
 
         public List<UserTask> GetLastTasks(string userName, int qtd)
@@ -200,7 +204,7 @@ namespace Phobos.Library.CoreServices
 
                 this.Repository.UpdateAccount(selectedUser);
 
-                return NotificationService.SendMessage(selectedUser.Username, string.Format("Your new password is {0}", selectedUser.Password));
+                return MessageService.SendMessage(selectedUser.Username, string.Format("Your new password is {0}", selectedUser.Password));
             }
             else
             {
@@ -234,6 +238,9 @@ namespace Phobos.Library.CoreServices
                         selectedUser = this.Repository.CreateUser(name, userName, password.GetAsHash(salt.Value));
                     }
                 }
+
+                this.NotificationService.SendNotification(UserNotification.Welcome.SetUser(selectedUser));
+
                 return selectedUser != null;
             }
             else
@@ -308,8 +315,12 @@ namespace Phobos.Library.CoreServices
 
             user.CurrentStatus = Models.Enums.UserStatusEnum.Online;
 
-            user.LastLoginDate = DateTime.Now;
+            this.NotificationService.ClearNotifications(NotificationType.Login, user.Username);
 
+            this.NotificationService.SendNotification(UserNotification.LastLogin(user));
+
+            user.LastLoginDate = DateTime.Now;
+            
             this.UpdateAccount(user);
         }
 

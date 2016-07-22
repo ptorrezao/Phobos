@@ -99,7 +99,9 @@ namespace Phobos
         {
             using (MiniProfiler.Current.Step("ResolveUserNotifications"))
             {
-                filterContext.Controller.ViewBag.UserNotifications = UserNotificationViewModel.AsListOfUserNotificationViewModel(this.userManagementService.GetLastNotifications(filterContext.HttpContext.User.Identity.Name, 10));
+                List<UserNotificationViewModel> usersViewModel = AutoMapperConfiguration.GetMapper().Map<List<UserNotificationViewModel>>(this.userManagementService.GetLastNotifications(filterContext.HttpContext.User.Identity.Name, 10));
+
+                filterContext.Controller.ViewBag.UserNotifications = usersViewModel;
             }
         }
 

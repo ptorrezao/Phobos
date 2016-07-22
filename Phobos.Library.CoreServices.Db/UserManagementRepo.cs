@@ -106,27 +106,6 @@ namespace Phobos.Library.CoreServices.Db
             }
         }
 
-        public List<UserMessage> GetLastMessagesForUser(string userName, int qtd)
-        {
-            return this.MsgService.GetLastMessages(userName, qtd, true);
-        }
-
-        public List<UserNotification> GetLastNotificationsForUser(string userName, int qtd)
-        {
-            using (var context = new PhobosCoreContext())
-            {
-                var userMessages = context.UserNotifications
-                    .Where(x => x.User.Username == userName);
-
-                if (userMessages.Count() == 0)
-                {
-                    return new List<UserNotification>();
-
-                }
-                return userMessages.Take(qtd).ToList();
-            }
-        }
-
         public List<UserTask> GetLastTasksForUser(string userName, int qtd)
         {
             using (var context = new PhobosCoreContext())

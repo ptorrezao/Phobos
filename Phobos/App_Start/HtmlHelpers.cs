@@ -14,6 +14,11 @@ namespace Phobos.Helpers
 {
     public static class HtmlHelpers
     {
+        public static MvcHtmlString ToCssClass(this TextColor color)
+        {
+            return MvcHtmlString.Create("text-" + color.ToString().ToLower());
+        }
+
         public static MvcHtmlString FontAwesome(this HtmlHelper htmlHelper, string value, TextColor? color = null)
         {
             var builder = new TagBuilder("i");

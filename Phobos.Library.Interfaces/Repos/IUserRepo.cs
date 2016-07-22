@@ -19,8 +19,7 @@ namespace Phobos.Library.Interfaces.Repos
         ActionAuthorization GetAutorizationForAction(string currentControllerName, string currentActionName);
         UserAccount CreateUser(string name, string userName, string password);
         bool UpdateAccount(UserAccount userAccount);
-        List<UserMessage> GetLastMessagesForUser(string userName, int qtd);
-        List<UserNotification> GetLastNotificationsForUser(string userName, int qtd);
+ 
         List<UserTask> GetLastTasksForUser(string userName, int qtd);
         UserRole CreateRole(string username);
         List<UserRole> GetAllRoles();

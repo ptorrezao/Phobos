@@ -65,12 +65,14 @@ namespace Phobos
                 kernel.Bind<ICoreRepo>().To<CoreRepo>();
                 kernel.Bind<IUserManagementRepo>().To<UserManagementRepo>();
                 kernel.Bind<IMessageRepo>().To<MessageRepo>();
+                kernel.Bind<INotificationRepo>().To<NotificationRepo>();
 
                 kernel.Bind<IUserManagementService>().To<UserManagementCoreService>();
                 kernel.Bind<IAuthenticationService>().To<AuthenticationService>();
                 kernel.Bind<INavigationService>().To<NavigationCoreService>();
                 kernel.Bind<IAuditTrailService>().To<AuditTrailCoreService>();
                 kernel.Bind<IMessageService>().To<MessageCoreService>();
+                kernel.Bind<INotificationService>().To<NotificationService>();
             }
 
             return kernel;

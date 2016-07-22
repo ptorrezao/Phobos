@@ -12,20 +12,20 @@
     @if (userNotifications.Count > 0)
     {
         <ul class="dropdown-menu">
-        <li class="header">You have @userNotifications.Count notifications</li>
-        <li>
-            <ul class="menu">
-                <li>
-                    @foreach (var item in userNotifications)
-                    {
-                        <a href="@item.Link">
-                            <i class="fa @item.FontAwesome text-aqua"></i> @item.Title
+            <li class="header">You have @userNotifications.Count notifications</li>
+            <li>
+                <ul class="menu">
+                    <li>
+                        @foreach (var item in userNotifications)
+                        {
+                            <a href="@Url.Action("GoToNotification", "Notification", new { id = item.Id })">
+                            <i class="fa @item.FontAwesome @item.Color.ToCssClass()"></i> @item.Title
                         </a>
-                    }
-                </li>
-            </ul>
-        </li>
-        <li class="footer"><a href="#">View all</a></li>
-    </ul>
+                        }
+                    </li>
+                </ul>
+            </li>
+            <li class="footer"><a href="#">View all</a></li>
+        </ul>
     }
 </li>

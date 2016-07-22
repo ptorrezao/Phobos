@@ -22,7 +22,7 @@ namespace Phobos.Controllers
         private IUserManagementService userManagementService;
         private IAuditTrailService auditTrailService;
 
-        public AccountController(IUserManagementService usrMngSvc, IAuthenticationService authSvc, IAuditTrailService auditTrailService)
+        public AccountController(IUserManagementService usrMngSvc, IAuthenticationService authSvc,IAuditTrailService auditTrailService)
         {
             this.userManagementService = usrMngSvc;
             this.AuthenticationService = authSvc;
@@ -65,7 +65,7 @@ namespace Phobos.Controllers
                             AuthenticationService.Login(user.UserName, user.RememberMe);
 
                             SessionManager.UserAccount = AutoMapperConfiguration.GetMapper().Map<UserAccountViewModel>(this.userManagementService.GetUser(user.UserName));
-
+                            
                             return RedirectToAction("Index", "Home");
                         }
                     }

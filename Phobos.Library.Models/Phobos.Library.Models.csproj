@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ActionAuthorization.cs" />
+    <Compile Include="Enums\NotificationType.cs" />
     <Compile Include="Enums\TextColor.cs" />
     <Compile Include="Enums\UserStatusEnum.cs" />
     <Compile Include="Configuration.cs" />

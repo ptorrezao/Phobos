@@ -15,7 +15,7 @@ namespace Phobos.Library.CoreServices.Db
         public const string InboxFolderName = "Inbox";
         public const string SentFolderName = "Sent";
         public const string DraftFolderName = "Draft";
-
+     
         public List<UserMessage> GetLastMessages(string userName, int qtd, bool orderDesc)
         {
             using (var context = new PhobosCoreContext())
@@ -311,7 +311,6 @@ namespace Phobos.Library.CoreServices.Db
                 context.SaveChanges();
             }
         }
-
 
         public void DeleteFolder(string userName, int id)
         {

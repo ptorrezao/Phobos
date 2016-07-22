@@ -1,5 +1,7 @@
 ﻿using Ninject;
 using Phobos.Library.Interfaces;
+using Phobos.Library.Interfaces.Services;
+using Phobos.Library.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +12,9 @@ namespace Phobos
 {
     public class AuthenticationService : IAuthenticationService
     {
+        [Inject]
+        public INotificationService NotificationService { get; set; }
+
         public IUserManagementService userManagementService
         {
             get
@@ -20,6 +25,7 @@ namespace Phobos
 
         public void Login(string username, bool rememberMe)
         {
+            userManagementService.UpdateAccountForLogin(username);
             FormsAuthentication.SetAuthCookie(username, rememberMe);
         }
 
