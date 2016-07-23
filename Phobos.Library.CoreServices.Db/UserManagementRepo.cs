@@ -198,6 +198,7 @@ namespace Phobos.Library.CoreServices.Db
                     selectedUser.LastName = userAccount.LastName;
                     selectedUser.MemberSinceDate = userAccount.MemberSinceDate;
                     selectedUser.Position = userAccount.Position;
+                    selectedUser.IsLocked = userAccount.IsLocked;
                     selectedUser.LastLoginDate = userAccount.LastLoginDate;
                     context.SaveChanges();
                     return true;

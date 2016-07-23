@@ -227,10 +227,10 @@ namespace Phobos.Library.CoreServices
                     if (this.CheckSecurityMesurements(userName, password, confirmPassword, out error))
                     {
                         selectedUser = this.Repository.CreateUser(name, userName, password.GetAsHash(salt.Value));
+
+                        this.NotificationService.SendNotification(UserNotification.Welcome.SetUser(selectedUser));
                     }
                 }
-
-                this.NotificationService.SendNotification(UserNotification.Welcome.SetUser(selectedUser));
 
                 return selectedUser != null;
             }
@@ -311,7 +311,7 @@ namespace Phobos.Library.CoreServices
             this.NotificationService.SendNotification(UserNotification.LastLogin(user));
 
             user.LastLoginDate = DateTime.Now;
-            
+
             this.UpdateAccount(user);
         }
 

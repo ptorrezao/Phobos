@@ -7,7 +7,6 @@ using Phobos.Library.Models;
 using System.Collections.Generic;
 using System.Linq;
 using Phobos.Library.Interfaces.Repos;
-using Phobos.UnitTest.Repos;
 using Phobos.Library.Interfaces.Services;
 
 namespace Phobos.UnitTest
@@ -27,18 +26,6 @@ namespace Phobos.UnitTest
         public void Initialize()
         {
             var kernel = MvcApplication.GetKernel();
-
-            kernel.Unbind<ICoreRepo>();
-            kernel.Bind<ICoreRepo>().To<TestCoreRepo>();
-
-            kernel.Unbind<IUserManagementRepo>();
-            kernel.Bind<IUserManagementRepo>().To<TestUserManagementRepo>();
-
-            kernel.Unbind<IMessageRepo>();
-            kernel.Bind<IMessageRepo>().To<TestMessageRepo>();
-
-            kernel.Unbind<INotificationRepo>();
-            kernel.Bind<INotificationRepo>().To<TestNotificationRepo>();
 
             usrMngSvc = kernel.Get<IUserManagementService>();
             msgSvc = kernel.Get<IMessageService>();
@@ -81,7 +68,7 @@ namespace Phobos.UnitTest
 
             Assert.IsTrue(sucess, error);
             sucess = usrMngSvc.RegisterUser(name, nonexisingUser, goodPassword, goodPassword, out error);
-            Assert.IsFalse(sucess, error);
+            Assert.IsFalse(!error.Contains(" existing username"), error);
         }
 
         [TestMethod]
@@ -212,7 +199,8 @@ namespace Phobos.UnitTest
             Assert.IsTrue(sucess, "The user isn't locked");
 
             sucess = usrMngSvc.CheckIfUserIsValid(username, goodPassword, out error);
-            Assert.IsTrue(sucess, error);
+
+            Assert.IsTrue(error.Contains("The user account is locked"), "The error message don't identify the account as locked.");
         }
         #endregion
 
@@ -250,7 +238,6 @@ namespace Phobos.UnitTest
         #region Messages
         [TestMethod]
         [TestCategory("Messages")]
-        [ExpectedException(typeof(NotImplementedException))]
         public void GetLastMessages()
         {
             var nonexisingUser = Guid.NewGuid().ToString().Substring(0, 10) + "@email.com";
@@ -261,17 +248,13 @@ namespace Phobos.UnitTest
 
             var messages = msgSvc.GetLastMessages(nonexisingUser, 10);
 
-            if (messages.Any(x => x.Receiver.Username != nonexisingUser))
-            {
-                Assert.Fail("There are messages from another userr.");
-            }
+            Assert.IsNotNull(messages);
         }
         #endregion
 
         #region Tasks
         [TestMethod]
         [TestCategory("Tasks")]
-        [ExpectedException(typeof(NotImplementedException))]
         public void GetLastTasks()
         {
             var nonexisingUser = Guid.NewGuid().ToString().Substring(0, 10) + "@email.com";
@@ -281,11 +264,8 @@ namespace Phobos.UnitTest
             Assert.IsTrue(sucess, error);
 
             var messages = usrMngSvc.GetLastTasks(nonexisingUser, 10);
-
-            if (messages.Any(x => x.User.Username != nonexisingUser))
-            {
-                Assert.Fail("There are Tasks from another userr.");
-            }
+            
+            Assert.IsNotNull(messages);
         }
         #endregion
     }

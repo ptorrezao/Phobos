@@ -15,7 +15,6 @@ namespace Phobos.Library.CoreServices
 
         public void LogMessage(string message, string user, object userAccount)
         {
-            
         }
 
         public void LogWarningMessage(string msg, string userName, DateTime now)

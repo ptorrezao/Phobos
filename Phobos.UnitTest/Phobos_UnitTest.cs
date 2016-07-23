@@ -13,6 +13,7 @@ namespace Phobos.UnitTest
     public class Phobos_UnitTest
     {
         [TestMethod]
+        [TestCategory("ViewModels")]
         public void ViewModelUtils_UnitTest()
         {
             List<MessageMailBoxFolderViewModel> listOfViewModels = new List<MessageMailBoxFolderViewModel>();

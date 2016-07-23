@@ -32,7 +32,7 @@ namespace Phobos.Library.Utils
         }
         public static string TruncateLongString(this string str, int maxLength, string suffix, bool removeHtmlImg)
         {
-            if (removeHtmlImg)
+            if (removeHtmlImg && str != null)
             {
                 str = Regex.Replace(str, @"<img\s[^>]*>(?:\s*?</img>)?", "", RegexOptions.IgnoreCase);
             }
@@ -46,7 +46,7 @@ namespace Phobos.Library.Utils
             if (userAccount == null)
                 return "";
 
-            return string.Format("{0}{1}{2}", userAccount.FirstName, (!string.IsNullOrEmpty(userAccount.FirstName) && !string.IsNullOrEmpty(userAccount.LastName)) ? " " : "", userAccount.LastLoginDate);
+            return string.Format("{0}{1}{2}", userAccount.FirstName, (!string.IsNullOrEmpty(userAccount.FirstName) && !string.IsNullOrEmpty(userAccount.LastName)) ? " " : "", userAccount.LastName);
         }
         public static UserNotification SetUser(this UserNotification userNotification, UserAccount user)
         {
