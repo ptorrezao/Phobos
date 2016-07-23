@@ -31,8 +31,6 @@ namespace Phobos.Library.CoreServices.Db.Migrations
 
             this.AddCurrentUsersToRoles(context, defaultUsers);
 
-            this.AddActionAuthorizations(context, "Index", "Message");
-
             this.AddActionAuthorizations(context, "EditProfile", "Account");
             this.AddActionAuthorizations(context, "ListUsers", "Account");
             this.AddActionAuthorizations(context, "CreateProfile", "Account", new string[1] { "Administrator" });
@@ -40,6 +38,11 @@ namespace Phobos.Library.CoreServices.Db.Migrations
             this.AddActionAuthorizations(context, "Index", "Home");
 
             this.AddActionAuthorizations(context, "GetFolderBox", "Message");
+
+            this.AddActionAuthorizations(context, "GoToNotification", "Notification");
+            this.AddActionAuthorizations(context, "Index", "Notification");
+
+            this.AddActionAuthorizations(context, "Index", "Message");
             this.AddActionAuthorizations(context, "Compose", "Message");
             this.AddActionAuthorizations(context, "CreateFolder", "Message");
             this.AddActionAuthorizations(context, "EditFolder", "Message");

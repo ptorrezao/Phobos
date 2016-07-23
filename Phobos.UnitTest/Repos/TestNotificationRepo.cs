@@ -24,7 +24,14 @@ namespace Phobos.UnitTest.Repos
 
         public List<UserNotification> GetLastNotificationsForUser(string userName, int qtd, bool onlyUnread)
         {
-            return notifications.Where(x => x.User.Username == userName).Take(qtd).ToList();
+            if (onlyUnread)
+            {
+                return notifications.Where(x => x.User.Username == userName && x.Read == false).Take(qtd).ToList();
+            }
+            else
+            {
+                return notifications.Where(x => x.User.Username == userName).Take(qtd).ToList();
+            }
         }
 
         public void ClearNotifications(NotificationType notificationType, string userName)
@@ -35,6 +42,17 @@ namespace Phobos.UnitTest.Repos
         public void MarkNotificationAsRead(int id)
         {
             notifications.Where(x => x.Id == id).ToList().ForEach(x => x.Read = true);
+        }
+
+        public List<UserNotification> GetNotifications(string userName)
+        {
+            return notifications.Where(x => x.User.Username == userName).ToList();
+        }
+
+
+        public void DeleteNotification(string userName, int selectedInt)
+        {
+             notifications.RemoveAll(x => x.User.Username == userName && x.Id == selectedInt);
         }
     }
 }

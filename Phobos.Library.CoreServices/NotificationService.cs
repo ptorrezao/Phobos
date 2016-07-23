@@ -38,5 +38,16 @@ namespace Phobos.Library.CoreServices
         {
             this.Repository.MarkNotificationAsRead(id);
         }
+
+        public List<UserNotification> GetNotifications(string userName)
+        {
+            return this.Repository.GetNotifications(userName);
+        }
+
+
+        public void DeleteNotification(string userName, int selectedInt)
+        {
+            this.Repository.DeleteNotification(userName, selectedInt);
+        }
     }
 }

@@ -17,5 +17,9 @@ namespace Phobos.Library.Interfaces.Repos
         void ClearNotifications(NotificationType notificationType, string userName);
 
         void MarkNotificationAsRead(int id);
+
+        List<UserNotification> GetNotifications(string userName);
+
+        void DeleteNotification(string userName, int selectedInt);
     }
 }

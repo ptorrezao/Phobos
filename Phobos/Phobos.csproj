@@ -557,6 +557,7 @@
     <Content Include="Views\AdminLTE\Account\ListGroups.cshtml" />
     <Content Include="Views\AdminLTE\Account\_EditRole.cshtml" />
     <Content Include="Views\AdminLTE\Account\_DeleteRole.cshtml" />
+    <Content Include="Views\AdminLTE\Notification\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
