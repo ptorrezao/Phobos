@@ -16,7 +16,7 @@ namespace Phobos.Library.CoreServices.Db
         public const string SentFolderName = "Sent";
         public const string DraftFolderName = "Draft";
      
-        public List<UserMessage> GetLastMessages(string userName, int qtd, bool orderDesc)
+        public List<UserMessage> GetLastMessages(string userName, int qtd)
         {
             using (var context = new PhobosCoreContext())
             {

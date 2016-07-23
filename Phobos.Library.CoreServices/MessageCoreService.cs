@@ -23,9 +23,9 @@ namespace Phobos.Library.CoreServices
             return false;
         }
 
-        public List<UserMessage> GetLastMessages(string userName, int qtd, bool orderDesc)
+        public List<UserMessage> GetLastMessages(string userName, int qtd)
         {
-            return this.Repository.GetLastMessages(userName, qtd, orderDesc);
+            return this.Repository.GetLastMessages(userName, qtd);
         }
 
         public List<UserMessageFolder> GetAllFoldersForUser(string userName)

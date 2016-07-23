@@ -10,7 +10,7 @@ namespace Phobos.Library.Interfaces.Services
     public interface IMessageService
     {
         bool SendMessage(string username, string msg);
-        List<UserMessage> GetLastMessages(string userName, int qtd, bool orderDesc);
+        List<UserMessage> GetLastMessages(string userName, int qtd);
         List<UserMessageFolder> GetAllFoldersForUser(string userName);
         UserMessageFolder GetFolder(string userName, int? id);
         UserMessage SendMessage(string userName, UserMessage createdMessage);

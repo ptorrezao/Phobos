@@ -14,8 +14,6 @@ namespace Phobos.Library.Interfaces
         bool CheckIfUserIsValid(string userName, string password, out string error);
         List<UserAccount> GetAllUsers();
         UserAccount GetUser(string userName);
-        List<UserMessage> GetLastMessages(string userName, int qtd);
-        List<UserNotification> GetLastNotifications(string userName, int qtd);
         List<UserTask> GetLastTasks(string userName, int qtd);
         bool RegisterUser(string name, string userName, string password, string confirmPassword, out string error);
         bool RecoverProfile(string userName, out string error);

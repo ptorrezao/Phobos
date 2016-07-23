@@ -9,7 +9,7 @@ namespace Phobos.Library.Interfaces.Repos
 {
     public interface IMessageRepo
     {
-        List<UserMessage> GetLastMessages(string userName, int qtd, bool orderDesc);
+        List<UserMessage> GetLastMessages(string userName, int qtd);
         List<UserMessageFolder> GetAllFolders(string userName);
         UserMessageFolder GetFolder(string userName, int folderId);
         UserMessageFolder GetInboxFolder(string userName);

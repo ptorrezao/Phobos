@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Phobos.Library.Interfaces.Repos;
 using Phobos.UnitTest.Repos;
+using Phobos.Library.Interfaces.Services;
 
 namespace Phobos.UnitTest
 {
@@ -19,6 +20,8 @@ namespace Phobos.UnitTest
         string badPassword = "BadPassword";
 
         IUserManagementService usrMngSvc;
+        IMessageService msgSvc;
+        INotificationService notificatioSvc;
 
         [TestInitialize]
         public void Initialize()
@@ -31,7 +34,15 @@ namespace Phobos.UnitTest
             kernel.Unbind<IUserManagementRepo>();
             kernel.Bind<IUserManagementRepo>().To<TestUserManagementRepo>();
 
+            kernel.Unbind<IMessageRepo>();
+            kernel.Bind<IMessageRepo>().To<TestMessageRepo>();
+
+            kernel.Unbind<INotificationRepo>();
+            kernel.Bind<INotificationRepo>().To<TestNotificationRepo>();
+
             usrMngSvc = kernel.Get<IUserManagementService>();
+            msgSvc = kernel.Get<IMessageService>();
+            notificatioSvc = kernel.Get<INotificationService>();
 
             var coreRepo = kernel.Get<ICoreRepo>();
             coreRepo.AddConfiguration("PasswordSalt", "Phobos");
@@ -248,34 +259,13 @@ namespace Phobos.UnitTest
 
             Assert.IsTrue(sucess, error);
 
-            var messages = usrMngSvc.GetLastMessages(nonexisingUser, 10);
+            var messages = msgSvc.GetLastMessages(nonexisingUser, 10);
 
             if (messages.Any(x => x.Receiver.Username != nonexisingUser))
             {
                 Assert.Fail("There are messages from another userr.");
             }
-        } 
-        #endregion
-
-        #region Notifications
-        [TestMethod]
-        [TestCategory("Notifications")]
-        [ExpectedException(typeof(NotImplementedException))]
-        public void GetLastNotifications()
-        {
-            var nonexisingUser = Guid.NewGuid().ToString().Substring(0, 10) + "@email.com";
-            var error = "";
-            var sucess = usrMngSvc.RegisterUser(name, nonexisingUser, goodPassword, goodPassword, out error);
-
-            Assert.IsTrue(sucess, error);
-
-            var messages = usrMngSvc.GetLastNotifications(nonexisingUser, 10);
-
-            if (messages.Any(x => x.User.Username != nonexisingUser))
-            {
-                Assert.Fail("There are Notifications from another userr.");
-            }
-        } 
+        }
         #endregion
 
         #region Tasks
@@ -296,7 +286,7 @@ namespace Phobos.UnitTest
             {
                 Assert.Fail("There are Tasks from another userr.");
             }
-        } 
+        }
         #endregion
     }
 }

@@ -12,7 +12,7 @@ namespace Phobos.Library.Interfaces.Services
     {
         bool SendNotification(UserNotification userNotification);
 
-        List<UserNotification> GetLastNotifications(string userName, int qtd);
+        List<UserNotification> GetLastNotifications(string userName, int qtd, bool onlyUnread);
 
         void ClearNotifications(NotificationType notificationType, string userName);
 

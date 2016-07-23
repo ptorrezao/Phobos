@@ -20,17 +20,23 @@ namespace Phobos
     {
         private IUserManagementService userManagementService;
         private INavigationService navigationService;
+        private INotificationService notificationService;
+        private IMessageService msgService;
 
         public PhobosInitializationAttribute()
             : this(
                 MvcApplication.GetKernel().Get<IUserManagementService>(),
-                MvcApplication.GetKernel().Get<INavigationService>())
+                MvcApplication.GetKernel().Get<INavigationService>(),
+                MvcApplication.GetKernel().Get<INotificationService>(),
+                MvcApplication.GetKernel().Get<IMessageService>())
         { }
 
-        public PhobosInitializationAttribute(IUserManagementService userMngSvc, INavigationService navSvc)
+        public PhobosInitializationAttribute(IUserManagementService userMngSvc, INavigationService navSvc, INotificationService notificationService, IMessageService msgService)
         {
             this.userManagementService = userMngSvc;
             this.navigationService = navSvc;
+            this.notificationService = notificationService;
+            this.msgService = msgService;
         }
 
         public override void OnActionExecuting(ActionExecutingContext filterContext)
@@ -91,7 +97,7 @@ namespace Phobos
         {
             using (MiniProfiler.Current.Step("ResolveUserMessages"))
             {
-                filterContext.Controller.ViewBag.UserMessages = AutoMapperConfiguration.GetMapper().Map<List<UserMessage>, List<UserMessageViewModel>>(this.userManagementService.GetLastMessages(filterContext.HttpContext.User.Identity.Name, 10));
+                filterContext.Controller.ViewBag.UserMessages = AutoMapperConfiguration.GetMapper().Map<List<UserMessage>, List<UserMessageViewModel>>(this.msgService.GetLastMessages(filterContext.HttpContext.User.Identity.Name, 10));
             }
         }
 
@@ -99,7 +105,7 @@ namespace Phobos
         {
             using (MiniProfiler.Current.Step("ResolveUserNotifications"))
             {
-                List<UserNotificationViewModel> usersViewModel = AutoMapperConfiguration.GetMapper().Map<List<UserNotificationViewModel>>(this.userManagementService.GetLastNotifications(filterContext.HttpContext.User.Identity.Name, 10));
+                List<UserNotificationViewModel> usersViewModel = AutoMapperConfiguration.GetMapper().Map<List<UserNotificationViewModel>>(this.notificationService.GetLastNotifications(filterContext.HttpContext.User.Identity.Name, 10, true));
 
                 filterContext.Controller.ViewBag.UserNotifications = usersViewModel;
             }

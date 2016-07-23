@@ -23,12 +23,17 @@ namespace Phobos.Library.CoreServices.Db
             }
         }
 
-        public List<UserNotification> GetLastNotificationsForUser(string userName, int qtd)
+        public List<UserNotification> GetLastNotificationsForUser(string userName, int qtd, bool onlyUnread)
         {
             using (var context = new PhobosCoreContext())
             {
                 var userMessages = context.UserNotifications
                     .Where(x => x.User.Username == userName);
+
+                if (onlyUnread)
+                {
+                    userMessages = userMessages.Where(x => x.Read == false);
+                }
 
                 if (userMessages.Count() == 0)
                 {

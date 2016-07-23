@@ -153,15 +153,6 @@ namespace Phobos.Library.CoreServices
             return isValid;
         }
 
-        public List<UserMessage> GetLastMessages(string userName, int qtd)
-        {
-            return this.MessageService.GetLastMessages(userName, qtd, true);
-        }
-
-        public List<UserNotification> GetLastNotifications(string userName, int qtd)
-        {
-            return this.NotificationService.GetLastNotifications(userName, qtd);
-        }
 
         public List<UserTask> GetLastTasks(string userName, int qtd)
         {

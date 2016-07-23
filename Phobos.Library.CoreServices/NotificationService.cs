@@ -23,9 +23,9 @@ namespace Phobos.Library.CoreServices
             return this.Repository.SendNotification(userNotification);
         }
 
-        public List<UserNotification> GetLastNotifications(string userName, int qtd)
+        public List<UserNotification> GetLastNotifications(string userName, int qtd, bool onlyUnread)
         {
-            return this.Repository.GetLastNotificationsForUser(userName, qtd);
+            return this.Repository.GetLastNotificationsForUser(userName, qtd, true);
         }
 
         public void ClearNotifications(NotificationType notificationType, string userName)
