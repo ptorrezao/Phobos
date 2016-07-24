@@ -40,9 +40,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AuditTrailService.cs" />
-    <Compile Include="Inject.cs" />
     <Compile Include="NavigationService.cs" />
-    <Compile Include="UserManagementService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

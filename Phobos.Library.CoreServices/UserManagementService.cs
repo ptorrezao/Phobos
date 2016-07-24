@@ -366,5 +366,10 @@ namespace Phobos.Library.CoreServices
             error = "";
             return this.Repository.DeleteRole(name);
         }
+
+        public bool UnlockUserAccount(string username)
+        {
+            return this.Repository.UnlockUserAccount(username);
+        }
     }
 }

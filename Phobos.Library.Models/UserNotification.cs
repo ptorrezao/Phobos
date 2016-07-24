@@ -23,7 +23,7 @@ namespace Phobos.Library.Models
             {
                 return new UserNotification()
                 {
-                    Type = NotificationType.Login,
+                    Type = NotificationType.Welcome,
                     Read = false,
                     Icon = "child",
                     IconColor = TextColor.Blue,
@@ -35,7 +35,7 @@ namespace Phobos.Library.Models
         {
             return new UserNotification()
             {
-                Type = NotificationType.Welcome,
+                Type = NotificationType.Login,
                 Read = false,
                 User = user,
                 Icon = "search-minus",

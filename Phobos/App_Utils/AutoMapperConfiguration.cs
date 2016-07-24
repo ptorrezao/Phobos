@@ -87,6 +87,14 @@ namespace Phobos.App_Utils
                     .ForMember(dest => dest.Link, opts => opts.MapFrom(src => src.Link));
                 #endregion
 
+                #region UserTaskViewModel <-> UserTask
+                cfg.CreateMap<UserTask, UserTaskViewModel>()
+                      .ForMember(dest => dest.Title, opts => opts.MapFrom(src => src.Title));
+
+                cfg.CreateMap<UserTaskViewModel, UserTask>()
+                    .ForMember(dest => dest.Title, opts => opts.MapFrom(src => src.Title));
+                #endregion
+                
                 #region UserAccount <-> UserAccountViewModel
                 cfg.CreateMap<UserAccount, UserAccountViewModel>()
                            .ForMember(dest => dest.CurrentStatus, opts => opts.MapFrom(src => src.CurrentStatus))

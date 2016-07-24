@@ -20,10 +20,11 @@ namespace Phobos.Library.Interfaces
         bool UpdateAccount(UserAccount userAccount);
         void UpdateAccountForLogin(string username);
         void UpdateAccountForLogout(string username);
-        bool CreateRole(string username, out string error);
+        bool CreateRole(string rolename, out string error);
         List<UserRole> GetAllRoles();
         UserRole GetRole(string name);
         bool UpdateRole(string oldName, string newName,List<string> usersInRole, out string error);
         bool DeleteRole(string name, out string error);
+        bool UnlockUserAccount(string username);
     }
 }

@@ -20,6 +20,6 @@ namespace Phobos.Library.Interfaces.Services
 
         List<UserNotification> GetNotifications(string userName);
 
-        void DeleteNotification(string p, int selectedInt);
+        void DeleteNotification(string userName, int selectedInt);
     }
 }

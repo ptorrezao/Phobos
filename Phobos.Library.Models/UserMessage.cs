@@ -16,6 +16,7 @@ namespace Phobos.Library.Models
             Message = "";
             MessageDate = DateTime.Now;
         }
+
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }

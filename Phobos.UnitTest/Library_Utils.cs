@@ -6,7 +6,7 @@ using Phobos.Library.Utils;
 namespace Phobos.UnitTest
 {
     [TestClass]
-    public class Libary_Utils
+    public class Library_Utils
     {
         [TestMethod]
         [TestCategory("Utils.Extensions")]
@@ -101,5 +101,6 @@ namespace Phobos.UnitTest
 
             Assert.IsTrue(truncatedString.Length <= qtd + suffix.Length);
         }
+
     }
 }

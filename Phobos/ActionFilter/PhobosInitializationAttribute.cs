@@ -89,7 +89,9 @@ namespace Phobos
         {
             using (MiniProfiler.Current.Step("ResolveUserTasks"))
             {
-                filterContext.Controller.ViewBag.UserTasks = UserTaskViewModel.AsListOfUserTaskViewModel(this.userManagementService.GetLastTasks(filterContext.HttpContext.User.Identity.Name, 10));
+                List<UserTaskViewModel> usersViewModel = AutoMapperConfiguration.GetMapper().Map<List<UserTaskViewModel>>(this.userManagementService.GetLastTasks(filterContext.HttpContext.User.Identity.Name, 10));
+
+                filterContext.Controller.ViewBag.UserTasks = usersViewModel;
             }
         }
 

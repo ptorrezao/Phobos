@@ -25,6 +25,14 @@ namespace Phobos.UnitTest.MockedRepositories
         public static List<UserTask> userTasks = new List<UserTask>();
         public static List<UserNotification> userNotifications = new List<UserNotification>();
 
+        public MockedUserManagementRepo()
+        {
+            if (actionAuthorizations.Count == 0)
+            {
+                actionAuthorizations.Add(new ActionAuthorization() { Action = "Index", Controller = "Home" });
+            }
+        }
+
         #region IUserManagementRepo
         public bool CheckIfUserExist(string userName)
         {
@@ -334,7 +342,7 @@ namespace Phobos.UnitTest.MockedRepositories
             var notifications = userNotifications
                 .RemoveAll(x => x.User.Username == userName
                     && x.Id == selectedInt);
-        } 
+        }
         #endregion
     }
 }

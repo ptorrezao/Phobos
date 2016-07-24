@@ -15,6 +15,7 @@ namespace Phobos.Library.Models
             Roles = new List<UserRole>();
             UserAccounts = new List<UserAccount>();
         }
+
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }

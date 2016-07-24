@@ -19,7 +19,7 @@ namespace Phobos.Library.CoreServices.Db.Migrations
         readonly string[] defaultUsers = { userRoleName };
         readonly string[] defaultAdminUsers = { adminRoleName };
 
-        protected override void Seed(Phobos.Library.CoreServices.Db.PhobosCoreContext context)
+        protected override void Seed(PhobosCoreContext context)
         {
             //if (System.Diagnostics.Debugger.IsAttached == false)
             //    System.Diagnostics.Debugger.Launch();
