@@ -199,6 +199,7 @@ namespace Phobos.Library.CoreServices.Db
                     selectedUser.MemberSinceDate = userAccount.MemberSinceDate;
                     selectedUser.Position = userAccount.Position;
                     selectedUser.IsLocked = userAccount.IsLocked;
+                    selectedUser.LockedDate = userAccount.LockedDate;
                     selectedUser.LastLoginDate = userAccount.LastLoginDate;
                     context.SaveChanges();
                     return true;
@@ -308,7 +309,6 @@ namespace Phobos.Library.CoreServices.Db
                 return context.SaveChanges() > 0;
             }
         }
-
 
         public bool UpdateRoleUsers(string name, List<string> usersInRole)
         {

@@ -15,7 +15,7 @@ namespace Phobos.Library.Interfaces.Repos
         bool AddFailedLoginAttempt(string userName);
         bool UnlockUserAccount(string userName);
         bool LockUserAccount(string userName);
-        bool UpdateLastLoginDate(string userName, DateTime now);
+        bool UpdateLastLoginDate(string userName, DateTime lastDate);
         ActionAuthorization GetAutorizationForAction(string currentControllerName, string currentActionName);
         UserAccount CreateUser(string name, string userName, string password);
         bool UpdateAccount(UserAccount userAccount);
@@ -26,6 +26,6 @@ namespace Phobos.Library.Interfaces.Repos
         UserRole GetRole(string name);
         bool UpdateRole(UserRole role, string name);
         bool DeleteRole(string name);
-        bool UpdateRoleUsers(string p, List<string> usersInRole);
+        bool UpdateRoleUsers(string name, List<string> usersInRole);
     }
 }

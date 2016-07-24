@@ -8,6 +8,9 @@ using System.Collections.Generic;
 using System.Linq;
 using Phobos.Library.Interfaces.Repos;
 using Phobos.Library.Interfaces.Services;
+using Rhino.Mocks;
+using Phobos.UnitTest.MockedRepositories;
+using System.Configuration;
 
 namespace Phobos.UnitTest
 {
@@ -26,6 +29,13 @@ namespace Phobos.UnitTest
         public void Initialize()
         {
             var kernel = MvcApplication.GetKernel();
+            bool isLocal = bool.Parse(ConfigurationManager.AppSettings["UseDatabaseToTest"]); ;
+
+            if (!isLocal)
+            {
+                kernel.Rebind<IUserManagementRepo>().To<MockedUserManagementRepo>();
+                kernel.Rebind<INotificationRepo>().To<MockedUserManagementRepo>();
+            }
 
             usrMngSvc = kernel.Get<IUserManagementService>();
             msgSvc = kernel.Get<IMessageService>();
@@ -189,9 +199,8 @@ namespace Phobos.UnitTest
             var sucess = usrMngSvc.RegisterUser(Guid.NewGuid().ToString().Substring(0, 10), username, goodPassword, goodPassword, out error);
 
             var user = usrMngSvc.GetUser(username);
-            user.LockedDate = DateTime.MinValue;
+            user.LockedDate = DateTime.Now;
             user.IsLocked = true;
-
             sucess = usrMngSvc.UpdateAccount(user);
 
             user = usrMngSvc.GetUser(username);
@@ -264,7 +273,7 @@ namespace Phobos.UnitTest
             Assert.IsTrue(sucess, error);
 
             var messages = usrMngSvc.GetLastTasks(nonexisingUser, 10);
-            
+
             Assert.IsNotNull(messages);
         }
         #endregion
