@@ -3,6 +3,7 @@ using Phobos.Library.Interfaces.Repos;
 using Phobos.Library.Interfaces.Services;
 using Phobos.Library.Models;
 using Phobos.Library.Models.Enums;
+using Phobos.Library.Models.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,20 +12,16 @@ using System.Threading.Tasks;
 
 namespace Phobos.UnitTest.MockedRepositories
 {
-    public class MockedUserManagementRepo : IUserManagementRepo, INotificationRepo
+    public class MockedUserManagementRepo : IUserManagementRepo, ICoreRepo, INotificationRepo, IMessageRepo
     {
-        [Inject]
-        public ICoreRepo CoreRepository { get; set; }
-
-        [Inject]
-        public IMessageService MsgService { get; set; }
-
         public static List<UserAccount> users = new List<UserAccount>();
+        public static List<UserMessage> userMessages = new List<UserMessage>();
         public static List<ActionAuthorization> actionAuthorizations = new List<ActionAuthorization>();
         public static List<UserRole> roles = new List<UserRole>();
         public static List<UserTask> userTasks = new List<UserTask>();
         public static List<UserNotification> userNotifications = new List<UserNotification>();
-
+        public static List<Configuration> configurations = new List<Configuration>();
+        
         public MockedUserManagementRepo()
         {
             if (actionAuthorizations.Count == 0)
@@ -145,7 +142,7 @@ namespace Phobos.UnitTest.MockedRepositories
 
         public UserAccount CreateUser(string name, string userName, string password)
         {
-            Configuration salt = CoreRepository.GetConfiguration("PasswordSalt");
+            Configuration salt = this.GetConfiguration("PasswordSalt");
 
             var newUser = new UserAccount();
             newUser.FirstName = name;
@@ -342,6 +339,95 @@ namespace Phobos.UnitTest.MockedRepositories
             var notifications = userNotifications
                 .RemoveAll(x => x.User.Username == userName
                     && x.Id == selectedInt);
+        }
+        #endregion
+
+        #region IMessageRepo
+        public List<UserMessage> GetLastMessages(string userName, int qtd)
+        {
+            return userMessages.OrderByDescending(x => x.SendDate).Take(qtd).ToList();
+        }
+
+        public List<UserMessageFolder> GetAllFolders(string userName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public UserMessageFolder GetFolder(string userName, int folderId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public UserMessageFolder GetInboxFolder(string userName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public UserMessageFolder GetSentFolder(string userName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<UserMessage> GetMessages(string userName, int folderId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public UserMessageFolder CreateDefaultFolder(string userName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public UserMessage SaveMessage(UserMessage sentMessage)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void DeleteMessage(int messageId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public UserMessage GetMessage(string userName, int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public UserMessageFolder SaveFolder(UserMessageFolder model)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void MoveMessageToFolder(string userName, int msgId, int newFolderId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void DeleteFolder(string userName, int id)
+        {
+            throw new NotImplementedException();
+        }
+        #endregion
+
+        #region ICoreRepo
+        public void AddConfiguration(string key, string value)
+        {
+            var config = configurations.FirstOrDefault(x => x.Key == key);
+            if (config == default(Configuration))
+            {
+                configurations.Add(new Configuration() { Key = key, Value = value });
+            }
+        }
+
+        public Configuration GetConfiguration(string key)
+        {
+            var config = configurations.FirstOrDefault(x => x.Key == key);
+            if (config == default(Configuration))
+            {
+                throw new Exception("Configuration (" + key + ") is not set.");
+            }
+
+            return config;
         }
         #endregion
     }

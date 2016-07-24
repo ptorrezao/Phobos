@@ -38,6 +38,8 @@ namespace Phobos.UnitTest
             {
                 kernel.Rebind<IUserManagementRepo>().To<MockedUserManagementRepo>();
                 kernel.Rebind<INotificationRepo>().To<MockedUserManagementRepo>();
+                kernel.Rebind<IMessageRepo>().To<MockedUserManagementRepo>();
+                kernel.Rebind<ICoreRepo>().To<MockedUserManagementRepo>();
             }
 
             usrMngSvc = kernel.Get<IUserManagementService>();
@@ -129,8 +131,6 @@ namespace Phobos.UnitTest
         {
             //// Create User
             var username = Guid.NewGuid().ToString().Substring(0, 10) + "@email.com";
-            var error = "";
-            var oldName = "A";
             var newName = "B";
             var user = new UserAccount();
             user.Username = username;
